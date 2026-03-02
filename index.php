@@ -29,19 +29,19 @@ require __DIR__ . '/includes/header.php';
             <div class="countdown-grid" data-countdown>
                 <div class="countdown-box">
                     <strong data-days>0</strong>
-                    <span>J</span>
+                    <span><?= e(t('home.countdown_days_label')) ?></span>
                 </div>
                 <div class="countdown-box">
                     <strong data-hours>00</strong>
-                    <span>H</span>
+                    <span><?= e(t('home.countdown_hours_label')) ?></span>
                 </div>
                 <div class="countdown-box">
                     <strong data-minutes>00</strong>
-                    <span>M</span>
+                    <span><?= e(t('home.countdown_minutes_label')) ?></span>
                 </div>
                 <div class="countdown-box">
                     <strong data-seconds>00</strong>
-                    <span>S</span>
+                    <span><?= e(t('home.countdown_seconds_label')) ?></span>
                 </div>
             </div>
         </aside>
