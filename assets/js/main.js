@@ -159,6 +159,70 @@ document.addEventListener('DOMContentLoaded', function () {
         window.setInterval(tick, 1000);
     }
 
+    var counterNodes = Array.prototype.slice.call(document.querySelectorAll('[data-counter-end]'));
+    if (counterNodes.length > 0) {
+        var counterFormatValue = function (value, decimals) {
+            if (decimals > 0) return String(value.toFixed(decimals));
+            return String(Math.round(value));
+        };
+
+        var animateCounter = function (node) {
+            if (!node || node.getAttribute('data-counter-complete') === '1') return;
+            node.setAttribute('data-counter-complete', '1');
+
+            var startValue = parseFloat(node.getAttribute('data-counter-start') || '0');
+            var endValue = parseFloat(node.getAttribute('data-counter-end') || '0');
+            var duration = parseInt(node.getAttribute('data-counter-duration') || '1400', 10);
+            var decimals = parseInt(node.getAttribute('data-counter-decimals') || '0', 10);
+            var prefix = node.getAttribute('data-counter-prefix') || '';
+            var suffix = node.getAttribute('data-counter-suffix') || '';
+            var animationStart = 0;
+
+            if (!isFinite(startValue)) startValue = 0;
+            if (!isFinite(endValue)) endValue = 0;
+            if (!isFinite(duration) || duration < 200) duration = 1400;
+            if (!isFinite(decimals) || decimals < 0) decimals = 0;
+
+            var stepCounter = function (timestamp) {
+                if (animationStart === 0) animationStart = timestamp;
+                var progress = Math.min(1, (timestamp - animationStart) / duration);
+                var easedProgress = 1 - Math.pow(1 - progress, 3);
+                var currentValue = startValue + ((endValue - startValue) * easedProgress);
+
+                node.textContent = prefix + counterFormatValue(currentValue, decimals) + suffix;
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(stepCounter);
+                    return;
+                }
+
+                node.textContent = prefix + counterFormatValue(endValue, decimals) + suffix;
+            };
+
+            window.requestAnimationFrame(stepCounter);
+        };
+
+        if ('IntersectionObserver' in window) {
+            var counterObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            }, {
+                threshold: 0.45
+            });
+
+            counterNodes.forEach(function (node) {
+                counterObserver.observe(node);
+            });
+        } else {
+            counterNodes.forEach(function (node) {
+                animateCounter(node);
+            });
+        }
+    }
+
     document.querySelectorAll('form[data-validate]').forEach(function (form) {
         form.addEventListener('submit', function (event) {
             var errors = [];

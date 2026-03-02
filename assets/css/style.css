@@ -126,7 +126,10 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    justify-self: center;
     gap: 0.18rem;
+    width: fit-content;
+    max-width: 100%;
     min-width: 0;
     padding: 0.2rem;
     border-radius: 999px;
@@ -792,6 +795,279 @@ textarea:focus {
     display: block;
 }
 
+.about-hero {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 33%),
+        linear-gradient(118deg, rgba(198, 40, 40, 0.95), rgba(244, 180, 0, 0.9) 54%, rgba(31, 143, 70, 0.9));
+}
+
+.about-hero::after {
+    content: "";
+    position: absolute;
+    inset: auto -20% -48% auto;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 64%);
+    pointer-events: none;
+}
+
+.about-hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1rem;
+    align-items: stretch;
+    min-height: 520px;
+    padding: 3.9rem 0;
+}
+
+.about-hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.86rem;
+}
+
+.about-kicker {
+    margin: 0;
+    width: fit-content;
+    border-radius: 999px;
+    padding: 0.38rem 0.72rem;
+    font-size: 0.79rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.about-hero-copy h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 3.05rem);
+}
+
+.about-hero .lead {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+}
+
+.about-hero-copy p {
+    margin: 0;
+    max-width: 72ch;
+}
+
+.about-hero-copy .cta-row {
+    margin-top: 1rem;
+}
+
+.about-hero-panel {
+    align-self: center;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(10, 16, 31, 0.25);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 14px 30px rgba(10, 15, 28, 0.22);
+    padding: 1.1rem;
+}
+
+.about-hero-panel h2 {
+    margin: 0 0 0.82rem;
+    font-size: 1.24rem;
+    color: #fff;
+}
+
+.about-goals-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.56rem;
+}
+
+.about-goals-list li {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    padding: 0.72rem 0.82rem 0.72rem 2.15rem;
+    background: rgba(255, 255, 255, 0.11);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.about-goals-list li::before {
+    content: "";
+    position: absolute;
+    left: 0.78rem;
+    top: 50%;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.58));
+    box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.45);
+}
+
+.about-goals-list li:hover {
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.34);
+}
+
+.about-stats-section {
+    padding-top: 0;
+    margin-top: -2.1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.about-stats-strip {
+    align-items: stretch;
+}
+
+.about-stat-card {
+    border: 1px solid rgba(196, 207, 230, 0.9);
+    background: linear-gradient(160deg, #ffffff, #f6f8ff);
+    box-shadow: 0 12px 28px rgba(10, 20, 41, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-stat-card strong {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    color: #842020;
+}
+
+.about-stat-card span {
+    display: block;
+    max-width: 24ch;
+    color: #33435f;
+    font-size: 0.93rem;
+    font-weight: 650;
+}
+
+.about-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 34px rgba(10, 20, 41, 0.16);
+}
+
+.about-info-grid {
+    align-items: stretch;
+}
+
+.about-info-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 255, 0.99));
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.about-info-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c62828, #f4b400, #1f8f46);
+}
+
+.about-info-card:hover,
+.about-info-card:focus-within {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 34px rgba(14, 24, 45, 0.14);
+}
+
+.about-roadmap-section {
+    background: linear-gradient(180deg, #f8faff 0%, #f5f8ff 100%);
+}
+
+.about-section-head {
+    max-width: 920px;
+    margin-bottom: 1rem;
+}
+
+.about-section-head h2 {
+    margin-bottom: 0.68rem;
+}
+
+.about-roadmap-grid {
+    gap: 0.9rem;
+}
+
+.about-roadmap-step {
+    position: relative;
+    border-radius: 14px;
+    border: 1px solid rgba(203, 211, 228, 0.9);
+    background: #fff;
+    box-shadow: 0 9px 20px rgba(15, 26, 46, 0.09);
+    padding: 1rem 1rem 1rem 3.28rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.about-roadmap-step p {
+    margin: 0;
+    color: #24344d;
+    font-weight: 600;
+}
+
+.about-step-index {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    width: 1.72rem;
+    height: 1.72rem;
+    border-radius: 50%;
+    border: 1px solid rgba(198, 40, 40, 0.32);
+    background: rgba(198, 40, 40, 0.12);
+    color: #6b1f1f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-roadmap-step:hover {
+    transform: translateY(-4px);
+    border-color: rgba(198, 40, 40, 0.3);
+    box-shadow: 0 14px 28px rgba(14, 24, 45, 0.14);
+}
+
+.about-message-grid {
+    align-items: stretch;
+}
+
+.about-message-card {
+    background: linear-gradient(150deg, #fff, #f8faff);
+}
+
+.about-cta-card {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    background: linear-gradient(145deg, rgba(198, 40, 40, 0.95), rgba(138, 24, 24, 0.92));
+    box-shadow: 0 16px 30px rgba(118, 17, 17, 0.25);
+}
+
+.about-cta-card h2 {
+    margin-top: 0;
+    color: #fff;
+}
+
+.about-cta-card p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.about-cta-card .btn-primary {
+    background: #1f8f46;
+}
+
+.about-cta-card .btn-light {
+    color: #7a2222;
+}
+
 .hidden-honeypot {
     position: absolute;
     left: -9999px;
@@ -1070,6 +1346,13 @@ textarea:focus {
         min-height: var(--hero-min-height-mobile);
     }
 
+    .about-hero-grid {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        padding: 3.2rem 0;
+        gap: 0.85rem;
+    }
+
     .hero-copy,
     .hero-card {
         min-height: 0;
@@ -1078,6 +1361,18 @@ textarea:focus {
     .hero-copy .cta-row {
         margin-top: 1.2rem;
         padding-top: 0;
+    }
+
+    .about-hero-copy .cta-row {
+        margin-top: 0.9rem;
+    }
+
+    .about-stats-section {
+        margin-top: -1.2rem;
+    }
+
+    .about-roadmap-step {
+        padding-left: 3rem;
     }
 
     .footer-main {
@@ -1119,6 +1414,41 @@ textarea:focus {
     .hero-grid {
         padding: 3.4rem 0;
         min-height: 700px;
+    }
+
+    .about-hero-grid {
+        padding: 2.8rem 0;
+    }
+
+    .about-kicker {
+        font-size: 0.72rem;
+    }
+
+    .about-hero-panel {
+        padding: 0.95rem;
+    }
+
+    .about-goals-list li {
+        padding: 0.66rem 0.72rem 0.66rem 1.95rem;
+    }
+
+    .about-stats-section {
+        margin-top: -0.72rem;
+    }
+
+    .about-stat-card strong {
+        font-size: 1.7rem;
+    }
+
+    .about-roadmap-step {
+        padding: 0.92rem 0.9rem 0.92rem 2.66rem;
+    }
+
+    .about-step-index {
+        left: 0.78rem;
+        top: 0.82rem;
+        width: 1.56rem;
+        height: 1.56rem;
     }
 
     .tube-lang {
