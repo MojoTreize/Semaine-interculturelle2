@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 if (!function_exists('payment_currency')) {
-    function payment_currency(PDO $pdo): string
+    function payment_currency(mixed $pdo): string
     {
         $configured = strtoupper((string) app_config('payment.currency', 'EUR'));
         $fromSetting = strtoupper(get_setting($pdo, 'currency', $configured));
@@ -13,7 +13,7 @@ if (!function_exists('payment_currency')) {
 }
 
 if (!function_exists('stripe_secret_key')) {
-    function stripe_secret_key(PDO $pdo): string
+    function stripe_secret_key(mixed $pdo): string
     {
         $fromDb = get_setting($pdo, 'stripe_secret_key', '');
         if ($fromDb !== '') {
@@ -25,7 +25,7 @@ if (!function_exists('stripe_secret_key')) {
 }
 
 if (!function_exists('stripe_public_key')) {
-    function stripe_public_key(PDO $pdo): string
+    function stripe_public_key(mixed $pdo): string
     {
         $fromDb = get_setting($pdo, 'stripe_public_key', '');
         if ($fromDb !== '') {
@@ -37,7 +37,7 @@ if (!function_exists('stripe_public_key')) {
 }
 
 if (!function_exists('create_stripe_checkout_session')) {
-    function create_stripe_checkout_session(PDO $pdo, int $donationId, float $amount, string $description): array
+    function create_stripe_checkout_session(mixed $pdo, int $donationId, float $amount, string $description): array
     {
         $secret = stripe_secret_key($pdo);
         if ($secret === '') {
@@ -97,7 +97,7 @@ if (!function_exists('create_stripe_checkout_session')) {
 }
 
 if (!function_exists('retrieve_stripe_session')) {
-    function retrieve_stripe_session(PDO $pdo, string $sessionId): ?array
+    function retrieve_stripe_session(mixed $pdo, string $sessionId): ?array
     {
         $secret = stripe_secret_key($pdo);
         if ($secret === '' || $sessionId === '') {
@@ -130,7 +130,7 @@ if (!function_exists('retrieve_stripe_session')) {
 }
 
 if (!function_exists('paypal_business_email')) {
-    function paypal_business_email(PDO $pdo): string
+    function paypal_business_email(mixed $pdo): string
     {
         $fromDb = get_setting($pdo, 'paypal_business_email', '');
         if ($fromDb !== '') {
@@ -142,7 +142,7 @@ if (!function_exists('paypal_business_email')) {
 }
 
 if (!function_exists('paypal_checkout_url')) {
-    function paypal_checkout_url(PDO $pdo, int $donationId, float $amount, string $itemLabel): string
+    function paypal_checkout_url(mixed $pdo, int $donationId, float $amount, string $itemLabel): string
     {
         $business = paypal_business_email($pdo);
         if ($business === '') {
