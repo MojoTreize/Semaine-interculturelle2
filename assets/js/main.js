@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var siteHeader = document.querySelector('.site-header');
     var scrollTopBtn = document.querySelector('[data-scroll-top]');
 
+    if (window.AOS && document.querySelector('[data-aos]')) {
+        window.AOS.init({
+            duration: 700,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 26
+        });
+    }
+
     if (siteHeader) {
         var lastY = window.scrollY || window.pageYOffset || 0;
         var navHidden = false;
@@ -118,6 +127,19 @@ document.addEventListener('DOMContentLoaded', function () {
         var minsNode = countdownRoot.querySelector('[data-minutes]');
         var secsNode = countdownRoot.querySelector('[data-seconds]');
 
+        var updateCountdownNode = function (node, nextValue) {
+            if (!node || node.textContent === nextValue) return;
+
+            node.classList.remove('is-changing');
+            void node.offsetWidth;
+            node.textContent = nextValue;
+            node.classList.add('is-changing');
+
+            window.setTimeout(function () {
+                node.classList.remove('is-changing');
+            }, 420);
+        };
+
         var tick = function () {
             var now = Date.now();
             var delta = Math.max(0, targetDate - now);
@@ -127,10 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
             var minutes = Math.floor((delta / (1000 * 60)) % 60);
             var seconds = Math.floor((delta / 1000) % 60);
 
-            if (daysNode) daysNode.textContent = String(days);
-            if (hoursNode) hoursNode.textContent = String(hours).padStart(2, '0');
-            if (minsNode) minsNode.textContent = String(minutes).padStart(2, '0');
-            if (secsNode) secsNode.textContent = String(seconds).padStart(2, '0');
+            updateCountdownNode(daysNode, String(days));
+            updateCountdownNode(hoursNode, String(hours).padStart(2, '0'));
+            updateCountdownNode(minsNode, String(minutes).padStart(2, '0'));
+            updateCountdownNode(secsNode, String(seconds).padStart(2, '0'));
         };
 
         tick();
