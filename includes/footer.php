@@ -33,7 +33,7 @@ declare(strict_types=1);
     </div>
 </footer>
 <script>
-window.GD2026_EVENT_START = <?= json_encode(site_event_start_iso(), JSON_UNESCAPED_SLASHES) ?>;
+window.GD2026_EVENT_START = <?= json_encode(site_event_start_iso(isset($pdo) && $pdo instanceof PDO ? $pdo : null), JSON_UNESCAPED_SLASHES) ?>;
 window.GD2026_VALIDATE_PREFIX = <?= json_encode(t('validation.client_prefix'), JSON_UNESCAPED_SLASHES) ?>;
 </script>
 <script src="<?= e(base_url('assets/js/main.js')) ?>" defer></script>
