@@ -244,9 +244,11 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: var(--radius-lg);
     backdrop-filter: blur(8px);
-    padding: 1.2rem;
+    padding: 1rem;
     min-height: 0;
-    height: 100%;
+    width: min(100%, 430px);
+    height: auto;
+    align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
