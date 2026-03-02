@@ -38,7 +38,6 @@ if (!headers_sent()) {
     header('Permissions-Policy: geolocation=()');
 }
 
-require_once ROOT_PATH . '/config/database.php';
 require_once ROOT_PATH . '/includes/data_program.php';
 require_once ROOT_PATH . '/includes/functions.php';
 require_once ROOT_PATH . '/includes/csrf.php';
@@ -47,6 +46,6 @@ require_once ROOT_PATH . '/includes/auth.php';
 require_once ROOT_PATH . '/includes/mailer.php';
 require_once ROOT_PATH . '/includes/payment.php';
 
-$pdo = pdo_connection((array) ($config['db'] ?? []));
+$pdo = null;
 
 init_language($config);

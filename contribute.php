@@ -64,57 +64,12 @@ if (is_post()) {
         redirect('contribute.php');
     }
 
-    $stmt = $pdo->prepare('INSERT INTO donations
-        (donor_name, donor_email, amount, currency, motive, custom_motive, message, payment_method, payment_status, is_public, language)
-        VALUES
-        (:donor_name, :donor_email, :amount, :currency, :motive, :custom_motive, :message, :payment_method, :payment_status, :is_public, :language)');
-
-    $currency = payment_currency($pdo);
-
-    $stmt->execute([
-        'donor_name' => $donorName !== '' ? $donorName : null,
-        'donor_email' => $donorEmail !== '' ? $donorEmail : null,
-        'amount' => $amount,
-        'currency' => $currency,
-        'motive' => $motive,
-        'custom_motive' => $customMotive !== '' ? $customMotive : null,
-        'message' => $message !== '' ? $message : null,
-        'payment_method' => $paymentMethod,
-        'payment_status' => 'pending',
-        'is_public' => 1,
-        'language' => current_lang(),
-    ]);
-
-    $donationId = (int) $pdo->lastInsertId();
-
     if ($paymentMethod === 'stripe') {
-        $stripe = create_stripe_checkout_session($pdo, $donationId, $amount, 'Contribution Guinee Dortmund 2026');
-        if (!empty($stripe['ok'])) {
-            $upd = $pdo->prepare('UPDATE donations SET payment_provider_id = :provider_id WHERE id = :id');
-            $upd->execute([
-                'provider_id' => (string) ($stripe['session_id'] ?? ''),
-                'id' => $donationId,
-            ]);
-            clear_old_input();
-            redirect((string) $stripe['checkout_url']);
-        }
-
-        set_flash('error', (string) ($stripe['error'] ?? t('contribute.payment_error_stripe')));
+        set_flash('error', t('contribute.payment_error_stripe'));
         redirect('contribute.php');
     }
 
     if ($paymentMethod === 'paypal') {
-        $paypalUrl = paypal_checkout_url($pdo, $donationId, $amount, 'Contribution Guinee Dortmund 2026');
-        if ($paypalUrl !== '') {
-            $upd = $pdo->prepare('UPDATE donations SET payment_provider_id = :provider_id WHERE id = :id');
-            $upd->execute([
-                'provider_id' => 'paypal-' . $donationId,
-                'id' => $donationId,
-            ]);
-            clear_old_input();
-            redirect($paypalUrl);
-        }
-
         set_flash('error', t('contribute.payment_error_paypal'));
         redirect('contribute.php');
     }
