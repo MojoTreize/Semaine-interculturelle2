@@ -396,11 +396,37 @@ if (!function_exists('collection_totals')) {
 }
 
 if (!function_exists('site_event_start_iso')) {
-    function site_event_start_iso(): string
+    function site_event_start_iso(?PDO $pdo = null): string
     {
-        $start = (string) app_config('app.event_start', '2026-07-04 00:00:00');
+        $timezone = new DateTimeZone((string) app_config('app.timezone', 'Europe/Berlin'));
+        $startDate = '';
+
+        if ($pdo instanceof PDO) {
+            try {
+                $stmt = $pdo->query("SELECT MIN(event_date) AS first_event_date FROM program_items WHERE is_active = 1");
+                $row = $stmt !== false ? $stmt->fetch() : false;
+                $firstEventDate = trim((string) ($row['first_event_date'] ?? ''));
+
+                if ($firstEventDate !== '') {
+                    $startDate = $firstEventDate;
+                }
+            } catch (Throwable) {
+                // Ignore DB errors and fallback to configuration.
+            }
+        }
+
+        if ($startDate === '') {
+            $configuredStart = trim((string) app_config('app.event_start', '2026-07-04 00:00:00'));
+            try {
+                $configuredDate = new DateTimeImmutable($configuredStart, $timezone);
+                $startDate = $configuredDate->format('Y-m-d');
+            } catch (Throwable) {
+                $startDate = '2026-07-04';
+            }
+        }
+
         try {
-            $date = new DateTimeImmutable($start, new DateTimeZone((string) app_config('app.timezone', 'Europe/Berlin')));
+            $date = new DateTimeImmutable($startDate . ' 00:00:00', $timezone);
             return $date->format(DateTimeInterface::ATOM);
         } catch (Throwable) {
             return '2026-07-04T00:00:00+02:00';
