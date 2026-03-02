@@ -49,6 +49,11 @@ return [
     'about' => [
         'title' => 'A propos',
         'subtitle' => 'Vision, contexte et ambitions du dialogue interculturel',
+        'roadmap_title' => 'Une feuille de route claire pour agir',
+        'roadmap_intro' => 'Nos priorites sont organisees en etapes concretes pour transformer le dialogue en resultats mesurables.',
+        'stat_days' => 'Jours d activites (4 au 13 juillet)',
+        'stat_objectives' => 'Objectifs prioritaires',
+        'stat_roadmap' => 'Ans de feuille de route (2026-2030)',
         'region_title' => 'La Guinee Forestiere',
         'region_text' => 'La Guinee Forestiere est une region riche en biodiversite, en ressources naturelles et en capital humain. Elle fait face a des enjeux de developpement, de gouvernance locale, de jeunesse et d integration economique.',
         'objectives_title' => 'Objectifs du projet',
@@ -60,6 +65,8 @@ return [
         'simandou_text' => 'Le Projet Simandou 2040 ouvre des perspectives majeures pour la transformation economique de la Guinee. Cette semaine vise a integrer les dimensions environnementales, sociales et territoriales pour que les retombees profitent durablement aux populations locales.',
         'message_title' => 'Message des organisateurs',
         'message_text' => 'Nous voulons un dialogue exigeant, responsable et orienté resultats. Dortmund 2026 est une plateforme d engagement collectif au service du developpement durable de la Guinee Forestiere.',
+        'cta_title' => 'Passez de la vision a l action',
+        'cta_text' => 'Inscrivez-vous ou contribuez pour transformer les ambitions collectives en resultats concrets sur le terrain.',
     ],
     'program' => [
         'title' => 'Programme officiel',
