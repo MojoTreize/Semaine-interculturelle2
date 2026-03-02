@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# Force HTTPS in production
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} !^localhost [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Basic security hardening
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Clean URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^about/?$ about.php [L,QSA]
+RewriteRule ^program/?$ program.php [L,QSA]
+RewriteRule ^registration/?$ registration.php [L,QSA]
+RewriteRule ^contribute/?$ contribute.php [L,QSA]
+RewriteRule ^partners/?$ partners.php [L,QSA]
+RewriteRule ^contact/?$ contact.php [L,QSA]
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+RewriteRule ^impressum/?$ impressum.php [L,QSA]

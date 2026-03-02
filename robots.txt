@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://guineedortmund2026.org/sitemap.xml

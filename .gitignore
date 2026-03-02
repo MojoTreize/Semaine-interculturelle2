@@ -1,0 +1,40 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Local Composer/bootstrap tooling
+/composer.phar
+/composer-setup.php
+/cacert.pem
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.dist
+
+# Local database and runtime data
+/database/dev.sqlite
+/uploads/*
+!/uploads/.gitkeep
+
+# Logs, temp files, caches
+*.log
+*.tmp
+*.temp
+/tmp/
+/temp/
+/cache/
+/logs/
+
+# Test and debug outputs
+/.phpunit.result.cache
+/coverage/
+/build/
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/

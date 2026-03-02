@@ -1,0 +1,15 @@
+{
+    "name": "guinee/dortmund2026",
+    "description": "Site officiel Guinee Dortmund 2026",
+    "type": "project",
+    "require": {
+        "php": "^8.1",
+        "phpmailer/phpmailer": "^6.10",
+        "phpoffice/phpspreadsheet": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "includes/"
+        }
+    }
+}
