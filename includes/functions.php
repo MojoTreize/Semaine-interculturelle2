@@ -47,6 +47,32 @@ if (!function_exists('base_url')) {
     function base_url(string $path = ''): string
     {
         $base = rtrim((string) app_config('app.base_url', ''), '/');
+        $requestHost = (string) ($_SERVER['HTTP_HOST'] ?? '');
+
+        // Keep the currently opened local dev host (localhost/127.0.0.1/::1)
+        // to avoid browser host switches that can look like a zoom/layout jump.
+        if ($base !== '' && $requestHost !== '') {
+            $baseHost = strtolower((string) parse_url($base, PHP_URL_HOST));
+            $basePort = (int) (parse_url($base, PHP_URL_PORT) ?? 0);
+
+            $requestOrigin = (is_https_request() ? 'https' : 'http') . '://' . $requestHost;
+            $requestHostOnly = strtolower((string) parse_url($requestOrigin, PHP_URL_HOST));
+            $requestPort = (int) (parse_url($requestOrigin, PHP_URL_PORT) ?? 0);
+
+            $isLocal = static function (string $host): bool {
+                return $host === 'localhost'
+                    || $host === '127.0.0.1'
+                    || $host === '::1'
+                    || preg_match('/^127\\./', $host) === 1;
+            };
+
+            if ($baseHost !== '' && $requestHostOnly !== '' && $isLocal($baseHost) && $isLocal($requestHostOnly)) {
+                $samePort = $basePort === $requestPort;
+                if ($basePort === 0 || $requestPort === 0 || $samePort) {
+                    $base = rtrim($requestOrigin, '/');
+                }
+            }
+        }
 
         if ($path === '') {
             return $base;
@@ -54,6 +80,10 @@ if (!function_exists('base_url')) {
 
         if (preg_match('#^https?://#i', $path) === 1) {
             return $path;
+        }
+
+        if ($base === '') {
+            return '/' . ltrim($path, '/');
         }
 
         return $base . '/' . ltrim($path, '/');
