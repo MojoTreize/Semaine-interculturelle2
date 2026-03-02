@@ -14,6 +14,8 @@
     --radius-md: 14px;
     --radius-lg: 24px;
     --container: 1160px;
+    --hero-height-desktop: 620px;
+    --hero-min-height-mobile: 760px;
 }
 
 *,
@@ -163,7 +165,8 @@ main {
     gap: 2rem;
     align-items: stretch;
     padding: 4.5rem 0;
-    min-height: 420px;
+    height: var(--hero-height-desktop);
+    min-height: var(--hero-height-desktop);
 }
 
 .hero h1 {
@@ -179,7 +182,8 @@ main {
 }
 
 .hero-copy {
-    min-height: 320px;
+    min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -236,7 +240,8 @@ main {
     border-radius: var(--radius-lg);
     backdrop-filter: blur(8px);
     padding: 1.2rem;
-    min-height: 320px;
+    min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -537,7 +542,8 @@ textarea:focus {
     }
 
     .hero-grid {
-        min-height: 0;
+        height: auto;
+        min-height: var(--hero-min-height-mobile);
     }
 
     .hero-copy,
@@ -558,5 +564,6 @@ textarea:focus {
 
     .hero-grid {
         padding: 3.4rem 0;
+        min-height: 700px;
     }
 }
