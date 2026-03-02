@@ -1,12 +1,113 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
-    var toggleBtn = document.querySelector('[data-menu-toggle]');
-    var menu = document.querySelector('[data-main-nav]');
-    if (toggleBtn && menu) {
-        toggleBtn.addEventListener('click', function () {
-            menu.classList.toggle('open');
+    var siteHeader = document.querySelector('.site-header');
+    var scrollTopBtn = document.querySelector('[data-scroll-top]');
+
+    if (siteHeader) {
+        var lastY = window.scrollY || window.pageYOffset || 0;
+        var navHidden = false;
+        var tickScheduled = false;
+        var scrollDelta = 6;
+        var hideStartY = 120;
+
+        var applyNavVisibility = function (y) {
+            if (y <= 10) {
+                navHidden = false;
+            } else if (y > lastY + scrollDelta && y > hideStartY) {
+                navHidden = true;
+            } else if (y < lastY - scrollDelta) {
+                navHidden = false;
+            }
+
+            siteHeader.classList.toggle('is-hidden', navHidden);
+            if (scrollTopBtn) {
+                scrollTopBtn.classList.toggle('is-visible', navHidden);
+            }
+
+            lastY = y;
+        };
+
+        applyNavVisibility(lastY);
+
+        window.addEventListener('scroll', function () {
+            if (tickScheduled) return;
+            tickScheduled = true;
+
+            window.requestAnimationFrame(function () {
+                applyNavVisibility(window.scrollY || window.pageYOffset || 0);
+                tickScheduled = false;
+            });
+        }, { passive: true });
+    }
+
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
+    }
+
+    var tubelightNav = document.querySelector('[data-tubelight-nav]');
+    if (tubelightNav) {
+        var tubeIndicator = tubelightNav.querySelector('[data-tube-indicator]');
+        var tubeLinks = Array.prototype.slice.call(tubelightNav.querySelectorAll('[data-tube-link]'));
+        var activeLink = tubelightNav.querySelector('.tube-link.active') || tubeLinks[0] || null;
+
+        var moveIndicator = function (target) {
+            if (!tubeIndicator || !target) return;
+            var left = target.offsetLeft;
+            var top = target.offsetTop;
+
+            tubeIndicator.style.width = target.offsetWidth + 'px';
+            tubeIndicator.style.height = target.offsetHeight + 'px';
+            tubeIndicator.style.transform = 'translate3d(' + left + 'px,' + top + 'px,0)';
+            tubeIndicator.style.opacity = '1';
+        };
+
+        var restoreActive = function () {
+            if (!activeLink) return;
+            moveIndicator(activeLink);
+        };
+
+        var restoreAfterLayout = function () {
+            window.requestAnimationFrame(function () {
+                window.requestAnimationFrame(restoreActive);
+            });
+        };
+
+        tubeLinks.forEach(function (link) {
+            link.addEventListener('mouseenter', function () {
+                moveIndicator(link);
+            });
+
+            link.addEventListener('focus', function () {
+                moveIndicator(link);
+            });
+
+            link.addEventListener('click', function () {
+                activeLink = link;
+            });
+        });
+
+        tubelightNav.addEventListener('mouseleave', restoreActive);
+        tubelightNav.addEventListener('scroll', restoreActive, { passive: true });
+
+        window.addEventListener('resize', restoreAfterLayout);
+        window.addEventListener('load', restoreAfterLayout);
+        window.addEventListener('pageshow', restoreAfterLayout);
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(restoreAfterLayout);
+        }
+
+        restoreAfterLayout();
+        window.setTimeout(function () {
+            restoreActive();
+            tubelightNav.classList.add('is-ready');
+        }, 80);
     }
 
     var countdownRoot = document.querySelector('[data-countdown]');
