@@ -13,17 +13,19 @@ $host = (string) ($_SERVER['HTTP_HOST'] ?? parse_url((string) app_config('app.ba
 $canonicalUrl = $canonicalUrl ?? ($host !== '' ? $scheme . '://' . $host . $pathPart : base_url(ltrim($pathPart, '/')));
 
 $navItems = [
-    'index.php' => t('nav.home'),
-    'about.php' => t('nav.about'),
-    'program.php' => t('nav.program'),
-    'registration.php' => t('nav.registration'),
-    'contribute.php' => t('nav.contribute'),
-    'partners.php' => t('nav.partners'),
-    'contact.php' => t('nav.contact'),
+    ['file' => 'index.php', 'label' => t('nav.home'), 'icon' => 'home'],
+    ['file' => 'about.php', 'label' => t('nav.about'), 'icon' => 'about'],
+    ['file' => 'program.php', 'label' => t('nav.program'), 'icon' => 'program'],
+    ['file' => 'registration.php', 'label' => t('nav.registration'), 'icon' => 'registration'],
+    ['file' => 'contribute.php', 'label' => t('nav.contribute'), 'icon' => 'contribute'],
+    ['file' => 'partners.php', 'label' => t('nav.partners'), 'icon' => 'partners'],
+    ['file' => 'contact.php', 'label' => t('nav.contact'), 'icon' => 'contact'],
 ];
 
 $currentFile = basename((string) ($_SERVER['SCRIPT_NAME'] ?? 'index.php'));
 $flash = get_flash();
+
+require_once ROOT_PATH . '/includes/components/tubelight_nav.php';
 ?>
 <!DOCTYPE html>
 <html lang="<?= e(current_lang()) ?>">
@@ -45,27 +47,8 @@ $flash = get_flash();
     <link rel="stylesheet" href="<?= e(base_url('assets/css/style.css')) ?>">
 </head>
 <body>
-<header class="site-header">
-    <div class="container topbar">
-        <a class="brand" href="<?= e(base_url('index.php')) ?>">
-            <img src="<?= e(base_url('assets/images/logo.svg')) ?>" alt="Logo Guinee Dortmund 2026" width="56" height="56">
-            <span><?= e(t('site.short_name')) ?></span>
-        </a>
-        <button class="menu-toggle" type="button" aria-label="Menu" data-menu-toggle>
-            <span></span><span></span><span></span>
-        </button>
-        <nav class="main-nav" data-main-nav>
-            <?php foreach ($navItems as $file => $label): ?>
-                <a href="<?= e(base_url($file)) ?>" class="<?= $currentFile === $file ? 'active' : '' ?>"><?= e($label) ?></a>
-            <?php endforeach; ?>
-        </nav>
-        <div class="lang-switch" aria-label="Language switcher">
-            <a href="<?= e(lang_url('fr')) ?>" class="<?= current_lang() === 'fr' ? 'active' : '' ?>">FR</a>
-            <a href="<?= e(lang_url('de')) ?>" class="<?= current_lang() === 'de' ? 'active' : '' ?>">DE</a>
-        </div>
-    </div>
-</header>
-<main>
+<?php render_tubelight_navbar($navItems, $currentFile); ?>
+<main class="site-main">
     <?php if ($flash): ?>
         <div class="container">
             <div class="alert alert-<?= e($flash['type']) ?>">
