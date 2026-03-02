@@ -12,16 +12,6 @@ $stats = [
     'contacts' => 0,
 ];
 
-try {
-    $stats['registrations'] = (int) $pdo->query('SELECT COUNT(*) FROM registrations')->fetchColumn();
-    $stats['donations'] = (int) $pdo->query('SELECT COUNT(*) FROM donations')->fetchColumn();
-    $stats['donations_paid'] = (float) $pdo->query("SELECT COALESCE(SUM(amount), 0) FROM donations WHERE payment_status = 'paid'")->fetchColumn();
-    $stats['sponsors'] = (int) $pdo->query('SELECT COUNT(*) FROM sponsor_requests')->fetchColumn();
-    $stats['contacts'] = (int) $pdo->query('SELECT COUNT(*) FROM contact_messages')->fetchColumn();
-} catch (Throwable) {
-    // Keep default values.
-}
-
 $adminTitle = t('admin.dashboard');
 $activeAdmin = 'dashboard';
 require __DIR__ . '/_header.php';

@@ -37,17 +37,6 @@ if (is_post()) {
         redirect('contact.php');
     }
 
-    $stmt = $pdo->prepare('INSERT INTO contact_messages (full_name, email, subject, message, gdpr_consent, language)
-                           VALUES (:full_name, :email, :subject, :message, :gdpr_consent, :language)');
-    $stmt->execute([
-        'full_name' => $fullName,
-        'email' => $email,
-        'subject' => $subject,
-        'message' => $message,
-        'gdpr_consent' => $gdprConsent,
-        'language' => current_lang(),
-    ]);
-
     $organizerEmail = get_setting($pdo, 'organizer_email', 'organisation@guineedortmund2026.org');
     $mailSubject = t('emails.contact_subject');
     $mailBody = '<p>Nom: ' . e($fullName) . '</p>'

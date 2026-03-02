@@ -17,30 +17,22 @@ if (!function_exists('admin_user')) {
 }
 
 if (!function_exists('admin_attempt_login')) {
-    function admin_attempt_login(PDO $pdo, string $email, string $password): bool
+    function admin_attempt_login(mixed $pdo, string $email, string $password): bool
     {
-        $stmt = $pdo->prepare('SELECT id, full_name, email, password_hash, role FROM admins WHERE email = :email AND is_active = 1 LIMIT 1');
-        $stmt->execute(['email' => $email]);
-        $admin = $stmt->fetch();
+        $configuredEmail = strtolower((string) app_config('admin.email', 'admin@guineedortmund2026.org'));
+        $configuredPassword = (string) app_config('admin.password', 'Admin@2026');
 
-        if (!$admin) {
-            return false;
-        }
-
-        if (!password_verify($password, (string) $admin['password_hash'])) {
+        if (strtolower($email) !== $configuredEmail || $password !== $configuredPassword) {
             return false;
         }
 
         session_regenerate_id(true);
         $_SESSION['admin'] = [
-            'id' => (int) $admin['id'],
-            'full_name' => (string) $admin['full_name'],
-            'email' => (string) $admin['email'],
-            'role' => (string) $admin['role'],
+            'id' => 1,
+            'full_name' => (string) app_config('admin.full_name', 'Admin Dortmund 2026'),
+            'email' => $configuredEmail,
+            'role' => 'super_admin',
         ];
-
-        $update = $pdo->prepare('UPDATE admins SET last_login_at = ' . db_now_expression($pdo) . ' WHERE id = :id');
-        $update->execute(['id' => (int) $admin['id']]);
 
         return true;
     }

@@ -185,44 +185,56 @@ if (!function_exists('honeypot_passed')) {
 }
 
 if (!function_exists('get_setting')) {
-    function get_setting(PDO $pdo, string $key, string $default = ''): string
+    function get_setting(mixed $pdo, string $key, string $default = ''): string
     {
-        static $cache = [];
+        static $cache = null;
+
+        if (!is_array($cache)) {
+            $cache = [
+                'site_domain' => (string) app_config('app.base_url', ''),
+                'contact_email' => 'contact@guineedortmund2026.org',
+                'organizer_email' => 'organisation@guineedortmund2026.org',
+                'bank_holder' => 'Association Guinee Forestiere Allemagne e.V.',
+                'bank_iban' => 'DE00 0000 0000 0000 0000 00',
+                'bank_bic' => 'GENODE00XXX',
+                'bank_name' => 'Banque Exemple Dortmund',
+                'stripe_public_key' => (string) app_config('payment.stripe_public_key', ''),
+                'stripe_secret_key' => (string) app_config('payment.stripe_secret_key', ''),
+                'paypal_business_email' => (string) app_config('payment.paypal_business_email', ''),
+                'paypal_mode' => (string) app_config('payment.paypal_mode', 'sandbox'),
+                'currency' => (string) app_config('payment.currency', 'EUR'),
+                'collection_goal' => '50000',
+            ];
+        }
 
         if (array_key_exists($key, $cache)) {
             return $cache[$key];
         }
 
-        $stmt = $pdo->prepare('SELECT setting_value FROM site_settings WHERE setting_key = :setting_key LIMIT 1');
-        $stmt->execute(['setting_key' => $key]);
-        $value = $stmt->fetchColumn();
+        try {
+            if (is_object($pdo) && method_exists($pdo, 'prepare')) {
+                $stmt = $pdo->prepare('SELECT setting_value FROM site_settings WHERE setting_key = :setting_key LIMIT 1');
+                $stmt->execute(['setting_key' => $key]);
+                $value = $stmt->fetchColumn();
 
-        if ($value === false || $value === null) {
-            $cache[$key] = $default;
-            return $default;
+                if ($value !== false && $value !== null) {
+                    $cache[$key] = (string) $value;
+                    return $cache[$key];
+                }
+            }
+        } catch (Throwable) {
+            // No persistent storage in no-DB mode.
         }
 
-        $cache[$key] = (string) $value;
+        $cache[$key] = $default;
         return $cache[$key];
     }
 }
 
 if (!function_exists('set_setting')) {
-    function set_setting(PDO $pdo, string $key, string $value): void
+    function set_setting(mixed $pdo, string $key, string $value): void
     {
-        if (db_is_sqlite($pdo)) {
-            $sql = 'INSERT INTO site_settings (setting_key, setting_value) VALUES (:setting_key, :setting_value)
-                    ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP';
-        } else {
-            $sql = 'INSERT INTO site_settings (setting_key, setting_value) VALUES (:setting_key, :setting_value)
-                    ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)';
-        }
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'setting_key' => $key,
-            'setting_value' => $value,
-        ]);
+        // No-op by design while running without SQL persistence.
     }
 }
 
@@ -234,7 +246,7 @@ if (!function_exists('format_amount')) {
 }
 
 if (!function_exists('fetch_program_items')) {
-    function fetch_program_items(PDO $pdo, string $lang = 'fr'): array
+    function fetch_program_items(mixed $pdo, string $lang = 'fr'): array
     {
         $lang = $lang === 'de' ? 'de' : 'fr';
 
@@ -280,7 +292,7 @@ if (!function_exists('program_by_date')) {
 }
 
 if (!function_exists('program_preview')) {
-    function program_preview(PDO $pdo, string $lang = 'fr', int $limit = 4): array
+    function program_preview(mixed $pdo, string $lang = 'fr', int $limit = 4): array
     {
         $items = fetch_program_items($pdo, $lang);
         return array_slice($items, 0, max(1, $limit));
@@ -288,7 +300,7 @@ if (!function_exists('program_preview')) {
 }
 
 if (!function_exists('fetch_featured_speakers')) {
-    function fetch_featured_speakers(PDO $pdo): array
+    function fetch_featured_speakers(mixed $pdo): array
     {
         try {
             $stmt = $pdo->query('SELECT full_name, title, organization, bio FROM speakers WHERE is_featured = 1 ORDER BY id ASC');
@@ -309,7 +321,7 @@ if (!function_exists('fetch_featured_speakers')) {
 }
 
 if (!function_exists('fetch_active_partners')) {
-    function fetch_active_partners(PDO $pdo, int $limit = 0): array
+    function fetch_active_partners(mixed $pdo, int $limit = 0): array
     {
         try {
             $sql = 'SELECT id, name, website_url, logo_path, partner_type
@@ -338,7 +350,7 @@ if (!function_exists('fetch_active_partners')) {
 }
 
 if (!function_exists('collection_totals')) {
-    function collection_totals(PDO $pdo): array
+    function collection_totals(mixed $pdo): array
     {
         try {
             $stmt = $pdo->query("SELECT COALESCE(SUM(amount), 0) AS total_amount, COUNT(*) AS total_count FROM donations WHERE payment_status = 'paid'");
@@ -400,9 +412,13 @@ if (!function_exists('is_https_request')) {
 }
 
 if (!function_exists('db_is_sqlite')) {
-    function db_is_sqlite(PDO $pdo): bool
+    function db_is_sqlite(mixed $pdo): bool
     {
         try {
+            if (!is_object($pdo) || !method_exists($pdo, 'getAttribute')) {
+                return false;
+            }
+
             return strtolower((string) $pdo->getAttribute(PDO::ATTR_DRIVER_NAME)) === 'sqlite';
         } catch (Throwable) {
             return false;
@@ -411,7 +427,7 @@ if (!function_exists('db_is_sqlite')) {
 }
 
 if (!function_exists('db_now_expression')) {
-    function db_now_expression(PDO $pdo): string
+    function db_now_expression(mixed $pdo): string
     {
         return db_is_sqlite($pdo) ? "datetime('now')" : 'NOW()';
     }
