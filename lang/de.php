@@ -49,6 +49,11 @@ return [
     'about' => [
         'title' => 'Uber uns',
         'subtitle' => 'Vision, Kontext und Ziele des interkulturellen Dialogs',
+        'roadmap_title' => 'Eine klare Roadmap zum Handeln',
+        'roadmap_intro' => 'Unsere Prioritaten sind in konkrete Etappen gegliedert, um den Dialog in messbare Ergebnisse zu uberfuhren.',
+        'stat_days' => 'Tage mit Aktivitat (4. bis 13. Juli)',
+        'stat_objectives' => 'Prioritare Ziele',
+        'stat_roadmap' => 'Jahre Roadmap (2026-2030)',
         'region_title' => 'Guinee Forestiere',
         'region_text' => 'Guinee Forestiere ist reich an Biodiversitat, Naturressourcen und menschlichem Potenzial. Gleichzeitig bestehen Herausforderungen bei Entwicklung, lokaler Governance, Jugend und wirtschaftlicher Integration.',
         'objectives_title' => 'Projektziele',
@@ -60,6 +65,8 @@ return [
         'simandou_text' => 'Das Projekt Simandou 2040 eroffnet wichtige Perspektiven fur die wirtschaftliche Transformation Guineas. Diese Woche integriert Umwelt-, Sozial- und Territorialaspekte, damit die Ergebnisse nachhaltig den lokalen Bevolkerungen zugutekommen.',
         'message_title' => 'Botschaft der Organisatoren',
         'message_text' => 'Wir wollen einen anspruchsvollen, verantwortungsvollen und ergebnisorientierten Dialog. Dortmund 2026 ist eine Plattform fur kollektives Engagement im Dienst der nachhaltigen Entwicklung von Guinee Forestiere.',
+        'cta_title' => 'Von der Vision zur Umsetzung',
+        'cta_text' => 'Melden Sie sich an oder tragen Sie bei, damit aus gemeinsamer Planung konkrete Ergebnisse vor Ort werden.',
     ],
     'program' => [
         'title' => 'Offizielles Programm',
