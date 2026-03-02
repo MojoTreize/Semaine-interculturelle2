@@ -42,6 +42,7 @@ return [
         'program_preview_title' => 'Apercu du programme',
         'partners_preview_title' => 'Partenaires institutionnels et sponsors',
         'see_full_program' => 'Voir le programme complet',
+        'add_to_calendar' => 'Ajouter au calendrier',
         'see_all_partners' => 'Voir tous les partenaires',
         'contact_block' => 'Pour toute demande officielle, contactez l equipe organisatrice.',
     ],

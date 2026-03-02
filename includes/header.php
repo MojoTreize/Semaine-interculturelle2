@@ -45,6 +45,7 @@ require_once ROOT_PATH . '/includes/components/tubelight_nav.php';
     <link rel="canonical" href="<?= e($canonicalUrl) ?>">
     <link rel="preload" href="<?= e(base_url('assets/css/style.css')) ?>" as="style">
     <link rel="stylesheet" href="<?= e(base_url('assets/css/style.css')) ?>">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 </head>
 <body>
 <?php render_tubelight_navbar($navItems, $currentFile); ?>
