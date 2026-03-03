@@ -84,6 +84,21 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     INDEX idx_contact_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS page_views (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    page_path VARCHAR(255) NOT NULL,
+    page_title VARCHAR(190) NULL,
+    referrer VARCHAR(255) NULL,
+    language CHAR(2) NOT NULL DEFAULT 'fr',
+    session_id VARCHAR(128) NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent VARCHAR(255) NULL,
+    viewed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_page_views_date (viewed_at),
+    INDEX idx_page_views_path (page_path),
+    INDEX idx_page_views_lang (language)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS partners (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(190) NOT NULL,
@@ -140,7 +155,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO admins (full_name, email, password_hash, role)
-VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
+VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$nLiXAZ.m6abolKwk99R1su12fsGidXN1e3cP4d9ClNK.ub0IqZXDK', 'super_admin')
 ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES

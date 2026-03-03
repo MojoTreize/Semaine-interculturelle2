@@ -39,6 +39,7 @@ declare(strict_types=1);
             <ul>
                 <li><a href="<?= e(base_url('privacy.php')) ?>"><?= e(t('footer.privacy')) ?></a></li>
                 <li><a href="<?= e(base_url('impressum.php')) ?>"><?= e(t('footer.impressum')) ?></a></li>
+                <li><a href="<?= e(base_url('admin/login.php')) ?>"><?= e(t('footer.admin')) ?></a></li>
                 <li><a href="<?= e(base_url('sitemap.xml')) ?>">Sitemap</a></li>
             </ul>
         </nav>

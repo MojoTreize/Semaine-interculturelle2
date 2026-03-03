@@ -221,6 +221,7 @@ return [
         'csrf' => 'Sitzung abgelaufen. Bitte Seite neu laden.',
         'honeypot' => 'Anti-Spam-Prufung fehlgeschlagen.',
         'amount' => 'Der Betrag muss groBer als 0 sein.',
+        'server_error' => 'Technischer Fehler beim Speichern. Bitte erneut versuchen.',
         'client_prefix' => 'Bitte Formular pruefen',
     ],
     'emails' => [
