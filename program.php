@@ -27,10 +27,12 @@ $formatProgramDate = static function (string $date, string $lang, string $timezo
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section">
-    <div class="container about-section-head" data-aos="fade-up">
-        <h1><?= e(t('program.title')) ?></h1>
-        <p class="lead"><?= e(t('program.subtitle')) ?></p>
+<section class="section program-intro-section">
+    <div class="container">
+        <div class="about-section-head program-intro-shell" data-aos="fade-up">
+            <h1><?= e(t('program.title')) ?></h1>
+            <p class="lead"><?= e(t('program.subtitle')) ?></p>
+        </div>
     </div>
 </section>
 

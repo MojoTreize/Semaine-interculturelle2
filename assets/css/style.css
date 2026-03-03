@@ -1147,6 +1147,45 @@ textarea:focus {
     margin-top: 0;
 }
 
+.registration-intro-section,
+.program-intro-section {
+    padding-bottom: 2.4rem;
+}
+
+.registration-intro-shell,
+.program-intro-shell {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(206, 214, 229, 0.95);
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(245, 248, 255, 0.96));
+    box-shadow: 0 12px 28px rgba(11, 20, 38, 0.11);
+    padding: 1.1rem 1.2rem;
+}
+
+.registration-intro-shell::before,
+.program-intro-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c62828, #f4b400, #1f8f46);
+}
+
+.registration-intro-shell h1,
+.program-intro-shell h1 {
+    margin-bottom: 0.42rem;
+}
+
+.registration-intro-shell .lead,
+.program-intro-shell .lead {
+    margin: 0;
+}
+
 .registration-layout {
     display: grid;
     grid-template-columns: minmax(260px, 0.95fr) minmax(0, 1.2fr);
@@ -1524,6 +1563,11 @@ textarea:focus {
         grid-template-columns: 1fr;
     }
 
+    .registration-intro-shell,
+    .program-intro-shell {
+        padding: 1rem;
+    }
+
     .registration-form-card {
         padding: 1rem;
     }
@@ -1607,6 +1651,11 @@ textarea:focus {
 
     .registration-steps {
         padding: 0.9rem;
+    }
+
+    .registration-intro-section,
+    .program-intro-section {
+        padding-bottom: 1.8rem;
     }
 
     .registration-form-card .btn-primary {
