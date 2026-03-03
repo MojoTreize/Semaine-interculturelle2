@@ -55,6 +55,8 @@ if (is_post()) {
     $body = '<p>Organisation: ' . e($organizationName) . '</p>'
         . '<p>Contact: ' . e($contactPerson) . '</p>'
         . '<p>Email: ' . e($email) . '</p>'
+        . '<p>Phone: ' . e($phone) . '</p>'
+        . '<p>Website: ' . e($website) . '</p>'
         . '<p>Level: ' . e($sponsorshipLevel) . '</p>'
         . '<p>Message: ' . nl2br(e($message)) . '</p>';
     send_email($organizerEmail, 'Organisation', $subject, $body, strip_tags($body));
@@ -64,37 +66,42 @@ if (is_post()) {
     redirect('partners.php');
 }
 
-$partnerItems = fetch_active_partners($pdo);
+$benefits = [
+    ['title' => t('partners.benefit_visibility_title'), 'text' => t('partners.benefit_visibility_text')],
+    ['title' => t('partners.benefit_network_title'), 'text' => t('partners.benefit_network_text')],
+    ['title' => t('partners.benefit_reputation_title'), 'text' => t('partners.benefit_reputation_text')],
+    ['title' => t('partners.benefit_impact_title'), 'text' => t('partners.benefit_impact_text')],
+];
+$targetTypes = [
+    t('partners.target_institutional'),
+    t('partners.target_companies'),
+    t('partners.target_finance'),
+    t('partners.target_associations'),
+    t('partners.target_media'),
+    t('partners.target_education'),
+];
 
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section">
+<section class="section partners-intro-section">
     <div class="container">
-        <h1><?= e(t('partners.title')) ?></h1>
-        <p class="lead"><?= e(t('partners.subtitle')) ?></p>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <div class="grid-3">
-            <?php foreach ($partnerItems as $partner): ?>
-                <article class="card">
-                    <a href="<?= e((string) ($partner['website_url'] ?? '#')) ?>" target="_blank" rel="noopener">
-                        <div class="partner-logo"><?= e((string) ($partner['name'] ?? 'Partner')) ?></div>
-                    </a>
-                    <p class="hint"><?= e((string) ($partner['partner_type'] ?? 'partner')) ?></p>
-                </article>
-            <?php endforeach; ?>
+        <div class="about-section-head partners-intro-shell" data-aos="fade-up">
+            <h1><?= e(t('partners.hero_title')) ?></h1>
+            <p class="lead"><?= e(t('partners.hero_subtitle')) ?></p>
+            <p class="partners-hero-text"><?= e(t('partners.open_text')) ?></p>
         </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="container">
-        <div class="form-card">
-            <h2><?= e(t('partners.become_sponsor')) ?></h2>
+<section class="section about-roadmap-section">
+    <div class="container partners-form-container">
+        <div class="form-card partners-form-card" data-aos="fade-up">
+            <div class="partners-form-head">
+                <h2><?= e(t('partners.become_sponsor')) ?></h2>
+                <p class="hint"><?= e(t('partners.form_intro')) ?></p>
+            </div>
+
             <form method="post" action="<?= e(base_url('partners.php')) ?>" data-validate novalidate>
                 <?= csrf_field() ?>
                 <?= honeypot_field_html() ?>
@@ -147,8 +154,47 @@ require __DIR__ . '/includes/header.php';
                     <label for="gdpr_consent"><?= e(t('partners.gdpr_label')) ?></label>
                 </div>
 
+                <p class="hint partners-required-note"><?= e(t('partners.required_note')) ?></p>
                 <button type="submit" class="btn btn-primary"><?= e(t('partners.submit')) ?></button>
             </form>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="about-section-head" data-aos="fade-up">
+            <h2><?= e(t('partners.why_title')) ?></h2>
+            <p class="lead"><?= e(t('partners.why_intro')) ?></p>
+        </div>
+
+        <div class="grid-2 partners-benefits-grid">
+            <?php foreach ($benefits as $index => $benefit): ?>
+                <?php $benefitDelay = ($index % 4) * 90; ?>
+                <article class="card about-info-card partners-benefit-card" data-aos="fade-up" data-aos-delay="<?= e((string) $benefitDelay) ?>">
+                    <h3><?= e((string) $benefit['title']) ?></h3>
+                    <p><?= e((string) $benefit['text']) ?></p>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<section class="section about-roadmap-section partners-target-section">
+    <div class="container">
+        <div class="about-section-head" data-aos="fade-up">
+            <h2><?= e(t('partners.target_title')) ?></h2>
+            <p class="lead"><?= e(t('partners.target_intro')) ?></p>
+        </div>
+
+        <div class="grid-2 partners-target-grid">
+            <?php foreach ($targetTypes as $index => $targetType): ?>
+                <?php $targetDelay = ($index % 4) * 80; ?>
+                <article class="about-roadmap-step partners-target-card" data-aos="fade-up" data-aos-delay="<?= e((string) $targetDelay) ?>">
+                    <span class="about-step-index"><?= e(str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT)) ?></span>
+                    <p><?= e($targetType) ?></p>
+                </article>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>

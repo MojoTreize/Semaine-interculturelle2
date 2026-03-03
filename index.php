@@ -8,15 +8,25 @@ $pageDescription = t('seo.default_description');
 
 $previewItems = program_preview($pdo, current_lang(), 4);
 $partnerItems = fetch_active_partners($pdo, 6);
+$partnerItems = array_values(array_filter($partnerItems, static function (array $partner): bool {
+    $name = trim((string) ($partner['name'] ?? ''));
+    $logoPath = trim((string) ($partner['logo_path'] ?? ''));
+    return $name !== '' && $logoPath !== '';
+}));
+$programItems = fetch_program_items($pdo, current_lang());
+$totalSessions = count($programItems);
+$totalProgramDays = count(program_by_date($programItems));
+$totalPartners = count($partnerItems);
 
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="hero">
-    <div class="container hero-grid">
-        <div class="hero-copy">
+<section class="section about-hero home-about-hero">
+    <div class="container about-hero-grid home-about-hero-grid">
+        <div class="about-hero-copy" data-aos="fade-right">
+            <p class="about-kicker"><?= e(t('site.short_name')) ?></p>
             <h1><?= e(t('home.hero_title')) ?></h1>
-            <p><?= e(t('home.hero_subtitle')) ?></p>
+            <p class="lead"><?= e(t('home.hero_subtitle')) ?></p>
             <p><?= e(t('site.event_theme')) ?></p>
             <div class="cta-row">
                 <a class="btn btn-light" href="<?= e(base_url('registration.php')) ?>"><?= e(t('buttons.register')) ?></a>
@@ -24,7 +34,7 @@ require __DIR__ . '/includes/header.php';
                 <a class="btn btn-primary" href="<?= e(base_url('partners.php')) ?>"><?= e(t('buttons.become_partner')) ?></a>
             </div>
         </div>
-        <aside class="hero-card">
+        <aside class="about-hero-panel home-countdown-panel" data-aos="fade-left" data-aos-delay="120">
             <h2><?= e(t('home.countdown_title')) ?></h2>
             <div class="countdown-grid" data-countdown>
                 <div class="countdown-box">
@@ -48,17 +58,46 @@ require __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="section" data-aos="fade-up">
+<section class="section about-stats-section home-stats-section">
     <div class="container">
-        <h2><?= e(t('home.intro_title')) ?></h2>
-        <p class="lead"><?= e(t('home.intro_text')) ?></p>
+        <div class="stats-strip about-stats-strip">
+            <article class="stat-card about-stat-card" data-aos="zoom-in">
+                <strong data-counter-end="<?= e((string) $totalSessions) ?>">0</strong>
+                <span><?= e(t('home.stat_sessions')) ?></span>
+            </article>
+            <article class="stat-card about-stat-card" data-aos="zoom-in" data-aos-delay="100">
+                <strong data-counter-end="<?= e((string) $totalProgramDays) ?>">0</strong>
+                <span><?= e(t('home.stat_days')) ?></span>
+            </article>
+            <article class="stat-card about-stat-card" data-aos="zoom-in" data-aos-delay="200">
+                <strong data-counter-end="<?= e((string) $totalPartners) ?>">0</strong>
+                <span><?= e(t('home.stat_partners')) ?></span>
+            </article>
+        </div>
     </div>
 </section>
 
-<section class="section section-program" data-aos="fade-up">
+<section class="section">
+    <div class="container grid-2 about-info-grid">
+        <article class="card about-info-card" data-aos="fade-up">
+            <h2><?= e(t('home.intro_title')) ?></h2>
+            <p><?= e(t('home.intro_text')) ?></p>
+        </article>
+        <article class="card about-info-card" data-aos="fade-up" data-aos-delay="120">
+            <h2><?= e(t('home.focus_title')) ?></h2>
+            <p><?= e(t('home.focus_text')) ?></p>
+        </article>
+    </div>
+</section>
+
+<section class="section about-roadmap-section section-program">
     <div class="container">
-        <h2><?= e(t('home.program_preview_title')) ?></h2>
-        <div class="grid-2 program-preview-grid">
+        <div class="about-section-head" data-aos="fade-up">
+            <h2><?= e(t('home.program_preview_title')) ?></h2>
+            <p class="lead"><?= e(t('program.subtitle')) ?></p>
+        </div>
+
+        <div class="grid-2 about-info-grid program-preview-grid">
             <?php foreach ($previewItems as $index => $item): ?>
                 <?php
                 $itemType = preg_replace('/[^a-z0-9_-]/i', '', (string) ($item['item_type'] ?? 'conference')) ?: 'conference';
@@ -96,7 +135,7 @@ require __DIR__ . '/includes/header.php';
 
                 $aosDelay = $index * 100;
                 ?>
-                <article class="card program-card program-card--<?= e($itemType) ?>" data-aos="fade-up" data-aos-delay="<?= e((string) $aosDelay) ?>">
+                <article class="card about-info-card program-card program-card--<?= e($itemType) ?>" data-aos="fade-up" data-aos-delay="<?= e((string) $aosDelay) ?>">
                     <h3><?= e((string) ($item['title'] ?? '')) ?></h3>
                     <div class="meta">
                         <span class="badge"><?= e((string) ($item['event_date'] ?? '')) ?></span>
@@ -113,57 +152,72 @@ require __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="section section-partners" data-aos="fade-up">
+<section class="section section-partners">
     <div class="container">
-        <h2><?= e(t('home.partners_preview_title')) ?></h2>
-        <div class="grid-3 partners-logo-grid">
-            <?php foreach ($partnerItems as $index => $partner): ?>
-                <?php
-                $partnerName = trim((string) ($partner['name'] ?? 'Partner'));
-                $websiteUrl = trim((string) ($partner['website_url'] ?? '#'));
-                $words = preg_split('/\s+/', $partnerName) ?: [];
-                $initials = '';
-                foreach ($words as $word) {
-                    if ($word === '') {
-                        continue;
-                    }
-
-                    $initials .= strtoupper(substr($word, 0, 1));
-                    if (strlen($initials) >= 2) {
-                        break;
-                    }
-                }
-
-                if ($initials === '') {
-                    $initials = 'PT';
-                }
-
-                $partnerDelay = 100 + ($index * 80);
-                ?>
-                <article class="card partner-logo-card" data-aos="fade-up" data-aos-delay="<?= e((string) $partnerDelay) ?>">
-                    <a class="partner-logo-link" href="<?= e($websiteUrl !== '' ? $websiteUrl : '#') ?>" target="_blank" rel="noopener">
-                        <div class="partner-logo-svg-wrap" aria-hidden="true">
-                            <svg class="partner-logo-svg" viewBox="0 0 220 120" role="img" aria-hidden="true">
-                                <rect x="1" y="1" width="218" height="118" rx="18" fill="#f5f7ff" stroke="#d7dcef" />
-                                <circle cx="44" cy="60" r="18" fill="#c62828" />
-                                <rect x="72" y="45" width="64" height="30" rx="8" fill="#1f8f46" />
-                                <path d="M148 78l23-36 22 36h-45Z" fill="#f4b400" />
-                                <text x="110" y="69" text-anchor="middle" fill="#1d2a40" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif"><?= e($initials) ?></text>
-                            </svg>
-                        </div>
-                        <span class="partner-logo-name"><?= e($partnerName) ?></span>
-                    </a>
-                </article>
-            <?php endforeach; ?>
+        <?php $hasPartners = !empty($partnerItems); ?>
+        <div class="about-section-head" data-aos="fade-up">
+            <h2><?= e($hasPartners ? t('home.partners_preview_title') : t('partners.hero_title')) ?></h2>
+            <p class="lead"><?= e($hasPartners ? t('partners.open_text') : t('partners.hero_subtitle')) ?></p>
         </div>
-        <p data-aos="fade-up" data-aos-delay="420"><a class="btn btn-secondary" href="<?= e(base_url('partners.php')) ?>"><?= e(t('home.see_all_partners')) ?></a></p>
+        <?php if ($hasPartners): ?>
+            <div class="grid-3 partners-logo-grid">
+                <?php foreach ($partnerItems as $index => $partner): ?>
+                    <?php
+                    $partnerName = trim((string) ($partner['name'] ?? 'Partner'));
+                    $websiteUrl = trim((string) ($partner['website_url'] ?? ''));
+                    $logoPath = trim((string) ($partner['logo_path'] ?? ''));
+                    $logoUrl = '';
+                    if ($logoPath !== '') {
+                        $logoUrl = preg_match('#^https?://#i', $logoPath) === 1 ? $logoPath : base_url(ltrim($logoPath, '/'));
+                    }
+                    $showWebsite = $websiteUrl !== '' && $websiteUrl !== '#';
+
+                    $partnerDelay = 100 + ($index * 80);
+                    ?>
+                    <article class="card partner-logo-card" data-aos="fade-up" data-aos-delay="<?= e((string) $partnerDelay) ?>">
+                        <div class="partner-logo-link">
+                            <div class="partner-logo-svg-wrap" aria-hidden="true">
+                                <?php if ($logoUrl !== ''): ?>
+                                    <img class="partner-logo-image" src="<?= e($logoUrl) ?>" alt="<?= e($partnerName) ?>">
+                                <?php else: ?>
+                                    <span class="partner-logo-placeholder"><?= e(t('partners.logo_pending')) ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <span class="partner-logo-name"><?= e($partnerName) ?></span>
+                            <?php if ($showWebsite): ?>
+                                <a class="partner-preview-link" href="<?= e($websiteUrl) ?>" target="_blank" rel="noopener"><?= e(t('partners.visit_site')) ?></a>
+                            <?php endif; ?>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <article class="card partners-empty-state partners-empty-state--compact" data-aos="fade-up" data-aos-delay="80">
+                <p><?= e(t('partners.hero_subtitle')) ?></p>
+            </article>
+        <?php endif; ?>
+        <p data-aos="fade-up" data-aos-delay="420">
+            <a class="btn btn-secondary" href="<?= e(base_url('partners.php')) ?>">
+                <?= e($hasPartners ? t('home.see_all_partners') : t('buttons.become_partner')) ?>
+            </a>
+        </p>
     </div>
 </section>
 
-<section class="section" data-aos="fade-up">
-    <div class="container card" data-aos="fade-up">
-        <p><?= e(t('home.contact_block')) ?></p>
-        <a class="btn btn-light" href="<?= e(base_url('contact.php')) ?>"><?= e(t('nav.contact')) ?></a>
+<section class="section">
+    <div class="container grid-2 about-message-grid">
+        <article class="card about-message-card" data-aos="fade-right">
+            <h2><?= e(t('home.contact_title')) ?></h2>
+            <p><?= e(t('home.contact_text')) ?></p>
+        </article>
+        <article class="card about-cta-card home-cta-card" data-aos="fade-left" data-aos-delay="120">
+            <h2><?= e(t('about.cta_title')) ?></h2>
+            <p><?= e(t('about.cta_text')) ?></p>
+            <div class="cta-row">
+                <a class="btn btn-light" href="<?= e(base_url('contact.php')) ?>"><?= e(t('home.contact_cta')) ?></a>
+                <a class="btn btn-primary" href="<?= e(base_url('registration.php')) ?>"><?= e(t('buttons.register')) ?></a>
+            </div>
+        </article>
     </div>
 </section>
 
