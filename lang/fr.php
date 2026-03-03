@@ -221,6 +221,7 @@ return [
         'csrf' => 'Session expiree. Merci de recharger la page.',
         'honeypot' => 'Verification anti-spam echouee.',
         'amount' => 'Le montant doit etre superieur a 0.',
+        'server_error' => 'Erreur technique lors de l enregistrement. Merci de reessayer.',
         'client_prefix' => 'Veuillez verifier le formulaire',
     ],
     'emails' => [

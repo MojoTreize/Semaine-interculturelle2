@@ -64,14 +64,93 @@ if (is_post()) {
         redirect('contribute.php');
     }
 
-    if ($paymentMethod === 'stripe') {
-        set_flash('error', t('contribute.payment_error_stripe'));
+    try {
+        if (!($pdo instanceof PDO)) {
+            throw new RuntimeException('Database connection unavailable.');
+        }
+
+        $insertDonation = $pdo->prepare(
+            'INSERT INTO donations
+                (donor_name, donor_email, amount, currency, motive, custom_motive, message, payment_method, payment_status, is_public, language)
+             VALUES
+                (:donor_name, :donor_email, :amount, :currency, :motive, :custom_motive, :message, :payment_method, :payment_status, :is_public, :language)'
+        );
+        $insertDonation->execute([
+            'donor_name' => $donorName !== '' ? $donorName : null,
+            'donor_email' => $donorEmail !== '' ? $donorEmail : null,
+            'amount' => number_format($amount, 2, '.', ''),
+            'currency' => payment_currency($pdo),
+            'motive' => $motive,
+            'custom_motive' => $customMotive !== '' ? $customMotive : null,
+            'message' => $message !== '' ? $message : null,
+            'payment_method' => $paymentMethod,
+            'payment_status' => 'pending',
+            'is_public' => 1,
+            'language' => current_lang(),
+        ]);
+
+        $donationId = (int) $pdo->lastInsertId();
+        if ($donationId <= 0) {
+            throw new RuntimeException('Donation insert failed.');
+        }
+    } catch (Throwable) {
+        set_flash('error', t('validation.server_error'));
         redirect('contribute.php');
     }
 
+    $donationLabel = 'Guinee Dortmund 2026 - Donation #' . $donationId;
+
+    if ($paymentMethod === 'stripe') {
+        $session = create_stripe_checkout_session($pdo, $donationId, $amount, $donationLabel);
+
+        if (!($session['ok'] ?? false)) {
+            try {
+                $stmt = $pdo->prepare('UPDATE donations SET payment_status = :payment_status WHERE id = :id');
+                $stmt->execute([
+                    'payment_status' => 'failed',
+                    'id' => $donationId,
+                ]);
+            } catch (Throwable) {
+                // Ignore secondary write error.
+            }
+
+            set_flash('error', (string) ($session['error'] ?? t('contribute.payment_error_stripe')));
+            redirect('contribute.php');
+        }
+
+        try {
+            $stmt = $pdo->prepare('UPDATE donations SET payment_provider_id = :provider_id WHERE id = :id');
+            $stmt->execute([
+                'provider_id' => (string) ($session['session_id'] ?? ''),
+                'id' => $donationId,
+            ]);
+        } catch (Throwable) {
+            // Not critical for redirect flow.
+        }
+
+        clear_old_input();
+        redirect((string) $session['checkout_url']);
+    }
+
     if ($paymentMethod === 'paypal') {
-        set_flash('error', t('contribute.payment_error_paypal'));
-        redirect('contribute.php');
+        $checkoutUrl = paypal_checkout_url($pdo, $donationId, $amount, $donationLabel);
+        if ($checkoutUrl === '') {
+            try {
+                $stmt = $pdo->prepare('UPDATE donations SET payment_status = :payment_status WHERE id = :id');
+                $stmt->execute([
+                    'payment_status' => 'failed',
+                    'id' => $donationId,
+                ]);
+            } catch (Throwable) {
+                // Ignore secondary write error.
+            }
+
+            set_flash('error', t('contribute.payment_error_paypal'));
+            redirect('contribute.php');
+        }
+
+        clear_old_input();
+        redirect($checkoutUrl);
     }
 
     if ($donorEmail !== '') {

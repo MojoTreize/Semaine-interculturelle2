@@ -19,10 +19,57 @@ if (!function_exists('admin_user')) {
 if (!function_exists('admin_attempt_login')) {
     function admin_attempt_login(mixed $pdo, string $email, string $password): bool
     {
+        $normalizedEmail = strtolower(trim($email));
+        $canUseConfigFallback = !($pdo instanceof PDO);
+
+        if ($normalizedEmail === '' || $password === '') {
+            return false;
+        }
+
+        if ($pdo instanceof PDO) {
+            try {
+                $stmt = $pdo->prepare(
+                    'SELECT id, full_name, email, password_hash, role, is_active
+                     FROM admins
+                     WHERE email = :email
+                     LIMIT 1'
+                );
+                $stmt->execute(['email' => $normalizedEmail]);
+                $admin = $stmt->fetch();
+
+                $isValid = is_array($admin)
+                    && (int) ($admin['is_active'] ?? 0) === 1
+                    && password_verify($password, (string) ($admin['password_hash'] ?? ''));
+
+                if ($isValid) {
+                    session_regenerate_id(true);
+                    $_SESSION['admin'] = [
+                        'id' => (int) ($admin['id'] ?? 0),
+                        'full_name' => (string) ($admin['full_name'] ?? 'Admin'),
+                        'email' => (string) ($admin['email'] ?? $normalizedEmail),
+                        'role' => (string) ($admin['role'] ?? 'editor'),
+                    ];
+
+                    $nowExpression = db_now_expression($pdo);
+                    $pdo->exec('UPDATE admins SET last_login_at = ' . $nowExpression . ' WHERE id = ' . (int) $_SESSION['admin']['id']);
+
+                    return true;
+                }
+
+                return false;
+            } catch (Throwable) {
+                // Continue with fallback config-based auth.
+                $canUseConfigFallback = true;
+            }
+        }
+
+        if (!$canUseConfigFallback) {
+            return false;
+        }
+
         $configuredEmail = strtolower((string) app_config('admin.email', 'admin@guineedortmund2026.org'));
         $configuredPassword = (string) app_config('admin.password', 'Admin@2026');
-
-        if (strtolower($email) !== $configuredEmail || $password !== $configuredPassword) {
+        if ($normalizedEmail !== $configuredEmail || $password !== $configuredPassword) {
             return false;
         }
 
@@ -30,7 +77,7 @@ if (!function_exists('admin_attempt_login')) {
         $_SESSION['admin'] = [
             'id' => 1,
             'full_name' => (string) app_config('admin.full_name', 'Admin Dortmund 2026'),
-            'email' => $configuredEmail,
+            'email' => $normalizedEmail,
             'role' => 'super_admin',
         ];
 

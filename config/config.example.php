@@ -2,10 +2,25 @@
 
 declare(strict_types=1);
 
+$env = static function (string $key, string $default = ''): string {
+    $value = getenv($key);
+
+    if ($value === false || $value === '') {
+        return $default;
+    }
+
+    return (string) $value;
+};
+
+$dbDriver = strtolower($env('DB_DRIVER', 'mysql'));
+if (!in_array($dbDriver, ['mysql', 'sqlite'], true)) {
+    $dbDriver = 'mysql';
+}
+
 return [
     'app' => [
         'name' => 'Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026',
-        'base_url' => 'https://guineedortmund2026.org',
+        'base_url' => $env('APP_BASE_URL', 'https://guineedortmund2026.org'),
         'timezone' => 'Europe/Berlin',
         'default_lang' => 'fr',
         'supported_langs' => ['fr', 'de'],
@@ -13,14 +28,14 @@ return [
         'event_end' => '2026-07-13 23:59:59',
     ],
     'db' => [
-        'driver' => 'mysql', // mysql | sqlite
-        'path' => dirname(__DIR__) . '/database/dev.sqlite',
-        'host' => '127.0.0.1',
-        'port' => '3306',
-        'name' => 'guineedortmund2026',
-        'user' => 'root',
-        'pass' => '',
-        'charset' => 'utf8mb4',
+        'driver' => $dbDriver, // mysql | sqlite
+        'path' => $env('DB_PATH', dirname(__DIR__) . '/database/dev.sqlite'),
+        'host' => $env('DB_HOST', '127.0.0.1'),
+        'port' => $env('DB_PORT', '3306'),
+        'name' => $env('DB_NAME', 'guineedortmund2026'),
+        'user' => $env('DB_USER', 'root'),
+        'pass' => $env('DB_PASS', ''),
+        'charset' => $env('DB_CHARSET', 'utf8mb4'),
     ],
     'mail' => [
         'from_email' => 'no-reply@guineedortmund2026.org',

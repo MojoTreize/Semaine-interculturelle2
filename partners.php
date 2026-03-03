@@ -50,6 +50,33 @@ if (is_post()) {
         redirect('partners.php');
     }
 
+    try {
+        if (!($pdo instanceof PDO)) {
+            throw new RuntimeException('Database connection unavailable.');
+        }
+
+        $stmt = $pdo->prepare(
+            'INSERT INTO sponsor_requests
+                (organization_name, contact_person, email, phone, website, sponsorship_level, message, gdpr_consent, language)
+             VALUES
+                (:organization_name, :contact_person, :email, :phone, :website, :sponsorship_level, :message, :gdpr_consent, :language)'
+        );
+        $stmt->execute([
+            'organization_name' => $organizationName,
+            'contact_person' => $contactPerson,
+            'email' => $email,
+            'phone' => $phone !== '' ? $phone : null,
+            'website' => $website !== '' ? $website : null,
+            'sponsorship_level' => $sponsorshipLevel,
+            'message' => $message !== '' ? $message : null,
+            'gdpr_consent' => $gdprConsent,
+            'language' => current_lang(),
+        ]);
+    } catch (Throwable) {
+        set_flash('error', t('validation.server_error'));
+        redirect('partners.php');
+    }
+
     $organizerEmail = get_setting($pdo, 'organizer_email', 'organisation@guineedortmund2026.org');
     $subject = t('emails.sponsor_subject');
     $body = '<p>Organisation: ' . e($organizationName) . '</p>'

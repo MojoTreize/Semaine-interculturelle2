@@ -83,6 +83,21 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 );
 CREATE INDEX IF NOT EXISTS idx_contact_created ON contact_messages (created_at);
 
+CREATE TABLE IF NOT EXISTS page_views (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    page_path TEXT NOT NULL,
+    page_title TEXT NULL,
+    referrer TEXT NULL,
+    language TEXT NOT NULL DEFAULT 'fr',
+    session_id TEXT NULL,
+    ip_address TEXT NULL,
+    user_agent TEXT NULL,
+    viewed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_page_views_date ON page_views (viewed_at);
+CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views (page_path);
+CREATE INDEX IF NOT EXISTS idx_page_views_lang ON page_views (language);
+
 CREATE TABLE IF NOT EXISTS partners (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -139,7 +154,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
 );
 
 INSERT INTO admins (full_name, email, password_hash, role)
-VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
+VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$nLiXAZ.m6abolKwk99R1su12fsGidXN1e3cP4d9ClNK.ub0IqZXDK', 'super_admin')
 ON CONFLICT(email) DO UPDATE SET updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES
