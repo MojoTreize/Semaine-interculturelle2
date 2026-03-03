@@ -120,6 +120,10 @@ return [
     'contribute' => [
         'title' => 'Cagnotte solidaire',
         'subtitle' => 'Contribution volontaire pour soutenir l evenement',
+        'form_title' => 'Soumettre une contribution',
+        'form_intro' => 'Renseignez les informations utiles puis choisissez votre mode de paiement.',
+        'required_note' => '* Champs obligatoires.',
+        'bank_intro' => 'Vous pouvez egalement contribuer par virement bancaire securise.',
         'total_collected' => 'Total collecte',
         'donors_count' => 'Contributions validees',
         'goal' => 'Objectif',

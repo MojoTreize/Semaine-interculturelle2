@@ -120,6 +120,10 @@ return [
     'contribute' => [
         'title' => 'Solidaritatskasse',
         'subtitle' => 'Freiwilliger Beitrag zur Unterstutzung der Veranstaltung',
+        'form_title' => 'Beitrag einreichen',
+        'form_intro' => 'Tragen Sie die relevanten Informationen ein und wahlen Sie anschlieBend die Zahlungsart.',
+        'required_note' => '* Pflichtfelder.',
+        'bank_intro' => 'Alternativ konnen Sie per sicherer Bankuberweisung beitragen.',
         'total_collected' => 'Gesamtsumme',
         'donors_count' => 'Bestatigte Beitrage',
         'goal' => 'Ziel',

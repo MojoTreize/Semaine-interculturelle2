@@ -1148,12 +1148,14 @@ textarea:focus {
 }
 
 .registration-intro-section,
-.program-intro-section {
+.program-intro-section,
+.contribute-intro-section {
     padding-bottom: 2.4rem;
 }
 
 .registration-intro-shell,
-.program-intro-shell {
+.program-intro-shell,
+.contribute-intro-shell {
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -1168,7 +1170,8 @@ textarea:focus {
 }
 
 .registration-intro-shell::before,
-.program-intro-shell::before {
+.program-intro-shell::before,
+.contribute-intro-shell::before {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
@@ -1177,13 +1180,19 @@ textarea:focus {
 }
 
 .registration-intro-shell h1,
-.program-intro-shell h1 {
+.program-intro-shell h1,
+.contribute-intro-shell h1 {
     margin-bottom: 0.42rem;
 }
 
 .registration-intro-shell .lead,
-.program-intro-shell .lead {
+.program-intro-shell .lead,
+.contribute-intro-shell .lead {
     margin: 0;
+}
+
+.contribute-stats-section {
+    margin-top: 0;
 }
 
 .registration-layout {
@@ -1241,6 +1250,44 @@ textarea:focus {
 
 .registration-required-note {
     margin: 0.25rem 0 0.84rem;
+}
+
+.contribute-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.24fr) minmax(270px, 0.76fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.contribute-stat-card strong {
+    color: #1f2f49;
+}
+
+.contribute-form-card {
+    border: 1px solid rgba(205, 214, 231, 0.95);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 255, 0.98));
+    box-shadow: 0 16px 32px rgba(10, 20, 41, 0.12);
+    padding: 1.15rem;
+}
+
+.contribute-form-head {
+    margin-bottom: 0.5rem;
+}
+
+.contribute-form-head h2 {
+    margin: 0 0 0.32rem;
+}
+
+.contribute-required-note {
+    margin: 0.25rem 0 0.84rem;
+}
+
+.contribute-bank-card p {
+    margin: 0.45rem 0;
+}
+
+.contribute-bank-card .hint {
+    margin-top: 0.8rem;
 }
 
 .hidden-honeypot {
@@ -1564,12 +1611,18 @@ textarea:focus {
     }
 
     .registration-intro-shell,
-    .program-intro-shell {
+    .program-intro-shell,
+    .contribute-intro-shell {
         padding: 1rem;
     }
 
-    .registration-form-card {
+    .registration-form-card,
+    .contribute-form-card {
         padding: 1rem;
+    }
+
+    .contribute-layout {
+        grid-template-columns: 1fr;
     }
 
     .footer-main {
@@ -1654,11 +1707,13 @@ textarea:focus {
     }
 
     .registration-intro-section,
-    .program-intro-section {
+    .program-intro-section,
+    .contribute-intro-section {
         padding-bottom: 1.8rem;
     }
 
-    .registration-form-card .btn-primary {
+    .registration-form-card .btn-primary,
+    .contribute-form-card .btn-primary {
         width: 100%;
     }
 
