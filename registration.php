@@ -68,10 +68,12 @@ $optionCount = count($participationOptions);
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section">
-    <div class="container about-section-head" data-aos="fade-up">
-        <h1><?= e(t('registration.title')) ?></h1>
-        <p class="lead"><?= e(t('registration.subtitle')) ?></p>
+<section class="section registration-intro-section">
+    <div class="container">
+        <div class="about-section-head registration-intro-shell" data-aos="fade-up">
+            <h1><?= e(t('registration.title')) ?></h1>
+            <p class="lead"><?= e(t('registration.subtitle')) ?></p>
+        </div>
     </div>
 </section>
 
