@@ -63,19 +63,70 @@ if (is_post()) {
     redirect('registration.php');
 }
 
+$optionCount = count($participationOptions);
+
 require __DIR__ . '/includes/header.php';
 ?>
 
 <section class="section">
-    <div class="container">
+    <div class="container about-section-head" data-aos="fade-up">
         <h1><?= e(t('registration.title')) ?></h1>
         <p class="lead"><?= e(t('registration.subtitle')) ?></p>
     </div>
 </section>
 
-<section class="section">
+<section class="section about-stats-section registration-stats-section">
     <div class="container">
-        <div class="form-card">
+        <div class="stats-strip about-stats-strip">
+            <article class="stat-card about-stat-card" data-aos="zoom-in">
+                <strong data-counter-end="<?= e((string) $optionCount) ?>">0</strong>
+                <span><?= e(t('registration.stat_options')) ?></span>
+            </article>
+            <article class="stat-card about-stat-card" data-aos="zoom-in" data-aos-delay="100">
+                <strong data-counter-end="3">0</strong>
+                <span><?= e(t('registration.stat_steps')) ?></span>
+            </article>
+            <article class="stat-card about-stat-card" data-aos="zoom-in" data-aos-delay="200">
+                <strong data-counter-end="1">0</strong>
+                <span><?= e(t('registration.stat_confirmation')) ?></span>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section about-roadmap-section">
+    <div class="container registration-layout">
+        <aside class="registration-side" data-aos="fade-right">
+            <article class="card about-info-card registration-side-card">
+                <h2><?= e(t('registration.why_title')) ?></h2>
+                <p><?= e(t('registration.why_text')) ?></p>
+            </article>
+
+            <article class="registration-steps">
+                <h3><?= e(t('registration.steps_title')) ?></h3>
+                <div class="registration-step-list">
+                    <div class="about-roadmap-step registration-step">
+                        <span class="about-step-index">01</span>
+                        <p><?= e(t('registration.step_1')) ?></p>
+                    </div>
+                    <div class="about-roadmap-step registration-step">
+                        <span class="about-step-index">02</span>
+                        <p><?= e(t('registration.step_2')) ?></p>
+                    </div>
+                    <div class="about-roadmap-step registration-step">
+                        <span class="about-step-index">03</span>
+                        <p><?= e(t('registration.step_3')) ?></p>
+                    </div>
+                </div>
+            </article>
+        </aside>
+
+        <div class="form-card registration-form-card" data-aos="fade-left" data-aos-delay="120">
+            <div class="registration-form-head">
+                <h2><?= e(t('registration.form_title')) ?></h2>
+                <p class="hint"><?= e(t('registration.form_intro')) ?></p>
+            </div>
+
             <form method="post" action="<?= e(base_url('registration.php')) ?>" data-validate novalidate>
                 <?= csrf_field() ?>
                 <?= honeypot_field_html() ?>
@@ -128,6 +179,7 @@ require __DIR__ . '/includes/header.php';
                     <label for="gdpr_consent"><?= e(t('registration.gdpr_label')) ?></label>
                 </div>
 
+                <p class="hint registration-required-note"><?= e(t('registration.required_note')) ?></p>
                 <button type="submit" class="btn btn-primary"><?= e(t('registration.submit')) ?></button>
             </form>
         </div>
