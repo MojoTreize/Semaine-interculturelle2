@@ -804,6 +804,10 @@ textarea:focus {
         linear-gradient(118deg, rgba(198, 40, 40, 0.95), rgba(244, 180, 0, 0.9) 54%, rgba(31, 143, 70, 0.9));
 }
 
+.section.about-hero {
+    padding: 0;
+}
+
 .about-hero::after {
     content: "";
     position: absolute;
@@ -821,8 +825,9 @@ textarea:focus {
     grid-template-columns: 1.3fr 1fr;
     gap: 1rem;
     align-items: stretch;
-    min-height: 520px;
-    padding: 3.9rem 0;
+    height: var(--hero-height-desktop);
+    min-height: var(--hero-height-desktop);
+    padding: 4.5rem 0;
 }
 
 .about-hero-copy {
@@ -1066,6 +1071,76 @@ textarea:focus {
 
 .about-cta-card .btn-light {
     color: #7a2222;
+}
+
+.program-stats-section {
+    margin-top: 0;
+}
+
+.program-date-block + .program-date-block {
+    margin-top: 1rem;
+}
+
+.program-date-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.82rem;
+}
+
+.program-date-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 50, 99, 0.28);
+    background: rgba(26, 50, 99, 0.1);
+    color: #1b3262;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.58rem;
+}
+
+.program-date-head h2 {
+    margin: 0.36rem 0 0;
+}
+
+.program-date-count {
+    border-radius: 999px;
+    border: 1px solid rgba(193, 204, 224, 0.92);
+    background: #fff;
+    color: #2a3a56;
+    font-size: 0.82rem;
+    font-weight: 650;
+    padding: 0.35rem 0.65rem;
+}
+
+.program-schedule-grid {
+    gap: 0.92rem;
+}
+
+.program-schedule-card {
+    min-height: 0;
+}
+
+.program-schedule-meta {
+    margin-top: 0.55rem;
+    margin-bottom: 0.6rem;
+}
+
+.program-speakers-section {
+    background: linear-gradient(180deg, #f8faff 0%, #f6f9ff 100%);
+}
+
+.program-speakers-grid {
+    margin-top: 1rem;
+}
+
+.program-speaker-card {
+    min-height: 0;
 }
 
 .hidden-honeypot {
@@ -1348,8 +1423,9 @@ textarea:focus {
 
     .about-hero-grid {
         grid-template-columns: 1fr;
-        min-height: 0;
-        padding: 3.2rem 0;
+        height: auto;
+        min-height: var(--hero-min-height-mobile);
+        padding: 4.5rem 0;
         gap: 0.85rem;
     }
 
@@ -1373,6 +1449,14 @@ textarea:focus {
 
     .about-roadmap-step {
         padding-left: 3rem;
+    }
+
+    .program-date-head {
+        flex-direction: column;
+    }
+
+    .program-date-count {
+        align-self: flex-start;
     }
 
     .footer-main {
@@ -1417,7 +1501,8 @@ textarea:focus {
     }
 
     .about-hero-grid {
-        padding: 2.8rem 0;
+        padding: 3.4rem 0;
+        min-height: 700px;
     }
 
     .about-kicker {
