@@ -161,12 +161,6 @@ ON CONFLICT(setting_key) DO UPDATE SET
     setting_value = excluded.setting_value,
     updated_at = CURRENT_TIMESTAMP;
 
-INSERT OR IGNORE INTO partners (name, website_url, partner_type, display_order, is_active)
-VALUES
-('Ville de Dortmund', 'https://www.dortmund.de', 'institutional', 1, 1),
-('Diaspora Guinee Forestiere Allemagne', '#', 'partner', 2, 1),
-('Chambre de Commerce Guinee - Allemagne', '#', 'partner', 3, 1);
-
 INSERT OR IGNORE INTO speakers (full_name, title, organization, is_featured)
 VALUES
 ('Dr. Fatou Kaba', 'Experte en politiques minieres', 'Consultante independante', 1),
