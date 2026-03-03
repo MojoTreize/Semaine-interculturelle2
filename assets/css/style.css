@@ -1715,6 +1715,14 @@ textarea:focus {
     letter-spacing: 0.01em;
 }
 
+.footer-credit {
+    margin: 0.42rem 0 0;
+    font-size: 0.94rem;
+    color: rgba(255, 237, 225, 0.92);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
 .footer-policy-links {
     display: flex;
     flex-wrap: wrap;
