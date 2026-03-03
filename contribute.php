@@ -96,20 +96,27 @@ $bankName = get_setting($pdo, 'bank_name', 'Banque Exemple Dortmund');
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="section">
+<section class="section contribute-intro-section">
     <div class="container">
-        <h1><?= e(t('contribute.title')) ?></h1>
-        <p class="lead"><?= e(t('contribute.subtitle')) ?></p>
-        <div class="stats-strip">
-            <article class="stat-card">
+        <div class="about-section-head contribute-intro-shell" data-aos="fade-up">
+            <h1><?= e(t('contribute.title')) ?></h1>
+            <p class="lead"><?= e(t('contribute.subtitle')) ?></p>
+        </div>
+    </div>
+</section>
+
+<section class="section about-stats-section contribute-stats-section">
+    <div class="container">
+        <div class="stats-strip about-stats-strip">
+            <article class="stat-card about-stat-card contribute-stat-card" data-aos="zoom-in">
                 <span><?= e(t('contribute.total_collected')) ?></span>
                 <strong><?= e(format_amount($totals['amount'])) ?></strong>
             </article>
-            <article class="stat-card">
+            <article class="stat-card about-stat-card contribute-stat-card" data-aos="zoom-in" data-aos-delay="100">
                 <span><?= e(t('contribute.donors_count')) ?></span>
                 <strong><?= e((string) $totals['count']) ?></strong>
             </article>
-            <article class="stat-card">
+            <article class="stat-card about-stat-card contribute-stat-card" data-aos="zoom-in" data-aos-delay="200">
                 <span><?= e(t('contribute.goal')) ?></span>
                 <strong><?= e(format_amount($goalAmount)) ?></strong>
             </article>
@@ -117,9 +124,14 @@ require __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="section">
-    <div class="container grid-2">
-        <article class="form-card">
+<section class="section about-roadmap-section">
+    <div class="container contribute-layout">
+        <article class="form-card contribute-form-card" data-aos="fade-right">
+            <div class="contribute-form-head">
+                <h2><?= e(t('contribute.form_title')) ?></h2>
+                <p class="hint"><?= e(t('contribute.form_intro')) ?></p>
+            </div>
+
             <form method="post" action="<?= e(base_url('contribute.php')) ?>" data-validate novalidate>
                 <?= csrf_field() ?>
                 <?= honeypot_field_html() ?>
@@ -174,12 +186,14 @@ require __DIR__ . '/includes/header.php';
                     <label for="gdpr_consent"><?= e(t('registration.gdpr_label')) ?></label>
                 </div>
 
+                <p class="hint contribute-required-note"><?= e(t('contribute.required_note')) ?></p>
                 <button type="submit" class="btn btn-primary"><?= e(t('contribute.submit')) ?></button>
             </form>
         </article>
 
-        <article class="card">
+        <article class="card about-info-card contribute-bank-card" data-aos="fade-left" data-aos-delay="120">
             <h2><?= e(t('contribute.bank_title')) ?></h2>
+            <p class="hint"><?= e(t('contribute.bank_intro')) ?></p>
             <p><strong><?= e(t('contribute.bank_holder')) ?>:</strong> <?= e($bankHolder) ?></p>
             <p><strong><?= e(t('contribute.bank_iban')) ?>:</strong> <?= e($bankIban) ?></p>
             <p><strong><?= e(t('contribute.bank_bic')) ?>:</strong> <?= e($bankBic) ?></p>
