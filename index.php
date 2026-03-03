@@ -174,7 +174,7 @@ require __DIR__ . '/includes/header.php';
 
                     $partnerDelay = 100 + ($index * 80);
                     ?>
-                    <article class="card partner-logo-card" data-aos="fade-up" data-aos-delay="<?= e((string) $partnerDelay) ?>">
+                    <article class="card about-info-card partner-logo-card" data-aos="fade-up" data-aos-delay="<?= e((string) $partnerDelay) ?>">
                         <div class="partner-logo-link">
                             <div class="partner-logo-svg-wrap" aria-hidden="true">
                                 <?php if ($logoUrl !== ''): ?>
@@ -192,7 +192,7 @@ require __DIR__ . '/includes/header.php';
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <article class="card partners-empty-state partners-empty-state--compact" data-aos="fade-up" data-aos-delay="80">
+            <article class="card about-info-card partners-empty-state--compact" data-aos="fade-up" data-aos-delay="80">
                 <p><?= e(t('partners.hero_subtitle')) ?></p>
             </article>
         <?php endif; ?>
@@ -206,11 +206,11 @@ require __DIR__ . '/includes/header.php';
 
 <section class="section">
     <div class="container grid-2 about-message-grid">
-        <article class="card about-message-card" data-aos="fade-right">
+        <article class="card about-info-card home-contact-card" data-aos="fade-right">
             <h2><?= e(t('home.contact_title')) ?></h2>
             <p><?= e(t('home.contact_text')) ?></p>
         </article>
-        <article class="card about-cta-card home-cta-card" data-aos="fade-left" data-aos-delay="120">
+        <article class="card about-info-card home-cta-card" data-aos="fade-left" data-aos-delay="120">
             <h2><?= e(t('about.cta_title')) ?></h2>
             <p><?= e(t('about.cta_text')) ?></p>
             <div class="cta-row">
