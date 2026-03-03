@@ -368,14 +368,10 @@ if (!function_exists('fetch_active_partners')) {
                 return $rows;
             }
         } catch (Throwable) {
-            // Fallback below.
+            // Ignore and return an empty list.
         }
 
-        return [
-            ['name' => 'Ville de Dortmund', 'website_url' => 'https://www.dortmund.de', 'logo_path' => null, 'partner_type' => 'institutional'],
-            ['name' => 'Diaspora Guinee Forestiere Allemagne', 'website_url' => '#', 'logo_path' => null, 'partner_type' => 'partner'],
-            ['name' => 'Chambre de Commerce Guinee - Allemagne', 'website_url' => '#', 'logo_path' => null, 'partner_type' => 'partner'],
-        ];
+        return [];
     }
 }
 

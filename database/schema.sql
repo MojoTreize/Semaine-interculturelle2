@@ -160,13 +160,6 @@ INSERT INTO site_settings (setting_key, setting_value) VALUES
 ('collection_goal', '50000')
 ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value);
 
-INSERT INTO partners (name, website_url, partner_type, display_order, is_active)
-VALUES
-('Ville de Dortmund', 'https://www.dortmund.de', 'institutional', 1, 1),
-('Diaspora Guinee Forestiere Allemagne', '#', 'partner', 2, 1),
-('Chambre de Commerce Guinee - Allemagne', '#', 'partner', 3, 1)
-ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP;
-
 INSERT INTO speakers (full_name, title, organization, is_featured)
 VALUES
 ('Dr. Fatou Kaba', 'Experte en politiques minières', 'Consultante independante', 1),
