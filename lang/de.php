@@ -71,7 +71,12 @@ return [
     'program' => [
         'title' => 'Offizielles Programm',
         'subtitle' => 'Detaillierter Kalender vom 4. bis 13. Juli 2026',
+        'stat_sessions' => 'Bestatigte Sessions',
+        'stat_days' => 'Programmtage',
+        'stat_speakers' => 'Featured Referenten',
+        'sessions_short' => 'Sessions',
         'speakers_title' => 'Referenten und Experten',
+        'speakers_intro' => 'Profile mit hoher Expertise, die den Dialog moderieren und Ideen in konkrete Umsetzungsansatze uberfuhren.',
         'day' => 'Tag',
         'type' => 'Typ',
         'location' => 'Ort',
