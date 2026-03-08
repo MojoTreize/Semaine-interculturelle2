@@ -14,6 +14,7 @@ $settingKeys = [
     'bank_name',
     'stripe_public_key',
     'stripe_secret_key',
+    'stripe_webhook_secret',
     'paypal_business_email',
     'paypal_mode',
     'collection_goal',
