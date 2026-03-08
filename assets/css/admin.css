@@ -51,6 +51,7 @@ a:hover {
 
 .admin-main {
     padding: 1.1rem;
+    background: radial-gradient(circle at top right, #ecf3ff 0%, #f6f8fc 44%, #f5f7fb 100%);
 }
 
 .admin-top {
@@ -134,11 +135,117 @@ button,
     border: 1px solid #d6ddea;
     border-radius: 12px;
     padding: 0.9rem;
+    box-shadow: 0 8px 18px rgba(19, 36, 66, 0.06);
 }
 
 .stat strong {
     display: block;
     font-size: 1.32rem;
+}
+
+.stat span {
+    color: #4f617e;
+}
+
+.dashboard-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #cfd9ec;
+    background: linear-gradient(120deg, #ffffff 0%, #eef4ff 100%);
+}
+
+.dashboard-hero h3 {
+    margin: 0 0 0.3rem;
+}
+
+.dashboard-hero .hint {
+    margin: 0;
+    color: #536684;
+}
+
+.dashboard-hero-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-chip {
+    border-radius: 999px;
+    background: #dde8ff;
+    color: #173154;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.dashboard-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stat--accent {
+    border-color: #b9d4ff;
+}
+
+.stat--blue {
+    border-color: #c7e0ff;
+}
+
+.stat--green {
+    border-color: #bce8cc;
+}
+
+.stat--violet {
+    border-color: #d8c9ff;
+}
+
+.stat--amber {
+    border-color: #ffe4b2;
+}
+
+.dashboard-actions .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+}
+
+.dashboard-actions .btn {
+    text-align: center;
+    font-weight: 600;
+}
+
+.dashboard-activity table td {
+    vertical-align: middle;
+}
+
+.activity-badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    line-height: 1;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.36rem 0.55rem;
+    color: #10233d;
+    background: #dfe8f7;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.activity-badge--registration {
+    background: #d3e6ff;
+}
+
+.activity-badge--donation {
+    background: #d7f3de;
+}
+
+.activity-badge--sponsor {
+    background: #f5ddff;
+}
+
+.activity-badge--contact {
+    background: #ffe8ca;
 }
 
 .alert {
@@ -165,7 +272,14 @@ button,
     }
 
     .stats,
+    .dashboard-stats,
+    .dashboard-actions .quick-actions-grid,
     .row {
         grid-template-columns: 1fr;
+    }
+
+    .dashboard-hero {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
