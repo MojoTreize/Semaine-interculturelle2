@@ -64,6 +64,31 @@ if (is_post()) {
         redirect('contribute.php');
     }
 
+    $paymentStatus = $paymentMethod === 'bank_transfer' ? 'pending' : 'failed';
+
+    try {
+        $stmt = $pdo->prepare('INSERT INTO donations
+            (donor_name, donor_email, amount, currency, motive, custom_motive, message, payment_method, payment_status, language, is_public)
+            VALUES
+            (:donor_name, :donor_email, :amount, :currency, :motive, :custom_motive, :message, :payment_method, :payment_status, :language, :is_public)');
+        $stmt->execute([
+            'donor_name' => $donorName !== '' ? $donorName : null,
+            'donor_email' => $donorEmail !== '' ? $donorEmail : null,
+            'amount' => $amount,
+            'currency' => payment_currency($pdo),
+            'motive' => $motive,
+            'custom_motive' => $customMotive !== '' ? $customMotive : null,
+            'message' => $message !== '' ? $message : null,
+            'payment_method' => $paymentMethod,
+            'payment_status' => $paymentStatus,
+            'language' => current_lang(),
+            'is_public' => 1,
+        ]);
+    } catch (Throwable) {
+        set_flash('error', 'Erreur technique. Merci de reessayer.');
+        redirect('contribute.php');
+    }
+
     if ($paymentMethod === 'stripe') {
         set_flash('error', t('contribute.payment_error_stripe'));
         redirect('contribute.php');
