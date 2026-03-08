@@ -54,6 +54,29 @@ if (is_post()) {
         redirect('registration.php');
     }
 
+    try {
+        $stmt = $pdo->prepare('INSERT INTO registrations
+            (first_name, last_name, country, email, phone, organization, participation_type, gdpr_consent, language, ip_address, user_agent)
+            VALUES
+            (:first_name, :last_name, :country, :email, :phone, :organization, :participation_type, :gdpr_consent, :language, :ip_address, :user_agent)');
+        $stmt->execute([
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'country' => $country,
+            'email' => $email,
+            'phone' => $phone,
+            'organization' => $organization !== '' ? $organization : null,
+            'participation_type' => $participationType,
+            'gdpr_consent' => $gdprConsent,
+            'language' => current_lang(),
+            'ip_address' => request_ip(),
+            'user_agent' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255),
+        ]);
+    } catch (Throwable) {
+        set_flash('error', 'Erreur technique. Merci de reessayer.');
+        redirect('registration.php');
+    }
+
     $subject = t('emails.registration_subject');
     $body = t('emails.registration_body', ['name' => $firstName . ' ' . $lastName]);
     send_email($email, trim($firstName . ' ' . $lastName), $subject, $body, strip_tags($body));

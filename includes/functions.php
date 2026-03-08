@@ -217,7 +217,7 @@ if (!function_exists('honeypot_passed')) {
 if (!function_exists('get_setting')) {
     function get_setting(mixed $pdo, string $key, string $default = ''): string
     {
-        static $cache = null;
+        $cache = $GLOBALS['site_settings_cache'] ?? null;
 
         if (!is_array($cache)) {
             $cache = [
@@ -237,6 +237,8 @@ if (!function_exists('get_setting')) {
             ];
         }
 
+        $GLOBALS['site_settings_cache'] = $cache;
+
         if (array_key_exists($key, $cache)) {
             return $cache[$key];
         }
@@ -249,6 +251,7 @@ if (!function_exists('get_setting')) {
 
                 if ($value !== false && $value !== null) {
                     $cache[$key] = (string) $value;
+                    $GLOBALS['site_settings_cache'] = $cache;
                     return $cache[$key];
                 }
             }
@@ -257,6 +260,7 @@ if (!function_exists('get_setting')) {
         }
 
         $cache[$key] = $default;
+        $GLOBALS['site_settings_cache'] = $cache;
         return $cache[$key];
     }
 }
@@ -264,7 +268,38 @@ if (!function_exists('get_setting')) {
 if (!function_exists('set_setting')) {
     function set_setting(mixed $pdo, string $key, string $value): void
     {
-        // No-op by design while running without SQL persistence.
+        try {
+            if (!is_object($pdo) || !method_exists($pdo, 'prepare')) {
+                return;
+            }
+
+            if (db_is_sqlite($pdo)) {
+                $stmt = $pdo->prepare("INSERT INTO site_settings (setting_key, setting_value, updated_at)
+                                       VALUES (:setting_key, :setting_value, datetime('now'))
+                                       ON CONFLICT(setting_key) DO UPDATE SET
+                                           setting_value = excluded.setting_value,
+                                           updated_at = datetime('now')");
+            } else {
+                $stmt = $pdo->prepare('INSERT INTO site_settings (setting_key, setting_value)
+                                       VALUES (:setting_key, :setting_value)
+                                       ON DUPLICATE KEY UPDATE
+                                           setting_value = VALUES(setting_value),
+                                           updated_at = NOW()');
+            }
+
+            $stmt->execute([
+                'setting_key' => $key,
+                'setting_value' => $value,
+            ]);
+
+            $cache = $GLOBALS['site_settings_cache'] ?? [];
+            if (is_array($cache)) {
+                $cache[$key] = $value;
+                $GLOBALS['site_settings_cache'] = $cache;
+            }
+        } catch (Throwable) {
+            // Ignore persistence errors and keep runtime defaults.
+        }
     }
 }
 

@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             form.querySelectorAll('[data-email]').forEach(function (field) {
                 var value = String(field.value || '').trim();
-                if (value !== '' && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(value)) {
+                if (value !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                     errors.push(field.getAttribute('data-label') || field.name);
                     field.classList.add('invalid');
                 } else {
