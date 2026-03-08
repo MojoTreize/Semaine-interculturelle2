@@ -230,6 +230,7 @@ if (!function_exists('get_setting')) {
                 'bank_name' => 'Banque Exemple Dortmund',
                 'stripe_public_key' => (string) app_config('payment.stripe_public_key', ''),
                 'stripe_secret_key' => (string) app_config('payment.stripe_secret_key', ''),
+                'stripe_webhook_secret' => (string) app_config('payment.stripe_webhook_secret', ''),
                 'paypal_business_email' => (string) app_config('payment.paypal_business_email', ''),
                 'paypal_mode' => (string) app_config('payment.paypal_mode', 'sandbox'),
                 'currency' => (string) app_config('payment.currency', 'EUR'),
