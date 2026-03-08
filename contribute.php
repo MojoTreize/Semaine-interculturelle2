@@ -64,7 +64,8 @@ if (is_post()) {
         redirect('contribute.php');
     }
 
-    $paymentStatus = $paymentMethod === 'bank_transfer' ? 'pending' : 'failed';
+    $paymentStatus = 'pending';
+    $donationId = 0;
 
     try {
         $stmt = $pdo->prepare('INSERT INTO donations
@@ -84,19 +85,35 @@ if (is_post()) {
             'language' => current_lang(),
             'is_public' => 1,
         ]);
+        $donationId = (int) $pdo->lastInsertId();
     } catch (Throwable) {
         set_flash('error', 'Erreur technique. Merci de reessayer.');
         redirect('contribute.php');
     }
 
     if ($paymentMethod === 'stripe') {
-        set_flash('error', t('contribute.payment_error_stripe'));
-        redirect('contribute.php');
+        $description = t('site.short_name') . ' - Don #' . $donationId;
+        $session = create_stripe_checkout_session($pdo, $donationId, $amount, $description);
+
+        if (empty($session['ok']) || empty($session['checkout_url']) || empty($session['session_id'])) {
+            payment_db_update_donation($pdo, $donationId, 'failed', null, false, 'stripe');
+            set_flash('error', t('contribute.payment_error_stripe'));
+            redirect('contribute.php');
+        }
+
+        payment_db_update_donation($pdo, $donationId, 'pending', (string) $session['session_id'], false, 'stripe');
+        redirect((string) $session['checkout_url']);
     }
 
     if ($paymentMethod === 'paypal') {
-        set_flash('error', t('contribute.payment_error_paypal'));
-        redirect('contribute.php');
+        $itemLabel = t('site.short_name') . ' - Don #' . $donationId;
+        $paypalUrl = paypal_checkout_url($pdo, $donationId, $amount, $itemLabel);
+        if ($paypalUrl === '') {
+            payment_db_update_donation($pdo, $donationId, 'failed', null, false, 'paypal');
+            set_flash('error', t('contribute.payment_error_paypal'));
+            redirect('contribute.php');
+        }
+        redirect($paypalUrl);
     }
 
     if ($donorEmail !== '') {
