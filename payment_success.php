@@ -35,11 +35,13 @@ if ($provider === 'paypal') {
     $donationId = (int) ($_GET['donation_id'] ?? $_GET['custom'] ?? $_GET['cm'] ?? 0);
     $txnId = trim((string) ($_GET['tx'] ?? ''));
     if ($donationId > 0) {
-        if ($txnId !== '') {
-            payment_db_update_donation($pdo, $donationId, 'pending', $txnId, false, 'paypal');
-        }
         $row = payment_db_fetch_donation($pdo, $donationId);
         $status = strtolower((string) ($row['payment_status'] ?? 'pending'));
+        if ($txnId !== '' && $status !== 'paid') {
+            payment_db_update_donation($pdo, $donationId, 'pending', $txnId, false, 'paypal');
+            $row = payment_db_fetch_donation($pdo, $donationId);
+            $status = strtolower((string) ($row['payment_status'] ?? 'pending'));
+        }
         if ($status === 'paid') {
             $message = t('contribute.thanks_paid');
             $description = $message;
