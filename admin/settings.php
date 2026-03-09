@@ -47,7 +47,8 @@ require __DIR__ . '/_header.php';
             <?php foreach ($settings as $key => $value): ?>
                 <div>
                     <label for="<?= e($key) ?>"><?= e($key) ?></label>
-                    <input id="<?= e($key) ?>" type="text" name="<?= e($key) ?>" value="<?= e($value) ?>">
+                    <?php $isSecret = in_array($key, ['stripe_secret_key', 'stripe_webhook_secret'], true); ?>
+                    <input id="<?= e($key) ?>" type="<?= $isSecret ? 'password' : 'text' ?>" name="<?= e($key) ?>" value="<?= e($value) ?>" <?= $isSecret ? 'autocomplete="new-password"' : '' ?>>
                 </div>
             <?php endforeach; ?>
         </div>
