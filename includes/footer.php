@@ -56,7 +56,7 @@ declare(strict_types=1);
     <div class="container footer-bottom">
         <div class="footer-legal">
             <small>&copy; <?= date('Y') ?> guineedortmund2026.org - <?= e(t('footer.rights')) ?></small>
-            <p class="footer-credit">Développé par Mimi Sagno, développeur web.</p>
+            <p class="footer-credit">Développé par Mimi Sagno, développeur web et application.</p>
             <div class="footer-policy-links">
                 <a href="<?= e(base_url('privacy.php')) ?>"><?= e(t('footer.privacy')) ?></a>
                 <a href="<?= e(base_url('impressum.php')) ?>"><?= e(t('footer.impressum')) ?></a>
