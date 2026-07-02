@@ -162,6 +162,8 @@ return [
         'bank_iban' => 'IBAN',
         'bank_bic' => 'BIC',
         'bank_name' => 'Bank',
+        'bank_reference' => 'Verwendungszweck',
+        'bank_reference_value' => 'Beitrag Aufenthalt des Patriarchen',
         'thanks_paid' => 'Vielen Dank fur Ihren Beitrag. Zahlung bestatigt.',
         'thanks_pending' => 'Vielen Dank. Ihr Beitrag wartet auf Bestatigung.',
         'payment_cancelled' => 'Die Zahlung wurde abgebrochen. Sie konnen es jederzeit erneut versuchen.',

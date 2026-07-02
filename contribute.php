@@ -144,6 +144,7 @@ require __DIR__ . '/includes/header.php';
                 <p><strong><?= e(t('contribute.bank_iban')) ?> :</strong> <?= e($bankIban) ?></p>
                 <p><strong><?= e(t('contribute.bank_bic')) ?> :</strong> <?= e($bankBic) ?></p>
                 <p><strong><?= e(t('contribute.bank_name')) ?> :</strong> <?= e($bankName) ?></p>
+                <p class="contribute-bank-reference"><strong><?= e(t('contribute.bank_reference')) ?> :</strong> <?= e(t('contribute.bank_reference_value')) ?></p>
             </article>
         </div>
 

@@ -162,6 +162,8 @@ return [
         'bank_iban' => 'IBAN',
         'bank_bic' => 'BIC',
         'bank_name' => 'Banque',
+        'bank_reference' => 'Motif',
+        'bank_reference_value' => 'Contribution Séjour du patriarche',
         'thanks_paid' => 'Merci pour votre contribution. Paiement confirme.',
         'thanks_pending' => 'Merci. Votre contribution est en attente de confirmation.',
         'payment_cancelled' => 'Le paiement a ete annule. Vous pouvez recommencer a tout moment.',
