@@ -24,7 +24,7 @@ return [
     ],
     'mail' => [
         'from_email' => 'no-reply@guineedortmund2026.org',
-        'from_name' => 'Guinee Dortmund 2026',
+        'from_name' => 'Union de la Guinee Forestière en Allemagne',
         'smtp_host' => 'smtp.example.com',
         'smtp_port' => 587,
         'smtp_user' => 'smtp_user',

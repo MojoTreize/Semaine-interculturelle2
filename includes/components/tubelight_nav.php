@@ -23,9 +23,9 @@ if (!function_exists('tubelight_icon_svg')) {
 if (!function_exists('render_tubelight_navbar')) {
     function render_tubelight_navbar(array $items, string $activeFile, array $options = []): void
     {
-        $brandHref = (string) ($options['brand_href'] ?? base_url('index.php'));
+        $brandHref = (string) ($options['brand_href'] ?? '/');
         $brandLabel = (string) ($options['brand_label'] ?? t('site.short_name'));
-        $brandLogo = (string) ($options['brand_logo'] ?? base_url('assets/images/logo.svg'));
+        $brandLogo = (string) ($options['brand_logo'] ?? base_url('assets/images/logo.jpeg'));
         $showLang = (bool) ($options['show_lang'] ?? true);
         ?>
         <header class="site-header">
@@ -40,12 +40,13 @@ if (!function_exists('render_tubelight_navbar')) {
                     <?php foreach ($items as $item): ?>
                         <?php
                         $file = (string) ($item['file'] ?? 'index.php');
+                        $url  = (string) ($item['url']  ?? base_url($file));
                         $label = (string) ($item['label'] ?? $file);
                         $icon = (string) ($item['icon'] ?? 'fallback');
                         $isActive = $activeFile === $file;
                         ?>
                         <a
-                            href="<?= e(base_url($file)) ?>"
+                            href="<?= e($url) ?>"
                             class="tube-link<?= $isActive ? ' active' : '' ?>"
                             data-tube-link
                             aria-label="<?= e($label) ?>"

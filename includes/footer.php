@@ -7,7 +7,7 @@ declare(strict_types=1);
     <div class="container footer-main">
         <div class="footer-brand-col">
             <a class="footer-brand" href="<?= e(base_url('index.php')) ?>">
-                <img src="<?= e(base_url('assets/images/logo.svg')) ?>" alt="Logo Guinee Dortmund 2026" width="46" height="46">
+                <img src="<?= e(base_url('assets/images/logo.jpeg')) ?>" alt="Logo Union de la Guinee Forestière en Allemagne" width="46" height="46">
                 <span><?= e(t('site.short_name')) ?></span>
             </a>
             <p class="footer-tagline"><?= e(t('footer.event_title')) ?></p>
