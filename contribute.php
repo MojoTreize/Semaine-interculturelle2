@@ -6,134 +6,18 @@ require __DIR__ . '/includes/bootstrap.php';
 $pageTitle = t('seo.contribute_title');
 $pageDescription = t('contribute.subtitle');
 
-$motiveOptions = [
-    'general' => t('contribute.motive_general'),
-    'logistics' => t('contribute.motive_logistics'),
-    'youth' => t('contribute.motive_youth'),
-    'culture' => t('contribute.motive_culture'),
-    'other' => t('contribute.motive_other'),
-];
+$paypalPoolUrl = 'https://www.paypal.com/pool/9qyFAaYjtw?sr=wccr';
 
-$methodOptions = [
-    'stripe' => t('contribute.method_stripe'),
-    'paypal' => t('contribute.method_paypal'),
-    'bank_transfer' => t('contribute.method_bank_transfer'),
-];
-
-if (is_post()) {
-    verify_csrf_or_fail();
-    remember_old_input($_POST);
-
-    if (!honeypot_passed()) {
-        set_flash('error', t('validation.honeypot'));
-        redirect('contribute.php');
-    }
-
-    $donorName = post_string('donor_name');
-    $donorEmail = strtolower(post_string('donor_email'));
-    $amountRaw = str_replace([' ', ','], ['', '.'], post_string('amount'));
-    $amount = is_numeric($amountRaw) ? (float) $amountRaw : 0;
-    $motive = post_string('motive');
-    $customMotive = post_string('custom_motive');
-    $message = post_string('message');
-    $paymentMethod = post_string('payment_method');
-    $gdprConsent = isset($_POST['gdpr_consent']) ? 1 : 0;
-
-    $errors = [];
-    if ($amount <= 0) {
-        $errors[] = t('validation.amount');
-    }
-    if ($donorEmail !== '' && !is_valid_email($donorEmail)) {
-        $errors[] = t('validation.email');
-    }
-    if (!array_key_exists($motive, $motiveOptions)) {
-        $errors[] = t('validation.required');
-    }
-    if ($motive === 'other' && $customMotive === '') {
-        $errors[] = t('validation.required');
-    }
-    if (!array_key_exists($paymentMethod, $methodOptions)) {
-        $errors[] = t('validation.required');
-    }
-    if ($gdprConsent !== 1) {
-        $errors[] = t('validation.gdpr');
-    }
-
-    if (!empty($errors)) {
-        set_flash('error', implode(' ', array_unique($errors)));
-        redirect('contribute.php');
-    }
-
-    $paymentStatus = 'pending';
-    $donationId = 0;
-
-    try {
-        $stmt = $pdo->prepare('INSERT INTO donations
-            (donor_name, donor_email, amount, currency, motive, custom_motive, message, payment_method, payment_status, language, is_public)
-            VALUES
-            (:donor_name, :donor_email, :amount, :currency, :motive, :custom_motive, :message, :payment_method, :payment_status, :language, :is_public)');
-        $stmt->execute([
-            'donor_name' => $donorName !== '' ? $donorName : null,
-            'donor_email' => $donorEmail !== '' ? $donorEmail : null,
-            'amount' => $amount,
-            'currency' => payment_currency($pdo),
-            'motive' => $motive,
-            'custom_motive' => $customMotive !== '' ? $customMotive : null,
-            'message' => $message !== '' ? $message : null,
-            'payment_method' => $paymentMethod,
-            'payment_status' => $paymentStatus,
-            'language' => current_lang(),
-            'is_public' => 1,
-        ]);
-        $donationId = (int) $pdo->lastInsertId();
-    } catch (Throwable) {
-        set_flash('error', 'Erreur technique. Merci de reessayer.');
-        redirect('contribute.php');
-    }
-
-    if ($paymentMethod === 'stripe') {
-        $description = t('site.short_name') . ' - Don #' . $donationId;
-        $session = create_stripe_checkout_session($pdo, $donationId, $amount, $description);
-
-        if (empty($session['ok']) || empty($session['checkout_url']) || empty($session['session_id'])) {
-            payment_db_update_donation($pdo, $donationId, 'failed', null, false, 'stripe');
-            set_flash('error', t('contribute.payment_error_stripe'));
-            redirect('contribute.php');
-        }
-
-        payment_db_update_donation($pdo, $donationId, 'pending', (string) $session['session_id'], false, 'stripe');
-        redirect((string) $session['checkout_url']);
-    }
-
-    if ($paymentMethod === 'paypal') {
-        $itemLabel = t('site.short_name') . ' - Don #' . $donationId;
-        $paypalUrl = paypal_checkout_url($pdo, $donationId, $amount, $itemLabel);
-        if ($paypalUrl === '') {
-            payment_db_update_donation($pdo, $donationId, 'failed', null, false, 'paypal');
-            set_flash('error', t('contribute.payment_error_paypal'));
-            redirect('contribute.php');
-        }
-        redirect($paypalUrl);
-    }
-
-    if ($donorEmail !== '') {
-        $subject = t('emails.donation_subject');
-        $body = '<p>' . e(t('contribute.thanks_pending')) . '</p>';
-        send_email($donorEmail, $donorName !== '' ? $donorName : $donorEmail, $subject, $body, strip_tags($body));
-    }
-
-    clear_old_input();
-    set_flash('success', t('contribute.thanks_pending'));
-    redirect('contribute.php');
-}
-
-$totals = collection_totals($pdo);
-$goalAmount = (float) get_setting($pdo, 'collection_goal', '50000');
+$totals     = collection_totals($pdo);
+$goalAmount = (float) get_setting($pdo, 'collection_goal', '10000');
+$progressPct = $goalAmount > 0
+    ? min(100.0, round(($totals['amount'] / $goalAmount) * 100, 1))
+    : 0.0;
 
 $bankHolder = get_setting($pdo, 'bank_holder', 'Association Guinee Forestiere Allemagne e.V.');
-$bankIban = get_setting($pdo, 'bank_iban', 'DE00 0000 0000 0000 0000 00');
-$bankBic = get_setting($pdo, 'bank_bic', 'GENODE00XXX');
-$bankName = get_setting($pdo, 'bank_name', 'Banque Exemple Dortmund');
+$bankIban   = get_setting($pdo, 'bank_iban', 'DE00 0000 0000 0000 0000 00');
+$bankBic    = get_setting($pdo, 'bank_bic', 'GENODE00XXX');
+$bankName   = get_setting($pdo, 'bank_name', 'Banque Exemple Dortmund');
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -147,101 +31,92 @@ require __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="section about-stats-section contribute-stats-section">
-    <div class="container">
-        <div class="stats-strip about-stats-strip">
-            <article class="stat-card about-stat-card contribute-stat-card" data-aos="zoom-in">
-                <span><?= e(t('contribute.total_collected')) ?></span>
-                <strong><?= e(format_amount($totals['amount'])) ?></strong>
-            </article>
-            <article class="stat-card about-stat-card contribute-stat-card" data-aos="zoom-in" data-aos-delay="100">
-                <span><?= e(t('contribute.donors_count')) ?></span>
-                <strong><?= e((string) $totals['count']) ?></strong>
-            </article>
-            <article class="stat-card about-stat-card contribute-stat-card" data-aos="zoom-in" data-aos-delay="200">
-                <span><?= e(t('contribute.goal')) ?></span>
-                <strong><?= e(format_amount($goalAmount)) ?></strong>
-            </article>
-        </div>
-    </div>
-</section>
-
 <section class="section about-roadmap-section">
     <div class="container contribute-layout">
+
         <article class="form-card contribute-form-card" data-aos="fade-right">
-            <div class="contribute-form-head">
-                <h2><?= e(t('contribute.form_title')) ?></h2>
-                <p class="hint"><?= e(t('contribute.form_intro')) ?></p>
+
+            <!-- Progress bar -->
+            <div class="donate-progress-block">
+                <div class="donate-prog-row">
+                    <strong class="donate-prog-collected"><?= e(format_amount($totals['amount'])) ?></strong>
+                    <span class="donate-prog-goal-label"><?= e(t('contribute.goal')) ?> : <?= e(format_amount($goalAmount)) ?></span>
+                </div>
+                <div class="donate-prog-track">
+                    <div class="donate-prog-fill" style="width:<?= e(number_format($progressPct, 1, '.', '')) ?>%"></div>
+                </div>
+                <div class="donate-prog-meta">
+                    <span><?= e((string) $totals['count']) ?> <?= e(t('contribute.donors_count')) ?></span>
+                    <span class="donate-prog-pct"><?= e(number_format($progressPct, 0)) ?>%</span>
+                </div>
             </div>
 
-            <form method="post" action="<?= e(base_url('contribute.php')) ?>" data-validate novalidate>
-                <?= csrf_field() ?>
-                <?= honeypot_field_html() ?>
+            <!-- Head -->
+            <div class="contribute-form-head">
+                <h2><?= e(t('contribute.form_title')) ?></h2>
+                <p class="hint"><?= e(t('contribute.form_intro_simple')) ?></p>
+            </div>
 
-                <div class="form-group">
-                    <label for="donor_name"><?= e(t('contribute.donor_name')) ?></label>
-                    <input id="donor_name" type="text" name="donor_name" value="<?= e(old('donor_name')) ?>">
+            <!-- Amount presets -->
+            <div class="form-group">
+                <label><?= e(t('contribute.amount')) ?></label>
+                <div class="donate-presets">
+                    <button type="button" class="donate-preset-btn" data-amount="10">10 €</button>
+                    <button type="button" class="donate-preset-btn" data-amount="20">20 €</button>
+                    <button type="button" class="donate-preset-btn" data-amount="50">50 €</button>
+                    <button type="button" class="donate-preset-btn" data-amount="100">100 €</button>
                 </div>
+                <input id="amount-input" type="number" step="1" min="1"
+                       placeholder="<?= e(t('contribute.amount_custom')) ?>">
+            </div>
 
-                <div class="form-group">
-                    <label for="donor_email"><?= e(t('contribute.donor_email')) ?></label>
-                    <input id="donor_email" type="email" name="donor_email" value="<?= e(old('donor_email')) ?>" data-email data-label="<?= e(t('contribute.donor_email')) ?>">
-                </div>
+            <!-- PayPal pool CTA -->
+            <div class="donate-actions">
+                <a href="<?= e($paypalPoolUrl) ?>"
+                   class="btn-paypal-cta"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <span class="pp-wordmark">
+                        <span class="pp-blue">Pay</span><span class="pp-sky">Pal</span>
+                    </span>
+                    <?= e(t('contribute.pay_paypal')) ?>
+                    <svg class="paypal-arrow" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <p class="donate-paypal-note"><?= e(t('contribute.paypal_pool_note')) ?></p>
+            </div>
 
-                <div class="form-group">
-                    <label for="amount"><?= e(t('contribute.amount')) ?> *</label>
-                    <input id="amount" type="number" step="0.01" min="1" name="amount" value="<?= e(old('amount')) ?>" data-required data-label="<?= e(t('contribute.amount')) ?>">
-                </div>
-
-                <div class="form-group">
-                    <label for="motive"><?= e(t('contribute.motive')) ?> *</label>
-                    <select id="motive" name="motive" data-required data-label="<?= e(t('contribute.motive')) ?>">
-                        <option value="">--</option>
-                        <?php foreach ($motiveOptions as $value => $label): ?>
-                            <option value="<?= e($value) ?>" <?= old('motive') === $value ? 'selected' : '' ?>><?= e($label) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="custom_motive"><?= e(t('contribute.custom_motive')) ?></label>
-                    <input id="custom_motive" type="text" name="custom_motive" value="<?= e(old('custom_motive')) ?>">
-                </div>
-
-                <div class="form-group">
-                    <label for="message"><?= e(t('contribute.message')) ?></label>
-                    <textarea id="message" name="message"><?= e(old('message')) ?></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="payment_method"><?= e(t('contribute.payment_method')) ?> *</label>
-                    <select id="payment_method" name="payment_method" data-required data-label="<?= e(t('contribute.payment_method')) ?>">
-                        <option value="">--</option>
-                        <?php foreach ($methodOptions as $value => $label): ?>
-                            <option value="<?= e($value) ?>" <?= old('payment_method') === $value ? 'selected' : '' ?>><?= e($label) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="form-group checkbox">
-                    <input id="gdpr_consent" type="checkbox" name="gdpr_consent" value="1" <?= old('gdpr_consent') === '1' ? 'checked' : '' ?> data-gdpr data-label="RGPD">
-                    <label for="gdpr_consent"><?= e(t('registration.gdpr_label')) ?></label>
-                </div>
-
-                <p class="hint contribute-required-note"><?= e(t('contribute.required_note')) ?></p>
-                <button type="submit" class="btn btn-primary"><?= e(t('contribute.submit')) ?></button>
-            </form>
+            <script>
+            (function () {
+                var presets = document.querySelectorAll('.donate-preset-btn');
+                var input = document.getElementById('amount-input');
+                if (!input) return;
+                presets.forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        input.value = btn.getAttribute('data-amount');
+                        presets.forEach(function (b) { b.classList.remove('is-active'); });
+                        btn.classList.add('is-active');
+                    });
+                });
+                input.addEventListener('input', function () {
+                    presets.forEach(function (b) { b.classList.remove('is-active'); });
+                });
+            })();
+            </script>
         </article>
 
-        <article class="card about-info-card contribute-bank-card" data-aos="fade-left" data-aos-delay="120">
-            <h2><?= e(t('contribute.bank_title')) ?></h2>
-            <p class="hint"><?= e(t('contribute.bank_intro')) ?></p>
-            <p><strong><?= e(t('contribute.bank_holder')) ?>:</strong> <?= e($bankHolder) ?></p>
-            <p><strong><?= e(t('contribute.bank_iban')) ?>:</strong> <?= e($bankIban) ?></p>
-            <p><strong><?= e(t('contribute.bank_bic')) ?>:</strong> <?= e($bankBic) ?></p>
-            <p><strong><?= e(t('contribute.bank_name')) ?>:</strong> <?= e($bankName) ?></p>
-            <p class="hint"><?= e(t('contribute.security_note')) ?></p>
-        </article>
+        <div class="contribute-side">
+            <article class="card about-info-card contribute-bank-card" data-aos="fade-left" data-aos-delay="80">
+                <h2><?= e(t('contribute.bank_title')) ?></h2>
+                <p class="hint"><?= e(t('contribute.bank_intro')) ?></p>
+                <p><strong><?= e(t('contribute.bank_holder')) ?> :</strong> <?= e($bankHolder) ?></p>
+                <p><strong><?= e(t('contribute.bank_iban')) ?> :</strong> <?= e($bankIban) ?></p>
+                <p><strong><?= e(t('contribute.bank_bic')) ?> :</strong> <?= e($bankBic) ?></p>
+                <p><strong><?= e(t('contribute.bank_name')) ?> :</strong> <?= e($bankName) ?></p>
+            </article>
+        </div>
+
     </div>
 </section>
 

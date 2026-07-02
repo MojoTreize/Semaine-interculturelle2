@@ -234,7 +234,6 @@ if (!function_exists('get_setting')) {
                 'paypal_business_email' => (string) app_config('payment.paypal_business_email', ''),
                 'paypal_mode' => (string) app_config('payment.paypal_mode', 'sandbox'),
                 'currency' => (string) app_config('payment.currency', 'EUR'),
-                'collection_goal' => '50000',
             ];
         }
 
