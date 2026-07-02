@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'site' => [
-        'short_name' => 'Guinee Dortmund 2026',
+        'short_name' => 'Union de la Guinee Forestière en Allemagne',
         'event_name' => 'Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026',
         'event_dates' => '4 au 13 juillet 2026',
         'event_location' => 'Dortmund, Allemagne',
@@ -258,7 +258,7 @@ return [
     'impressum' => [
         'title' => 'Mentions legales / Impressum',
         'publisher' => 'Editeur du site',
-        'publisher_value' => 'Comite d organisation - Guinee Dortmund 2026',
+        'publisher_value' => 'Comite d organisation - Union de la Guinee Forestière en Allemagne',
         'address' => 'Dortmund, Allemagne',
         'email' => 'contact@guineedortmund2026.org',
         'responsible' => 'Responsable de publication',
@@ -277,18 +277,18 @@ return [
         'rights' => 'Tous droits reserves.',
     ],
     'seo' => [
-        'default_title' => 'Guinee Dortmund 2026 - Site officiel',
+        'default_title' => 'Union de la Guinee Forestière en Allemagne - Site officiel',
         'default_description' => 'Site officiel de la Semaine de Dialogue Interculturel de la Guinee Forestiere a Dortmund du 4 au 13 juillet 2026.',
         'default_keywords' => 'Guinee, Dortmund, diaspora, Simandou 2040, dialogue interculturel, developpement durable',
-        'home_title' => 'Accueil - Guinee Dortmund 2026',
-        'about_title' => 'A propos - Guinee Dortmund 2026',
-        'program_title' => 'Programme - Guinee Dortmund 2026',
-        'registration_title' => 'Inscription - Guinee Dortmund 2026',
-        'contribute_title' => 'Contribuer - Guinee Dortmund 2026',
-        'partners_title' => 'Partenaires - Guinee Dortmund 2026',
-        'contact_title' => 'Contact - Guinee Dortmund 2026',
-        'privacy_title' => 'Confidentialite - Guinee Dortmund 2026',
-        'impressum_title' => 'Mentions legales - Guinee Dortmund 2026',
+        'home_title' => 'Accueil - Union de la Guinee Forestière en Allemagne',
+        'about_title' => 'A propos - Union de la Guinee Forestière en Allemagne',
+        'program_title' => 'Programme - Union de la Guinee Forestière en Allemagne',
+        'registration_title' => 'Inscription - Union de la Guinee Forestière en Allemagne',
+        'contribute_title' => 'Contribuer - Union de la Guinee Forestière en Allemagne',
+        'partners_title' => 'Partenaires - Union de la Guinee Forestière en Allemagne',
+        'contact_title' => 'Contact - Union de la Guinee Forestière en Allemagne',
+        'privacy_title' => 'Confidentialite - Union de la Guinee Forestière en Allemagne',
+        'impressum_title' => 'Mentions legales - Union de la Guinee Forestière en Allemagne',
     ],
     'validation' => [
         'required' => 'Veuillez remplir tous les champs obligatoires.',
@@ -300,11 +300,11 @@ return [
         'client_prefix' => 'Veuillez verifier le formulaire',
     ],
     'emails' => [
-        'registration_subject' => 'Confirmation inscription - Guinee Dortmund 2026',
+        'registration_subject' => 'Confirmation inscription - Union de la Guinee Forestière en Allemagne',
         'registration_body' => 'Bonjour :name,<br>Votre inscription a bien ete enregistree pour la Semaine de Dialogue Interculturel de la Guinee Forestiere a Dortmund.',
-        'sponsor_subject' => 'Nouvelle demande sponsor - Guinee Dortmund 2026',
-        'contact_subject' => 'Nouveau message contact - Guinee Dortmund 2026',
-        'donation_subject' => 'Merci pour votre contribution - Guinee Dortmund 2026',
+        'sponsor_subject' => 'Nouvelle demande sponsor - Union de la Guinee Forestière en Allemagne',
+        'contact_subject' => 'Nouveau message contact - Union de la Guinee Forestière en Allemagne',
+        'donation_subject' => 'Merci pour votre contribution - Union de la Guinee Forestière en Allemagne',
     ],
     'admin' => [
         'title' => 'Administration',

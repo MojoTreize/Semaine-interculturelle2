@@ -1,4 +1,4 @@
-# Guinee Dortmund 2026 - Site officiel
+# Union de la Guinee Forestière en Allemagne - Site officiel
 
 Site institutionnel bilingue (FR/DE) en PHP natif pour:
 - presentation de l evenement

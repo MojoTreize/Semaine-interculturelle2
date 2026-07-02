@@ -24,7 +24,7 @@ return [
     ],
     'mail' => [
         'from_email' => 'no-reply@guineedortmund2026.org',
-        'from_name' => 'Guinee Dortmund 2026',
+        'from_name' => 'Union de la Guinee Forestière en Allemagne',
         'smtp_host' => 'smtp.example.com',
         'smtp_port' => 587,
         'smtp_user' => 'smtp_user',
@@ -42,6 +42,8 @@ return [
         'stripe_public_key' => '',
         'stripe_secret_key' => '',
         'stripe_webhook_secret' => '',
+        'paypal_client_id' => '',
+        'paypal_client_secret' => '',
         'paypal_business_email' => '',
         'paypal_mode' => 'sandbox',
     ],
