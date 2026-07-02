@@ -167,6 +167,33 @@ a:hover {
     text-decoration: none;
 }
 
+.tube-link--cta {
+    color: #fff !important;
+    background: linear-gradient(135deg, var(--color-red) 0%, #e53935 100%);
+    border: 1px solid rgba(198, 40, 40, 0.4);
+    box-shadow: 0 4px 14px rgba(198, 40, 40, 0.35), 0 1px 3px rgba(198, 40, 40, 0.25);
+    font-weight: 700;
+    animation: cta-pulse 2.4s ease-in-out infinite;
+}
+
+.tube-link--cta:hover,
+.tube-link--cta:focus-visible {
+    color: #fff !important;
+    background: linear-gradient(135deg, #b71c1c 0%, var(--color-red) 100%);
+    box-shadow: 0 6px 20px rgba(198, 40, 40, 0.5), 0 2px 6px rgba(198, 40, 40, 0.3);
+    transform: translateY(-1px);
+}
+
+.tube-link--cta.active {
+    background: linear-gradient(135deg, #b71c1c 0%, var(--color-red) 100%) !important;
+    box-shadow: 0 6px 18px rgba(198, 40, 40, 0.45) !important;
+}
+
+@keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 4px 14px rgba(198, 40, 40, 0.35), 0 1px 3px rgba(198, 40, 40, 0.25); }
+    50%       { box-shadow: 0 4px 20px rgba(198, 40, 40, 0.55), 0 1px 6px rgba(198, 40, 40, 0.35); }
+}
+
 .tube-icon {
     display: inline-flex;
     width: 1.1rem;
@@ -1546,6 +1573,15 @@ textarea:focus {
 
 .contribute-bank-card .hint {
     margin-top: 0.8rem;
+}
+
+.contribute-bank-reference {
+    margin-top: 1rem !important;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    background: rgba(31, 143, 70, 0.07);
+    border: 1px solid rgba(31, 143, 70, 0.25);
+    color: var(--color-ink);
 }
 
 .partners-notice-section {

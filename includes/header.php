@@ -17,7 +17,7 @@ $navItems = [
     ['file' => 'about.php',       'url' => '/about',        'label' => t('nav.about'),        'icon' => 'about'],
     ['file' => 'program.php',     'url' => '/program',      'label' => t('nav.program'),      'icon' => 'program'],
     ['file' => 'registration.php','url' => '/registration', 'label' => t('nav.registration'), 'icon' => 'registration'],
-    ['file' => 'contribute.php',  'url' => '/contribute',   'label' => t('nav.contribute'),   'icon' => 'contribute'],
+    ['file' => 'contribute.php',  'url' => '/contribute',   'label' => t('nav.contribute'),   'icon' => 'contribute', 'cta' => true],
     ['file' => 'partners.php',    'url' => '/partners',     'label' => t('nav.partners'),     'icon' => 'partners'],
     ['file' => 'contact.php',     'url' => '/contact',      'label' => t('nav.contact'),      'icon' => 'contact'],
 ];

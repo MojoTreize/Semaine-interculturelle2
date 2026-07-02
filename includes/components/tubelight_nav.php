@@ -44,10 +44,11 @@ if (!function_exists('render_tubelight_navbar')) {
                         $label = (string) ($item['label'] ?? $file);
                         $icon = (string) ($item['icon'] ?? 'fallback');
                         $isActive = $activeFile === $file;
+                        $isCta = !empty($item['cta']);
                         ?>
                         <a
                             href="<?= e($url) ?>"
-                            class="tube-link<?= $isActive ? ' active' : '' ?>"
+                            class="tube-link<?= $isActive ? ' active' : '' ?><?= $isCta ? ' tube-link--cta' : '' ?>"
                             data-tube-link
                             aria-label="<?= e($label) ?>"
                         >
