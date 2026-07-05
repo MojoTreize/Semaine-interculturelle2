@@ -114,7 +114,7 @@ require __DIR__ . '/includes/header.php';
                                 <span class="badge <?= e($itemType) ?>"><?= e(t($typeKey)) ?></span>
                             </div>
                             <?php if ($description !== ''): ?>
-                                <p><?= e($description) ?></p>
+                                <p><?= nl2br(e($description)) ?></p>
                             <?php endif; ?>
                             <?php if ($speakersList !== []): ?>
                                 <div class="program-speakers-list">
@@ -172,7 +172,7 @@ require __DIR__ . '/includes/header.php';
                             <p class="speaker-org"><?= e((string) $speaker['organization']) ?></p>
                         <?php endif; ?>
                         <?php if (trim((string) ($speaker['bio'] ?? '')) !== ''): ?>
-                            <p class="speaker-bio"><?= e((string) $speaker['bio']) ?></p>
+                            <p class="speaker-bio"><?= nl2br(e((string) $speaker['bio'])) ?></p>
                         <?php endif; ?>
                     </div>
                 </article>
