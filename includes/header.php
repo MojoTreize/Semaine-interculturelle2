@@ -23,6 +23,7 @@ $navItems = [
 ];
 
 $currentFile = basename((string) ($_SERVER['SCRIPT_NAME'] ?? 'index.php'));
+$currentPath  = ($pathPart === '/') ? '/' : rtrim($pathPart, '/');
 $flash = get_flash();
 
 require_once ROOT_PATH . '/includes/components/tubelight_nav.php';
@@ -48,7 +49,7 @@ require_once ROOT_PATH . '/includes/components/tubelight_nav.php';
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 </head>
 <body>
-<?php render_tubelight_navbar($navItems, $currentFile); ?>
+<?php render_tubelight_navbar($navItems, $currentFile, ['current_path' => $currentPath]); ?>
 <main class="site-main">
     <?php if ($flash): ?>
         <div class="container">

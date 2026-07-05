@@ -23,10 +23,11 @@ if (!function_exists('tubelight_icon_svg')) {
 if (!function_exists('render_tubelight_navbar')) {
     function render_tubelight_navbar(array $items, string $activeFile, array $options = []): void
     {
-        $brandHref = (string) ($options['brand_href'] ?? '/');
-        $brandLabel = (string) ($options['brand_label'] ?? t('site.short_name'));
-        $brandLogo = (string) ($options['brand_logo'] ?? base_url('assets/images/logo.jpeg'));
-        $showLang = (bool) ($options['show_lang'] ?? true);
+        $brandHref   = (string) ($options['brand_href']   ?? '/');
+        $brandLabel  = (string) ($options['brand_label']  ?? t('site.short_name'));
+        $brandLogo   = (string) ($options['brand_logo']   ?? base_url('assets/images/logo.jpeg'));
+        $showLang    = (bool)   ($options['show_lang']    ?? true);
+        $currentPath = isset($options['current_path']) ? (string) $options['current_path'] : null;
         ?>
         <header class="site-header">
             <div class="tubelight-shell">
@@ -39,12 +40,19 @@ if (!function_exists('render_tubelight_navbar')) {
                     <span class="tube-indicator" aria-hidden="true" data-tube-indicator></span>
                     <?php foreach ($items as $item): ?>
                         <?php
-                        $file = (string) ($item['file'] ?? 'index.php');
-                        $url  = (string) ($item['url']  ?? base_url($file));
+                        $file  = (string) ($item['file'] ?? 'index.php');
+                        $url   = (string) ($item['url']  ?? base_url($file));
                         $label = (string) ($item['label'] ?? $file);
-                        $icon = (string) ($item['icon'] ?? 'fallback');
-                        $isActive = $activeFile === $file;
+                        $icon  = (string) ($item['icon']  ?? 'fallback');
                         $isCta = !empty($item['cta']);
+
+                        // Prefer URL-path comparison (immune to trailing-slash basename bug)
+                        if ($currentPath !== null) {
+                            $navPath  = ($url === '/') ? '/' : rtrim($url, '/');
+                            $isActive = $currentPath === $navPath;
+                        } else {
+                            $isActive = $activeFile === $file;
+                        }
                         ?>
                         <a
                             href="<?= e($url) ?>"

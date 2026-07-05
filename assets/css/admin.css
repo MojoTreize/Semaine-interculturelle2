@@ -248,6 +248,113 @@ button,
     background: #ffe8ca;
 }
 
+.btn-danger {
+    background: #c62828;
+}
+
+.btn-success {
+    background: #1f8f46;
+}
+
+.btn-sm {
+    padding: 0.28rem 0.55rem;
+    font-size: 0.83rem;
+    border-radius: 6px;
+}
+
+.btn-icon {
+    padding: 0.28rem 0.45rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.row-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.search-bar {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    margin-bottom: 0.9rem;
+}
+
+.search-bar input {
+    max-width: 280px;
+}
+
+.edit-panel {
+    border: 2px solid #1f6eb0;
+    background: #f0f7ff;
+}
+
+.edit-panel h3 {
+    margin: 0 0 0.9rem;
+    color: #1a4f87;
+}
+
+.table-actions {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+}
+
+.status-badge {
+    display: inline-block;
+    font-size: 0.76rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.22rem 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.status-badge--paid    { background: #d7f3de; color: #196a3b; }
+.status-badge--pending { background: #fff3cd; color: #7a5500; }
+.status-badge--failed  { background: #fae7e7; color: #8a2525; }
+.status-badge--canceled{ background: #ebebeb; color: #444; }
+
+.full-message {
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: #f8f9fc;
+    border: 1px solid #d6ddea;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1.2rem;
+}
+
+.detail-grid dt {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #4f617e;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.detail-grid dd {
+    margin: 0 0 0.4rem;
+}
+
 .alert {
     border-radius: 10px;
     padding: 0.65rem 0.85rem;

@@ -19,8 +19,9 @@ if (!function_exists('admin_user')) {
 if (!function_exists('admin_attempt_login')) {
     function admin_attempt_login(mixed $pdo, string $email, string $password): bool
     {
-        $configuredEmail = strtolower((string) app_config('admin.email', 'admin@guineedortmund2026.org'));
-        $configuredPassword = (string) app_config('admin.password', 'Admin@2026');
+        $configuredEmail    = strtolower((string) app_config('admin.email',     'admin@ugfa.de'));
+        $configuredPassword = (string) app_config('admin.password',  '***REMOVED***');
+        $configuredName     = (string) app_config('admin.full_name', 'Administrateur UGFA');
 
         if (strtolower($email) !== $configuredEmail || $password !== $configuredPassword) {
             return false;
@@ -28,10 +29,10 @@ if (!function_exists('admin_attempt_login')) {
 
         session_regenerate_id(true);
         $_SESSION['admin'] = [
-            'id' => 1,
-            'full_name' => (string) app_config('admin.full_name', 'Admin Dortmund 2026'),
-            'email' => $configuredEmail,
-            'role' => 'super_admin',
+            'id'        => 1,
+            'full_name' => $configuredName,
+            'email'     => $configuredEmail,
+            'role'      => 'super_admin',
         ];
 
         return true;
