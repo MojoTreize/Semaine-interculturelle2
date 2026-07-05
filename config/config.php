@@ -37,6 +37,11 @@ return [
         'csrf_token_name' => 'csrf_token',
         'honeypot_field' => 'hp_field',
     ],
+    'admin' => [
+        'email'     => 'admin@ugfa.de',
+        'password'  => 'Admin@1234',
+        'full_name' => 'Administrateur UGFA',
+    ],
     'payment' => [
         'currency' => 'EUR',
         'stripe_public_key' => '',
