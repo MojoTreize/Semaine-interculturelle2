@@ -314,7 +314,7 @@ if (!function_exists('fetch_program_items')) {
         $lang = $lang === 'de' ? 'de' : 'fr';
 
         try {
-            $sql = "SELECT id, event_date, start_time, end_time, location, item_type,
+            $sql = "SELECT id, event_date, start_time, end_time, location, item_type, speakers_list,
                            CASE WHEN :lang = 'de' THEN title_de ELSE title_fr END AS title,
                            CASE WHEN :lang = 'de' THEN description_de ELSE description_fr END AS description
                     FROM program_items
@@ -366,7 +366,7 @@ if (!function_exists('fetch_featured_speakers')) {
     function fetch_featured_speakers(mixed $pdo): array
     {
         try {
-            $stmt = $pdo->query('SELECT full_name, title, organization, bio FROM speakers WHERE is_featured = 1 ORDER BY id ASC');
+            $stmt = $pdo->query('SELECT full_name, title, organization, bio, photo_path FROM speakers WHERE is_featured = 1 ORDER BY id ASC');
             $rows = $stmt->fetchAll();
             if (!empty($rows)) {
                 return $rows;

@@ -150,7 +150,9 @@ require __DIR__ . '/includes/header.php';
                 <h2><?= e(t('contact.channels_title')) ?></h2>
                 <p class="hint"><?= e(t('contact.channels_intro')) ?></p>
                 <p><strong>Email:</strong> <a href="mailto:<?= e($officialEmail) ?>"><?= e($officialEmail) ?></a></p>
-                <p><strong><?= e(t('contact.location_label')) ?>:</strong> <?= e(t('site.event_location')) ?></p>
+                <p><strong><?= e(t('contact.location_label')) ?>:</strong>
+                    <a class="program-location-link" href="https://www.google.com/maps/search/?api=1&query=<?= rawurlencode((string) t('site.event_location')) ?>" target="_blank" rel="noopener noreferrer"><?= e(t('site.event_location')) ?></a>
+                </p>
                 <p><strong>Web:</strong> <a href="<?= e($siteDomain) ?>" target="_blank" rel="noopener"><?= e($siteDomain) ?></a></p>
                 <ul class="contact-channel-list">
                     <li><span>LinkedIn</span><span><?= e(t('contact.soon')) ?></span></li>
@@ -162,7 +164,7 @@ require __DIR__ . '/includes/header.php';
             <article class="card about-info-card contact-map-card" data-aos="fade-left" data-aos-delay="200">
                 <h3><?= e(t('contact.map_label')) ?></h3>
                 <p><?= e(t('contact.map_intro')) ?></p>
-                <a class="btn btn-secondary" href="https://maps.google.com/?q=Dortmund+Germany" target="_blank" rel="noopener"><?= e(t('contact.open_map')) ?></a>
+                <a class="btn btn-secondary" href="https://www.google.com/maps/search/?api=1&query=<?= rawurlencode('Leonie-Reygers-Terrasse, 44137 Dortmund') ?>" target="_blank" rel="noopener noreferrer"><?= e(t('contact.open_map')) ?></a>
             </article>
         </aside>
     </div>

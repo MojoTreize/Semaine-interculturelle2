@@ -6,8 +6,8 @@ return [
     'site' => [
         'short_name' => 'Union de la Guinee Forestière en Allemagne',
         'event_name' => 'Woche des interkulturellen Dialogs von Guinee Forestiere - Dortmund 2026',
-        'event_dates' => '4. bis 13. Juli 2026',
-        'event_location' => 'Dortmund, Deutschland',
+        'event_dates' => '1. bis 11. Oktober 2026',
+        'event_location' => 'Leonie-Reygers-Terrasse, 44137 Dortmund, Deutschland',
         'event_theme' => 'Beitrag der Staatsangehorigen aus Guinee Forestiere in Deutschland zur nachhaltigen Entwicklung ihrer Herkunftsregion im Kontext des Projekts Simandou 2040 in der Republik Guinea.',
     ],
     'nav' => [
@@ -31,7 +31,7 @@ return [
     ],
     'home' => [
         'hero_title' => 'Woche des interkulturellen Dialogs von Guinee Forestiere',
-        'hero_subtitle' => 'Dortmund, Deutschland | 4. bis 13. Juli 2026',
+        'hero_subtitle' => 'Dortmund, Deutschland | 1. bis 11. Oktober 2026',
         'stat_sessions' => 'Geplante Sessions',
         'stat_days' => 'Programmtage',
         'stat_partners' => 'Offizielle Partner',
@@ -59,7 +59,7 @@ return [
         'subtitle' => 'Vision, Kontext und Ziele des interkulturellen Dialogs',
         'roadmap_title' => 'Eine klare Roadmap zum Handeln',
         'roadmap_intro' => 'Unsere Prioritaten sind in konkrete Etappen gegliedert, um den Dialog in messbare Ergebnisse zu uberfuhren.',
-        'stat_days' => 'Tage mit Aktivitat (4. bis 13. Juli)',
+        'stat_days' => 'Tage mit Aktivitat (1. bis 11. Oktober)',
         'stat_objectives' => 'Prioritare Ziele',
         'stat_roadmap' => 'Jahre Roadmap (2026-2030)',
         'region_title' => 'Guinee Forestiere',
@@ -78,7 +78,7 @@ return [
     ],
     'program' => [
         'title' => 'Offizielles Programm',
-        'subtitle' => 'Detaillierter Kalender vom 4. bis 13. Juli 2026',
+        'subtitle' => 'Detaillierter Kalender vom 1. bis 11. Oktober 2026',
         'stat_sessions' => 'Bestatigte Sessions',
         'stat_days' => 'Programmtage',
         'stat_speakers' => 'Featured Referenten',
@@ -247,7 +247,7 @@ return [
         'submit' => 'Nachricht senden',
         'success' => 'Ihre Nachricht wurde gesendet.',
         'map_label' => 'Karte',
-        'map_intro' => 'Hier finden Sie den zentralen Veranstaltungsort in Dortmund.',
+        'map_intro' => 'Der Hauptveranstaltungsort befindet sich in der Leonie-Reygers-Terrasse, 44137 Dortmund.',
         'open_map' => 'Karte offnen',
     ],
     'privacy' => [
@@ -261,7 +261,7 @@ return [
         'title' => 'Impressum / Mentions legales',
         'publisher' => 'Herausgeber',
         'publisher_value' => 'Organisationskomitee - Union de la Guinee Forestière en Allemagne',
-        'address' => 'Dortmund, Deutschland',
+        'address' => 'Leonie-Reygers-Terrasse, 44137 Dortmund, Deutschland',
         'email' => 'contact@guineedortmund2026.org',
         'responsible' => 'Verantwortlich fur Inhalte',
         'responsible_value' => 'Institutionelles Team Guinee Forestiere - Deutschland',
@@ -269,8 +269,8 @@ return [
     ],
     'footer' => [
         'event_title' => 'Interkultureller Dialog 2026',
-        'event_dates' => '4. bis 13. Juli 2026',
-        'event_location' => 'Dortmund, Deutschland',
+        'event_dates' => '1. bis 11. Oktober 2026',
+        'event_location' => 'Leonie-Reygers-Terrasse, 44137 Dortmund',
         'quick_links' => 'Schnellzugriffe',
         'legal' => 'Rechtliches',
         'privacy' => 'Datenschutz',
@@ -280,7 +280,7 @@ return [
     ],
     'seo' => [
         'default_title' => 'Union de la Guinee Forestière en Allemagne - Offizielle Webseite',
-        'default_description' => 'Offizielle Webseite der Woche des interkulturellen Dialogs von Guinee Forestiere in Dortmund vom 4. bis 13. Juli 2026.',
+        'default_description' => 'Offizielle Webseite der Woche des interkulturellen Dialogs von Guinee Forestiere in Dortmund vom 1. bis 11. Oktober 2026.',
         'default_keywords' => 'Guinea, Dortmund, Diaspora, Simandou 2040, interkultureller Dialog, nachhaltige Entwicklung',
         'home_title' => 'Start - Union de la Guinee Forestière en Allemagne',
         'about_title' => 'Uber uns - Union de la Guinee Forestière en Allemagne',

@@ -1202,6 +1202,58 @@ textarea:focus {
     margin-bottom: 0.6rem;
 }
 
+.program-speakers-list {
+    margin-top: 0.7rem;
+    padding-top: 0.65rem;
+    border-top: 1px dashed rgba(198, 40, 40, 0.2);
+}
+
+.program-speakers-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-red);
+    margin: 0 0 0.35rem;
+}
+
+.program-speakers-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.program-speakers-list li {
+    font-size: 0.88rem;
+    color: #243047;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.program-speakers-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--color-red);
+    font-size: 0.7rem;
+    top: 0.15em;
+}
+
+.program-location-link {
+    color: var(--color-red);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px dotted var(--color-red);
+    transition: color 0.2s, border-color 0.2s;
+}
+.program-location-link:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-ink);
+}
+
 .program-speakers-section {
     background: linear-gradient(180deg, #f8faff 0%, #f6f9ff 100%);
 }
@@ -1212,6 +1264,64 @@ textarea:focus {
 
 .program-speaker-card {
     min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    padding: 1.75rem 1.5rem 1.5rem;
+}
+
+.speaker-photo-wrap {
+    margin-bottom: 1.1rem;
+}
+
+.speaker-photo {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-red);
+    box-shadow: 0 4px 18px rgba(198, 30, 49, 0.18);
+    display: block;
+}
+
+.speaker-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-red) 0%, #8b0000 100%);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.04em;
+    box-shadow: 0 4px 18px rgba(198, 30, 49, 0.2);
+}
+
+.speaker-info {
+    width: 100%;
+}
+
+.speaker-info h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+}
+
+.speaker-org {
+    font-size: 0.85rem;
+    color: var(--color-red);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.speaker-bio {
+    font-size: 0.82rem;
+    color: var(--color-muted, #6b7280);
+    line-height: 1.55;
+    margin-top: 0.5rem;
 }
 
 .registration-stats-section {

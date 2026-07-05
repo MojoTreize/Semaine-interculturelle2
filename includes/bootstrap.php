@@ -98,3 +98,21 @@ try {
 }
 
 init_language($config);
+
+/* ── Auto-migration: add speakers_list to program_items if missing ────────── */
+try {
+    $driver = strtolower((string) ($dbConfig['driver'] ?? 'sqlite'));
+    if ($driver === 'sqlite') {
+        $existingCols = $pdo->query("PRAGMA table_info(program_items)")->fetchAll(PDO::FETCH_COLUMN, 1);
+        if (!in_array('speakers_list', $existingCols, true)) {
+            $pdo->exec("ALTER TABLE program_items ADD COLUMN speakers_list TEXT NULL");
+        }
+    } elseif ($driver === 'mysql') {
+        $existingCols = $pdo->query("SHOW COLUMNS FROM program_items")->fetchAll(PDO::FETCH_COLUMN, 0);
+        if (!in_array('speakers_list', $existingCols, true)) {
+            $pdo->exec("ALTER TABLE program_items ADD COLUMN speakers_list TEXT NULL");
+        }
+    }
+} catch (Throwable) {
+    // Non-blocking: column may already exist or table not yet created.
+}
