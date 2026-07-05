@@ -23,6 +23,8 @@ if (is_post()) {
             return [];
         }
 
+        $speakersRaw = trim(post_string('speakers_list'));
+
         return [
             'event_date'     => $eventDate,
             'start_time'     => $startTime !== '' ? $startTime : null,
@@ -35,6 +37,7 @@ if (is_post()) {
             'item_type'      => $itemType,
             'display_order'  => (int) post_string('display_order'),
             'is_active'      => isset($_POST['is_active']) ? 1 : 0,
+            'speakers_list'  => $speakersRaw !== '' ? $speakersRaw : null,
         ];
     };
 
@@ -45,9 +48,9 @@ if (is_post()) {
             redirect('admin/program.php');
         }
         $pdo->prepare('INSERT INTO program_items
-            (event_date, start_time, end_time, title_fr, title_de, description_fr, description_de, location, item_type, display_order, is_active)
+            (event_date, start_time, end_time, title_fr, title_de, description_fr, description_de, location, item_type, display_order, is_active, speakers_list)
             VALUES
-            (:event_date, :start_time, :end_time, :title_fr, :title_de, :description_fr, :description_de, :location, :item_type, :display_order, :is_active)')
+            (:event_date, :start_time, :end_time, :title_fr, :title_de, :description_fr, :description_de, :location, :item_type, :display_order, :is_active, :speakers_list)')
             ->execute($payload);
         set_flash('success', 'Élément du programme ajouté.');
         redirect('admin/program.php');
@@ -67,7 +70,8 @@ if (is_post()) {
             title_fr = :title_fr, title_de = :title_de,
             description_fr = :description_fr, description_de = :description_de,
             location = :location, item_type = :item_type,
-            display_order = :display_order, is_active = :is_active
+            display_order = :display_order, is_active = :is_active,
+            speakers_list = :speakers_list
             WHERE id = :id')
             ->execute($payload);
         set_flash('success', 'Élément mis à jour.');
@@ -154,6 +158,10 @@ require __DIR__ . '/_header.php';
         <div class="row" style="margin-bottom:.75rem">
             <div><label>Lieu</label><input type="text" name="location" value="<?= e((string)($editRow['location']??'')) ?>"></div>
             <div><label>Ordre d'affichage</label><input type="number" name="display_order" value="<?= e((string)($editRow['display_order']??'0')) ?>"></div>
+        </div>
+        <div style="margin-bottom:.75rem">
+            <label>Intervenants / Panélistes <small style="font-weight:400;color:#4f617e">(un nom par ligne)</small></label>
+            <textarea name="speakers_list" rows="4" placeholder="Dr. Fatou Kaba — Experte en politiques minières&#10;Prof. Amadou Camara — Économiste du développement&#10;Mariam Diallo"><?= e((string)($editRow['speakers_list']??'')) ?></textarea>
         </div>
         <p><label><input type="checkbox" name="is_active" value="1" <?= !$editRow || $editRow['is_active'] ? 'checked' : '' ?>> Actif</label></p>
         <div style="display:flex;gap:.5rem">

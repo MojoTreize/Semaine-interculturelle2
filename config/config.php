@@ -9,8 +9,8 @@ return [
         'timezone' => 'Europe/Berlin',
         'default_lang' => 'fr',
         'supported_langs' => ['fr', 'de'],
-        'event_start' => '2026-07-04 00:00:00',
-        'event_end' => '2026-07-13 23:59:59',
+        'event_start' => '2026-10-01 00:00:00',
+        'event_end' => '2026-10-11 23:59:59',
     ],
     'db' => [
         'driver' => 'sqlite',
