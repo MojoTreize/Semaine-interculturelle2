@@ -223,38 +223,154 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    /* ── Toast notification system ───────────────────────────────────────── */
+    function showToast(message, type, duration) {
+        type = type || 'error';
+        duration = (duration !== undefined) ? duration : (type === 'success' ? 5000 : 8000);
+
+        var container = document.getElementById('gd-toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'gd-toast-container';
+            document.body.appendChild(container);
+        }
+
+        var icons = {
+            success: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+            error:   '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M7 7l6 6M13 7l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+            warning: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5L18.5 17H1.5L10 2.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 8.5v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="14.5" r="1" fill="currentColor"/></svg>'
+        };
+
+        var toast = document.createElement('div');
+        toast.className = 'gd-toast gd-toast--' + type;
+        toast.setAttribute('role', 'alert');
+        toast.innerHTML =
+            '<span class="gd-toast-icon">' + (icons[type] || icons.error) + '</span>' +
+            '<span class="gd-toast-msg">' + message + '</span>' +
+            '<button class="gd-toast-close" type="button" aria-label="Fermer">' +
+            '<svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
+            '</button>' +
+            (duration > 0 ? '<div class="gd-toast-bar"><div class="gd-toast-bar-fill" style="animation-duration:' + duration + 'ms"></div></div>' : '');
+
+        container.appendChild(toast);
+
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                toast.classList.add('gd-toast--in');
+            });
+        });
+
+        var dismissed = false;
+        function dismiss() {
+            if (dismissed) return;
+            dismissed = true;
+            clearTimeout(timer);
+            toast.classList.remove('gd-toast--in');
+            toast.classList.add('gd-toast--out');
+            setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 400);
+        }
+
+        toast.querySelector('.gd-toast-close').addEventListener('click', dismiss);
+
+        var timer = duration > 0 ? setTimeout(dismiss, duration) : null;
+        if (timer) {
+            toast.addEventListener('mouseenter', function () { clearTimeout(timer); });
+            toast.addEventListener('mouseleave', function () { timer = setTimeout(dismiss, 2000); });
+        }
+    }
+
+    /* ── Convert server flash alerts to toasts ────────────────────────────── */
+    document.querySelectorAll('.alert').forEach(function (el) {
+        var type = el.classList.contains('alert-success') ? 'success'
+                 : el.classList.contains('alert-warning') ? 'warning'
+                 : 'error';
+        var msg = (el.textContent || '').trim();
+        if (msg) {
+            showToast(msg, type);
+            el.style.display = 'none';
+        }
+    });
+
+    /* ── Client-side form validation ──────────────────────────────────────── */
+    function setFieldError(field, message) {
+        field.classList.add('gd-invalid');
+        var wrap = field.closest('.form-group') || field.parentNode;
+        var existing = wrap.querySelector('.gd-field-error');
+        if (!existing) {
+            var err = document.createElement('span');
+            err.className = 'gd-field-error';
+            err.setAttribute('aria-live', 'polite');
+            field.parentNode.insertBefore(err, field.nextSibling);
+            existing = err;
+        }
+        existing.textContent = message;
+    }
+
+    function clearFieldError(field) {
+        field.classList.remove('gd-invalid');
+        var wrap = field.closest('.form-group') || field.parentNode;
+        var existing = wrap.querySelector('.gd-field-error');
+        if (existing) existing.textContent = '';
+    }
+
     document.querySelectorAll('form[data-validate]').forEach(function (form) {
+        /* Clear error on input */
+        form.addEventListener('input', function (e) {
+            if (e.target.classList.contains('gd-invalid')) {
+                clearFieldError(e.target);
+            }
+        });
+        form.addEventListener('change', function (e) {
+            if (e.target.classList.contains('gd-invalid')) {
+                clearFieldError(e.target);
+            }
+        });
+
         form.addEventListener('submit', function (event) {
-            var errors = [];
+            var errorCount = 0;
+            var firstBad = null;
 
             form.querySelectorAll('[data-required]').forEach(function (field) {
                 if (String(field.value || '').trim() === '') {
-                    errors.push(field.getAttribute('data-label') || field.name);
-                    field.classList.add('invalid');
+                    var label = field.getAttribute('data-label') || field.name;
+                    setFieldError(field, label + ' est obligatoire.');
+                    errorCount++;
+                    if (!firstBad) firstBad = field;
                 } else {
-                    field.classList.remove('invalid');
+                    clearFieldError(field);
                 }
             });
 
             form.querySelectorAll('[data-email]').forEach(function (field) {
                 var value = String(field.value || '').trim();
                 if (value !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    errors.push(field.getAttribute('data-label') || field.name);
-                    field.classList.add('invalid');
-                } else {
-                    field.classList.remove('invalid');
+                    setFieldError(field, 'Adresse e-mail invalide.');
+                    errorCount++;
+                    if (!firstBad) firstBad = field;
+                } else if (!field.classList.contains('gd-invalid')) {
+                    clearFieldError(field);
                 }
             });
 
             var consent = form.querySelector('[data-gdpr]');
             if (consent && !consent.checked) {
-                errors.push(consent.getAttribute('data-label') || 'RGPD');
+                setFieldError(consent, 'Vous devez accepter les conditions.');
+                errorCount++;
+                if (!firstBad) firstBad = consent;
+            } else if (consent) {
+                clearFieldError(consent);
             }
 
-            if (errors.length > 0) {
+            if (errorCount > 0) {
                 event.preventDefault();
-                var prefix = window.GD2026_VALIDATE_PREFIX || 'Please check the form';
-                alert(prefix + ': ' + errors.join(', '));
+                var msg = errorCount === 1
+                    ? 'Un champ obligatoire est manquant ou invalide.'
+                    : errorCount + ' champs obligatoires sont manquants ou invalides.';
+                showToast(msg, 'error');
+                if (firstBad) {
+                    firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(function () { firstBad.focus(); }, 400);
+                }
             }
         });
     });

@@ -20,6 +20,7 @@ $settingKeys = [
     'paypal_business_email',
     'paypal_mode',
     'collection_goal',
+    'whatsapp_number',
 ];
 
 if (is_post()) {

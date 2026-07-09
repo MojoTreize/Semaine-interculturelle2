@@ -99,6 +99,22 @@ try {
 
 init_language($config);
 
+/* ── Auto-migration: add phone to donations if missing ───────────────────── */
+try {
+    $driver = strtolower((string) ($dbConfig['driver'] ?? 'sqlite'));
+    if ($driver === 'sqlite') {
+        $dcols = $pdo->query("PRAGMA table_info(donations)")->fetchAll(PDO::FETCH_COLUMN, 1);
+        if (!in_array('phone', $dcols, true)) {
+            $pdo->exec("ALTER TABLE donations ADD COLUMN phone TEXT NULL");
+        }
+    } elseif ($driver === 'mysql') {
+        $dcols = $pdo->query("SHOW COLUMNS FROM donations")->fetchAll(PDO::FETCH_COLUMN, 0);
+        if (!in_array('phone', $dcols, true)) {
+            $pdo->exec("ALTER TABLE donations ADD COLUMN phone TEXT NULL");
+        }
+    }
+} catch (Throwable) {}
+
 /* ── Auto-migration: add speakers_list to program_items if missing ────────── */
 try {
     $driver = strtolower((string) ($dbConfig['driver'] ?? 'sqlite'));
@@ -116,3 +132,19 @@ try {
 } catch (Throwable) {
     // Non-blocking: column may already exist or table not yet created.
 }
+
+/* ── Auto-migration: add logo_path to sponsor_requests if missing ─────────── */
+try {
+    $driver = strtolower((string) ($dbConfig['driver'] ?? 'sqlite'));
+    if ($driver === 'sqlite') {
+        $srCols = $pdo->query("PRAGMA table_info(sponsor_requests)")->fetchAll(PDO::FETCH_COLUMN, 1);
+        if (!in_array('logo_path', $srCols, true)) {
+            $pdo->exec("ALTER TABLE sponsor_requests ADD COLUMN logo_path TEXT NULL");
+        }
+    } elseif ($driver === 'mysql') {
+        $srCols = $pdo->query("SHOW COLUMNS FROM sponsor_requests")->fetchAll(PDO::FETCH_COLUMN, 0);
+        if (!in_array('logo_path', $srCols, true)) {
+            $pdo->exec("ALTER TABLE sponsor_requests ADD COLUMN logo_path TEXT NULL");
+        }
+    }
+} catch (Throwable) {}
