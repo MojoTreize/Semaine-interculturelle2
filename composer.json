@@ -1,6 +1,6 @@
 {
     "name": "guinee/dortmund2026",
-    "description": "Site officiel Guinee Dortmund 2026",
+    "description": "Site officiel Union de la Guinee Forestière en Allemagne",
     "type": "project",
     "require": {
         "php": "^8.1",

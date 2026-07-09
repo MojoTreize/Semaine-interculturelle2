@@ -188,6 +188,13 @@ if (!function_exists('is_valid_email')) {
     }
 }
 
+if (!function_exists('db_now')) {
+    function db_now(): string
+    {
+        return date('Y-m-d H:i:s');
+    }
+}
+
 if (!function_exists('normalize_phone')) {
     function normalize_phone(string $phone): string
     {
@@ -204,7 +211,7 @@ if (!function_exists('honeypot_passed')) {
     function honeypot_field_html(): string
     {
         $field = honeypot_field_name();
-        return '<div class="hidden-honeypot"><label for="' . e($field) . '">Website</label><input type="text" name="' . e($field) . '" id="' . e($field) . '" autocomplete="off"></div>';
+        return '<div class="hidden-honeypot" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label for="' . e($field) . '">Website</label><input type="text" name="' . e($field) . '" id="' . e($field) . '" tabindex="-1" autocomplete="off"></div>';
     }
 
     function honeypot_passed(): bool
@@ -224,17 +231,14 @@ if (!function_exists('get_setting')) {
                 'site_domain' => (string) app_config('app.base_url', ''),
                 'contact_email' => 'contact@guineedortmund2026.org',
                 'organizer_email' => 'organisation@guineedortmund2026.org',
-                'bank_holder' => 'Association Guinee Forestiere Allemagne e.V.',
-                'bank_iban' => 'DE00 0000 0000 0000 0000 00',
-                'bank_bic' => 'GENODE00XXX',
-                'bank_name' => 'Banque Exemple Dortmund',
                 'stripe_public_key' => (string) app_config('payment.stripe_public_key', ''),
                 'stripe_secret_key' => (string) app_config('payment.stripe_secret_key', ''),
                 'stripe_webhook_secret' => (string) app_config('payment.stripe_webhook_secret', ''),
+                'paypal_client_id' => (string) app_config('payment.paypal_client_id', ''),
+                'paypal_client_secret' => (string) app_config('payment.paypal_client_secret', ''),
                 'paypal_business_email' => (string) app_config('payment.paypal_business_email', ''),
                 'paypal_mode' => (string) app_config('payment.paypal_mode', 'sandbox'),
                 'currency' => (string) app_config('payment.currency', 'EUR'),
-                'collection_goal' => '50000',
             ];
         }
 
@@ -317,7 +321,7 @@ if (!function_exists('fetch_program_items')) {
         $lang = $lang === 'de' ? 'de' : 'fr';
 
         try {
-            $sql = "SELECT id, event_date, start_time, end_time, location, item_type,
+            $sql = "SELECT id, event_date, start_time, end_time, location, item_type, speakers_list,
                            CASE WHEN :lang = 'de' THEN title_de ELSE title_fr END AS title,
                            CASE WHEN :lang = 'de' THEN description_de ELSE description_fr END AS description
                     FROM program_items
@@ -369,7 +373,7 @@ if (!function_exists('fetch_featured_speakers')) {
     function fetch_featured_speakers(mixed $pdo): array
     {
         try {
-            $stmt = $pdo->query('SELECT full_name, title, organization, bio FROM speakers WHERE is_featured = 1 ORDER BY id ASC');
+            $stmt = $pdo->query('SELECT full_name, title, organization, bio, photo_path FROM speakers WHERE is_featured = 1 ORDER BY id ASC');
             $rows = $stmt->fetchAll();
             if (!empty($rows)) {
                 return $rows;
