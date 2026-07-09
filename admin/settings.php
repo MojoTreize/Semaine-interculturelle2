@@ -15,9 +15,12 @@ $settingKeys = [
     'stripe_public_key',
     'stripe_secret_key',
     'stripe_webhook_secret',
+    'paypal_client_id',
+    'paypal_client_secret',
     'paypal_business_email',
     'paypal_mode',
     'collection_goal',
+    'whatsapp_number',
 ];
 
 if (is_post()) {

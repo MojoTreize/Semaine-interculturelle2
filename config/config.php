@@ -9,8 +9,8 @@ return [
         'timezone' => 'Europe/Berlin',
         'default_lang' => 'fr',
         'supported_langs' => ['fr', 'de'],
-        'event_start' => '2026-07-04 00:00:00',
-        'event_end' => '2026-07-13 23:59:59',
+        'event_start' => '2026-10-01 00:00:00',
+        'event_end' => '2026-10-11 23:59:59',
     ],
     'db' => [
         'driver' => 'sqlite',
@@ -24,7 +24,7 @@ return [
     ],
     'mail' => [
         'from_email' => 'no-reply@guineedortmund2026.org',
-        'from_name' => 'Guinee Dortmund 2026',
+        'from_name' => 'Union de la Guinee Forestière en Allemagne',
         'smtp_host' => 'smtp.example.com',
         'smtp_port' => 587,
         'smtp_user' => 'smtp_user',
@@ -37,11 +37,18 @@ return [
         'csrf_token_name' => 'csrf_token',
         'honeypot_field' => 'hp_field',
     ],
+    'admin' => [
+        'email'     => 'admin@ugfa.de',
+        'password'  => '***REMOVED***',
+        'full_name' => 'Administrateur UGFA',
+    ],
     'payment' => [
         'currency' => 'EUR',
         'stripe_public_key' => '',
         'stripe_secret_key' => '',
         'stripe_webhook_secret' => '',
+        'paypal_client_id' => '',
+        'paypal_client_secret' => '',
         'paypal_business_email' => '',
         'paypal_mode' => 'sandbox',
     ],

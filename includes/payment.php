@@ -339,6 +339,157 @@ if (!function_exists('paypal_verify_ipn')) {
     }
 }
 
+/* ── PayPal Orders API v2 (Smart Buttons) ──────────────────────────── */
+
+if (!function_exists('paypal_client_id')) {
+    function paypal_client_id(mixed $pdo): string
+    {
+        return get_setting($pdo, 'paypal_client_id', (string) app_config('payment.paypal_client_id', ''));
+    }
+}
+
+if (!function_exists('paypal_client_secret')) {
+    function paypal_client_secret(mixed $pdo): string
+    {
+        return get_setting($pdo, 'paypal_client_secret', (string) app_config('payment.paypal_client_secret', ''));
+    }
+}
+
+if (!function_exists('paypal_api_base')) {
+    function paypal_api_base(mixed $pdo): string
+    {
+        return paypal_mode($pdo) === 'live'
+            ? 'https://api-m.paypal.com'
+            : 'https://api-m.sandbox.paypal.com';
+    }
+}
+
+if (!function_exists('paypal_orders_token')) {
+    function paypal_orders_token(mixed $pdo): string
+    {
+        $clientId     = paypal_client_id($pdo);
+        $clientSecret = paypal_client_secret($pdo);
+
+        if ($clientId === '' || $clientSecret === '') {
+            throw new RuntimeException('PayPal client credentials not configured.');
+        }
+        if (!function_exists('curl_init')) {
+            throw new RuntimeException('cURL extension required.');
+        }
+
+        $ch = curl_init(paypal_api_base($pdo) . '/v1/oauth2/token');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => 'grant_type=client_credentials',
+            CURLOPT_USERPWD        => $clientId . ':' . $clientSecret,
+            CURLOPT_HTTPHEADER     => ['Accept: application/json'],
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_SSL_VERIFYPEER => true,
+        ]);
+
+        $raw  = curl_exec($ch);
+        $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $decoded = is_string($raw) ? json_decode($raw, true) : null;
+
+        if ($http !== 200 || !is_array($decoded) || empty($decoded['access_token'])) {
+            throw new RuntimeException('Unable to fetch PayPal access token (HTTP ' . $http . ').');
+        }
+
+        return (string) $decoded['access_token'];
+    }
+}
+
+if (!function_exists('paypal_orders_create')) {
+    function paypal_orders_create(mixed $pdo, int $donationId, float $amount): string
+    {
+        $currency = payment_currency($pdo);
+        $token    = paypal_orders_token($pdo);
+
+        $payload = json_encode([
+            'intent' => 'CAPTURE',
+            'purchase_units' => [[
+                'reference_id' => 'DON-' . $donationId,
+                'custom_id'    => (string) $donationId,
+                'description'  => 'Contribution Union de la Guinee Forestière en Allemagne #' . $donationId,
+                'amount'       => [
+                    'currency_code' => $currency,
+                    'value'         => number_format($amount, 2, '.', ''),
+                ],
+            ]],
+            'application_context' => [
+                'brand_name'  => 'Union de la Guinee Forestière en Allemagne',
+                'user_action' => 'PAY_NOW',
+                'return_url'  => base_url('payment_success.php?provider=paypal&donation_id=' . $donationId),
+                'cancel_url'  => base_url('payment_cancel.php?provider=paypal&donation_id=' . $donationId),
+            ],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        $ch = curl_init(paypal_api_base($pdo) . '/v2/checkout/orders');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $payload,
+            CURLOPT_HTTPHEADER     => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token,
+                'PayPal-Request-Id: gd2026-' . $donationId . '-' . time(),
+            ],
+            CURLOPT_TIMEOUT        => 20,
+            CURLOPT_SSL_VERIFYPEER => true,
+        ]);
+
+        $raw  = curl_exec($ch);
+        $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $decoded = is_string($raw) ? json_decode($raw, true) : null;
+
+        if ($http < 200 || $http >= 300 || !is_array($decoded) || empty($decoded['id'])) {
+            throw new RuntimeException('PayPal order creation failed (HTTP ' . $http . ').');
+        }
+
+        return (string) $decoded['id'];
+    }
+}
+
+if (!function_exists('paypal_orders_capture')) {
+    function paypal_orders_capture(mixed $pdo, string $paypalOrderId): array
+    {
+        $token = paypal_orders_token($pdo);
+        $url   = paypal_api_base($pdo) . '/v2/checkout/orders/' . rawurlencode($paypalOrderId) . '/capture';
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => '{}',
+            CURLOPT_HTTPHEADER     => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token,
+            ],
+            CURLOPT_TIMEOUT        => 20,
+            CURLOPT_SSL_VERIFYPEER => true,
+        ]);
+
+        $raw  = curl_exec($ch);
+        $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $decoded = is_string($raw) ? json_decode($raw, true) : null;
+
+        if ($http < 200 || $http >= 300 || !is_array($decoded)) {
+            throw new RuntimeException('PayPal capture failed (HTTP ' . $http . ').');
+        }
+
+        return $decoded;
+    }
+}
+
+/* ── Legacy IPN flow ──────────────────────────────────────────────── */
+
 if (!function_exists('paypal_checkout_url')) {
     function paypal_checkout_url(mixed $pdo, int $donationId, float $amount, string $itemLabel): string
     {

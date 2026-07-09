@@ -19,7 +19,7 @@ if (is_post()) {
 
     if (!honeypot_passed()) {
         set_flash('error', t('validation.honeypot'));
-        redirect('registration.php');
+        redirect('registration');
     }
 
     $firstName = post_string('first_name');
@@ -51,14 +51,14 @@ if (is_post()) {
 
     if (!empty($errors)) {
         set_flash('error', implode(' ', array_unique($errors)));
-        redirect('registration.php');
+        redirect('registration');
     }
 
     try {
         $stmt = $pdo->prepare('INSERT INTO registrations
-            (first_name, last_name, country, email, phone, organization, participation_type, gdpr_consent, language, ip_address, user_agent)
+            (first_name, last_name, country, email, phone, organization, participation_type, gdpr_consent, language, ip_address, user_agent, created_at)
             VALUES
-            (:first_name, :last_name, :country, :email, :phone, :organization, :participation_type, :gdpr_consent, :language, :ip_address, :user_agent)');
+            (:first_name, :last_name, :country, :email, :phone, :organization, :participation_type, :gdpr_consent, :language, :ip_address, :user_agent, :created_at)');
         $stmt->execute([
             'first_name' => $firstName,
             'last_name' => $lastName,
@@ -71,10 +71,11 @@ if (is_post()) {
             'language' => current_lang(),
             'ip_address' => request_ip(),
             'user_agent' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255),
+            'created_at' => db_now(),
         ]);
     } catch (Throwable) {
         set_flash('error', 'Erreur technique. Merci de reessayer.');
-        redirect('registration.php');
+        redirect('registration');
     }
 
     $subject = t('emails.registration_subject');
@@ -83,7 +84,7 @@ if (is_post()) {
 
     clear_old_input();
     set_flash('success', t('registration.success'));
-    redirect('registration.php');
+    redirect('registration');
 }
 
 $optionCount = count($participationOptions);
@@ -152,7 +153,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="hint"><?= e(t('registration.form_intro')) ?></p>
             </div>
 
-            <form method="post" action="<?= e(base_url('registration.php')) ?>" data-validate novalidate>
+            <form method="post" action="<?= e(base_url('registration')) ?>" data-validate novalidate>
                 <?= csrf_field() ?>
                 <?= honeypot_field_html() ?>
 
@@ -212,3 +213,4 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
+

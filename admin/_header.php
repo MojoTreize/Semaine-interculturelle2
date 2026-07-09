@@ -26,6 +26,7 @@ $flash = get_flash();
             <a class="<?= $activeAdmin === 'contacts' ? 'active' : '' ?>" href="<?= e(admin_url('contacts.php')) ?>"><?= e(t('admin.menu_contacts')) ?></a>
             <a class="<?= $activeAdmin === 'partners' ? 'active' : '' ?>" href="<?= e(admin_url('partners.php')) ?>"><?= e(t('admin.menu_partners')) ?></a>
             <a class="<?= $activeAdmin === 'program' ? 'active' : '' ?>" href="<?= e(admin_url('program.php')) ?>"><?= e(t('admin.menu_program')) ?></a>
+            <a class="<?= $activeAdmin === 'speakers' ? 'active' : '' ?>" href="<?= e(admin_url('speakers.php')) ?>">Intervenants</a>
             <a class="<?= $activeAdmin === 'settings' ? 'active' : '' ?>" href="<?= e(admin_url('settings.php')) ?>"><?= e(t('admin.menu_settings')) ?></a>
             <a href="<?= e(admin_url('logout.php')) ?>"><?= e(t('admin.logout')) ?></a>
         </div>
