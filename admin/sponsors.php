@@ -59,7 +59,7 @@ $params = [];
 if ($level !== '')  { $where[] = 'sponsorship_level = :level'; $params['level'] = $level; }
 if ($search !== '') { $where[] = '(organization_name LIKE :q OR contact_person LIKE :q OR email LIKE :q)'; $params['q'] = '%' . $search . '%'; }
 
-$sql = 'SELECT id, organization_name, contact_person, email, phone, website, sponsorship_level, message, created_at FROM sponsor_requests';
+$sql = 'SELECT id, organization_name, contact_person, email, phone, website, sponsorship_level, message, logo_path, created_at FROM sponsor_requests';
 if ($where) { $sql .= ' WHERE ' . implode(' AND ', $where); }
 $sql .= ' ORDER BY created_at DESC';
 
@@ -98,7 +98,13 @@ require __DIR__ . '/_header.php';
                 </select>
             </div>
         </div>
-        <?php if ($editRow['message'] !== ''): ?>
+        <?php if (!empty($editRow['logo_path']) && is_file(ROOT_PATH . '/' . $editRow['logo_path'])): ?>
+        <p style="font-weight:700;margin:0 0 .4rem">Logo</p>
+        <div style="margin-bottom:.75rem;background:#f7f9ff;border:1px solid #d1dded;border-radius:10px;padding:.75rem;display:inline-block">
+            <img src="<?= e(base_url((string)$editRow['logo_path'])) ?>" alt="Logo <?= e((string)$editRow['organization_name']) ?>" style="max-height:80px;max-width:240px;object-fit:contain">
+        </div>
+        <?php endif; ?>
+        <?php if (!empty($editRow['message'])): ?>
         <p style="font-weight:700;margin:0 0 .4rem">Message</p>
         <div class="full-message" style="margin-bottom:.75rem"><?= e((string)$editRow['message']) ?></div>
         <?php endif; ?>
@@ -139,12 +145,18 @@ require __DIR__ . '/_header.php';
     <p style="color:#4f617e;font-size:.9rem"><?= count($rows) ?> demande(s)</p>
     <table>
         <thead>
-            <tr><th>ID</th><th>Organisation</th><th>Contact</th><th>Email</th><th>Niveau</th><th>Date</th><th>Actions</th></tr>
+            <tr><th>Logo</th><th>Organisation</th><th>Contact</th><th>Email</th><th>Niveau</th><th>Date</th><th>Actions</th></tr>
         </thead>
         <tbody>
         <?php foreach ($rows as $row): ?>
             <tr>
-                <td><?= e((string)$row['id']) ?></td>
+                <td>
+                    <?php if (!empty($row['logo_path']) && is_file(ROOT_PATH . '/' . $row['logo_path'])): ?>
+                        <img src="<?= e(base_url((string)$row['logo_path'])) ?>" alt="Logo" style="height:36px;max-width:72px;object-fit:contain;border-radius:4px;border:1px solid #e0e7f0;background:#f9fbff;padding:2px">
+                    <?php else: ?>
+                        <span style="color:#bbb;font-size:.8rem">—</span>
+                    <?php endif; ?>
+                </td>
                 <td><?= e((string)$row['organization_name']) ?></td>
                 <td><?= e((string)$row['contact_person']) ?></td>
                 <td><?= e((string)$row['email']) ?></td>
@@ -163,7 +175,7 @@ require __DIR__ . '/_header.php';
                 </td>
             </tr>
         <?php endforeach; ?>
-        <?php if (!$rows): ?><tr><td colspan="7">Aucune demande sponsor.</td></tr><?php endif; ?>
+        <?php if (!$rows): ?><tr><td colspan="7" style="text-align:center;color:#9ca3af">Aucune demande sponsor.</td></tr><?php endif; ?>
         </tbody>
     </table>
 </section>

@@ -12,7 +12,7 @@ if (is_post()) {
 
     if (!honeypot_passed()) {
         set_flash('error', t('validation.honeypot'));
-        redirect('contact.php');
+        redirect('contact');
     }
 
     $fullName = post_string('full_name');
@@ -34,14 +34,14 @@ if (is_post()) {
 
     if (!empty($errors)) {
         set_flash('error', implode(' ', array_unique($errors)));
-        redirect('contact.php');
+        redirect('contact');
     }
 
     try {
         $stmt = $pdo->prepare('INSERT INTO contact_messages
-            (full_name, email, subject, message, gdpr_consent, language)
+            (full_name, email, subject, message, gdpr_consent, language, created_at)
             VALUES
-            (:full_name, :email, :subject, :message, :gdpr_consent, :language)');
+            (:full_name, :email, :subject, :message, :gdpr_consent, :language, :created_at)');
         $stmt->execute([
             'full_name' => $fullName,
             'email' => $email,
@@ -49,10 +49,11 @@ if (is_post()) {
             'message' => $message,
             'gdpr_consent' => $gdprConsent,
             'language' => current_lang(),
+            'created_at' => db_now(),
         ]);
     } catch (Throwable) {
         set_flash('error', 'Erreur technique. Merci de reessayer.');
-        redirect('contact.php');
+        redirect('contact');
     }
 
     $organizerEmail = get_setting($pdo, 'organizer_email', 'organisation@guineedortmund2026.org');
@@ -65,11 +66,14 @@ if (is_post()) {
 
     clear_old_input();
     set_flash('success', t('contact.success'));
-    redirect('contact.php');
+    redirect('contact');
 }
 
 $officialEmail = get_setting($pdo, 'contact_email', 'contact@guineedortmund2026.org');
-$siteDomain = get_setting($pdo, 'site_domain', base_url(''));
+$siteDomain    = get_setting($pdo, 'site_domain', base_url(''));
+$waRaw         = trim((string) get_setting($pdo, 'whatsapp_number', ''));
+$waNum         = preg_replace('/[^0-9+]/', '', $waRaw);
+$waUrl         = $waNum !== '' ? 'https://wa.me/' . ltrim($waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai une question concernant l\'Ã©vÃ©nement UGFA Dortmund 2026.') : '';
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -111,7 +115,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="hint"><?= e(t('contact.form_intro')) ?></p>
             </div>
 
-            <form method="post" action="<?= e(base_url('contact.php')) ?>" data-validate novalidate>
+            <form method="post" action="<?= e(base_url('contact')) ?>" data-validate novalidate>
                 <?= csrf_field() ?>
                 <?= honeypot_field_html() ?>
 
@@ -155,19 +159,44 @@ require __DIR__ . '/includes/header.php';
                 </p>
                 <p><strong>Web:</strong> <a href="<?= e($siteDomain) ?>" target="_blank" rel="noopener"><?= e($siteDomain) ?></a></p>
                 <ul class="contact-channel-list">
-                    <li><span>LinkedIn</span><span><?= e(t('contact.soon')) ?></span></li>
-                    <li><span>Facebook</span><span><?= e(t('contact.soon')) ?></span></li>
-                    <li><span>X</span><span><?= e(t('contact.soon')) ?></span></li>
+                    <li>
+                        <span>Facebook</span>
+                        <a href="https://www.facebook.com/profile.php?id=61591357127241"
+                           target="_blank" rel="noopener noreferrer"
+                           style="font-weight:600;color:#1877F2;text-decoration:none">
+                            Nous suivre â†’
+                        </a>
+                    </li>
                 </ul>
             </article>
 
-            <article class="card about-info-card contact-map-card" data-aos="fade-left" data-aos-delay="200">
-                <h3><?= e(t('contact.map_label')) ?></h3>
-                <p><?= e(t('contact.map_intro')) ?></p>
-                <a class="btn btn-secondary" href="https://www.google.com/maps/search/?api=1&query=<?= rawurlencode('Leonie-Reygers-Terrasse, 44137 Dortmund') ?>" target="_blank" rel="noopener noreferrer"><?= e(t('contact.open_map')) ?></a>
+            <article class="card about-info-card contribute-whatsapp-card" data-aos="fade-left" data-aos-delay="200">
+                <h3 class="contribute-whatsapp-title">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+                         style="width:20px;height:20px;color:#25D366;flex-shrink:0">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Contacter via WhatsApp
+                </h3>
+                <p class="hint">Pour toute question rapide ou en cas de problÃ¨me, notre Ã©quipe est joignable directement via WhatsApp.</p>
+                <?php if ($waUrl !== ''): ?>
+                    <a href="<?= e($waUrl) ?>" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+                             style="width:18px;height:18px;flex-shrink:0">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        Contacter via WhatsApp
+                    </a>
+                <?php else: ?>
+                    <p class="hint" style="font-size:.85rem">
+                        NumÃ©ro WhatsApp non encore configurÃ©.<br>
+                        Configurez-le dans <a href="<?= e(admin_url('settings.php')) ?>">l'espace admin</a>.
+                    </p>
+                <?php endif; ?>
             </article>
         </aside>
     </div>
 </section>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
+

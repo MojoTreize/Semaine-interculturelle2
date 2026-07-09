@@ -31,8 +31,14 @@ $phpToClean = [
     '/impressum.php'    => '/impressum',
 ];
 if (isset($phpToClean[$uri])) {
-    $qs = $_SERVER['QUERY_STRING'] !== '' ? '?' . $_SERVER['QUERY_STRING'] : '';
-    header('Location: ' . $phpToClean[$uri] . $qs, true, 301);
+    $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
+    if ($method === 'GET' || $method === 'HEAD') {
+        $qs = $_SERVER['QUERY_STRING'] !== '' ? '?' . $_SERVER['QUERY_STRING'] : '';
+        header('Location: ' . $phpToClean[$uri] . $qs, true, 301);
+        return true;
+    }
+    // POST/PUT/PATCH: serve the PHP file directly so POST data is not lost
+    require $base . $uri;
     return true;
 }
 

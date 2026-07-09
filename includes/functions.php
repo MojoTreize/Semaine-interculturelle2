@@ -188,6 +188,13 @@ if (!function_exists('is_valid_email')) {
     }
 }
 
+if (!function_exists('db_now')) {
+    function db_now(): string
+    {
+        return date('Y-m-d H:i:s');
+    }
+}
+
 if (!function_exists('normalize_phone')) {
     function normalize_phone(string $phone): string
     {
@@ -204,7 +211,7 @@ if (!function_exists('honeypot_passed')) {
     function honeypot_field_html(): string
     {
         $field = honeypot_field_name();
-        return '<div class="hidden-honeypot"><label for="' . e($field) . '">Website</label><input type="text" name="' . e($field) . '" id="' . e($field) . '" autocomplete="off"></div>';
+        return '<div class="hidden-honeypot" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label for="' . e($field) . '">Website</label><input type="text" name="' . e($field) . '" id="' . e($field) . '" tabindex="-1" autocomplete="off"></div>';
     }
 
     function honeypot_passed(): bool
