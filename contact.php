@@ -52,7 +52,7 @@ if (is_post()) {
             'created_at' => db_now(),
         ]);
     } catch (Throwable) {
-        set_flash('error', 'Erreur technique. Merci de reessayer.');
+        set_flash('error', 'Erreur technique. Merci de réessayer.');
         redirect('contact');
     }
 
@@ -73,7 +73,7 @@ $officialEmail = get_setting($pdo, 'contact_email', 'contact@guineedortmund2026.
 $siteDomain    = get_setting($pdo, 'site_domain', base_url(''));
 $waRaw         = trim((string) get_setting($pdo, 'whatsapp_number', ''));
 $waNum         = preg_replace('/[^0-9+]/', '', $waRaw);
-$waUrl         = $waNum !== '' ? 'https://wa.me/' . ltrim($waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai une question concernant l\'Ã©vÃ©nement UGFA Dortmund 2026.') : '';
+$waUrl         = $waNum !== '' ? 'https://wa.me/' . ltrim($waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai une question concernant l\'événement UGFA Dortmund 2026.') : '';
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -164,7 +164,7 @@ require __DIR__ . '/includes/header.php';
                         <a href="https://www.facebook.com/profile.php?id=61591357127241"
                            target="_blank" rel="noopener noreferrer"
                            style="font-weight:600;color:#1877F2;text-decoration:none">
-                            Nous suivre â†’
+                            Nous suivre →
                         </a>
                     </li>
                 </ul>
@@ -178,7 +178,7 @@ require __DIR__ . '/includes/header.php';
                     </svg>
                     Contacter via WhatsApp
                 </h3>
-                <p class="hint">Pour toute question rapide ou en cas de problÃ¨me, notre Ã©quipe est joignable directement via WhatsApp.</p>
+                <p class="hint">Pour toute question rapide ou en cas de problème, notre équipe est joignable directement via WhatsApp.</p>
                 <?php if ($waUrl !== ''): ?>
                     <a href="<?= e($waUrl) ?>" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
@@ -189,7 +189,7 @@ require __DIR__ . '/includes/header.php';
                     </a>
                 <?php else: ?>
                     <p class="hint" style="font-size:.85rem">
-                        NumÃ©ro WhatsApp non encore configurÃ©.<br>
+                        Numéro WhatsApp non encore configuré.<br>
                         Configurez-le dans <a href="<?= e(admin_url('settings.php')) ?>">l'espace admin</a>.
                     </p>
                 <?php endif; ?>
