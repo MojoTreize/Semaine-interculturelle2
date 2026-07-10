@@ -29,7 +29,7 @@ if (is_post()) {
         $value = post_string($key);
         set_setting($pdo, $key, $value);
     }
-    set_flash('success', 'Parametres enregistres.');
+    set_flash('success', 'Paramètres enregistrés.');
     redirect('admin/settings.php');
 }
 

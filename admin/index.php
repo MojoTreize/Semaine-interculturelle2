@@ -75,7 +75,7 @@ require __DIR__ . '/_header.php';
         <strong><?= e((string) $stats['donations']) ?></strong>
     </article>
     <article class="stat stat--green">
-        <span>Total collecte</span>
+        <span>Total collecté</span>
         <strong><?= e(format_amount((float) $stats['donations_paid'])) ?></strong>
     </article>
     <article class="stat stat--violet">
@@ -107,19 +107,19 @@ require __DIR__ . '/_header.php';
 </section>
 
 <section class="card dashboard-activity">
-    <h3>Activite recente</h3>
+    <h3>Activité récente</h3>
     <table>
         <thead>
             <tr>
                 <th>Type</th>
-                <th>Detail</th>
+                <th>Détail</th>
                 <th>Date</th>
             </tr>
         </thead>
         <tbody>
         <?php if (empty($recentActivity)): ?>
             <tr>
-                <td colspan="3">Aucune activite pour le moment.</td>
+                <td colspan="3">Aucune activité pour le moment.</td>
             </tr>
         <?php else: ?>
             <?php foreach ($recentActivity as $item): ?>
@@ -130,7 +130,7 @@ require __DIR__ . '/_header.php';
                     'donation' => 'Don',
                     'sponsor' => 'Sponsor',
                     'contact' => 'Contact',
-                    default => 'Activite',
+                    default => 'Activité',
                 };
                 ?>
                 <tr>

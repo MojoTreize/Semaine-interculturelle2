@@ -11,8 +11,11 @@ declare(strict_types=1);
                 <span><?= e(t('site.short_name')) ?></span>
             </a>
             <p class="footer-tagline"><?= e(t('footer.event_title')) ?></p>
-            <p class="footer-meta"><?= e(t('footer.event_dates')) ?></p>
-            <p class="footer-meta"><?= e(t('footer.event_location')) ?></p>
+            <div class="footer-social" aria-label="Social media">
+                <a href="https://www.facebook.com/profile.php?id=61591357127241" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.1 19v-6.6h2.2l.3-2.5h-2.5V8.2c0-.7.2-1.2 1.3-1.2h1.3V4.8a17.4 17.4 0 0 0-1.9-.1c-1.9 0-3.1 1.2-3.1 3.4V10H9.5v2.5h2.1V19h2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
         </div>
 
         <nav class="footer-link-col" aria-label="<?= e(t('footer.quick_links')) ?>">
@@ -21,51 +24,56 @@ declare(strict_types=1);
                 <li><a href="<?= e(base_url('index.php')) ?>"><?= e(t('nav.home')) ?></a></li>
                 <li><a href="<?= e(base_url('about.php')) ?>"><?= e(t('nav.about')) ?></a></li>
                 <li><a href="<?= e(base_url('program.php')) ?>"><?= e(t('nav.program')) ?></a></li>
-                <li><a href="<?= e(base_url('contact.php')) ?>"><?= e(t('nav.contact')) ?></a></li>
-            </ul>
-        </nav>
-
-        <nav class="footer-link-col" aria-label="<?= e(t('nav.registration')) ?>">
-            <h3><?= e(t('nav.registration')) ?></h3>
-            <ul>
                 <li><a href="<?= e(base_url('registration.php')) ?>"><?= e(t('nav.registration')) ?></a></li>
                 <li><a href="<?= e(base_url('contribute.php')) ?>"><?= e(t('nav.contribute')) ?></a></li>
                 <li><a href="<?= e(base_url('partners.php')) ?>"><?= e(t('nav.partners')) ?></a></li>
-            </ul>
-        </nav>
-
-        <nav class="footer-link-col" aria-label="<?= e(t('footer.legal')) ?>">
-            <h3><?= e(t('footer.legal')) ?></h3>
-            <ul>
-                <li><a href="<?= e(base_url('privacy.php')) ?>"><?= e(t('footer.privacy')) ?></a></li>
-                <li><a href="<?= e(base_url('impressum.php')) ?>"><?= e(t('footer.impressum')) ?></a></li>
-            </ul>
-        </nav>
-
-        <nav class="footer-link-col" aria-label="Resources">
-            <h3>Resources</h3>
-            <ul>
-                <li><a href="<?= e(base_url('program.php')) ?>"><?= e(t('nav.program')) ?></a></li>
-                <li><a href="<?= e(base_url('partners.php')) ?>"><?= e(t('nav.partners')) ?></a></li>
                 <li><a href="<?= e(base_url('contact.php')) ?>"><?= e(t('nav.contact')) ?></a></li>
             </ul>
         </nav>
+
+        <div class="footer-link-col footer-contact-col">
+            <h3><?= e(t('footer.contact_title')) ?></h3>
+            <ul class="footer-contact-list">
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg>
+                    <span><?= e(t('footer.event_location')) ?></span>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h3l1.6 4-2 1.4a12 12 0 006 6l1.4-2 4 1.6V19a2 2 0 01-2.2 2A16 16 0 014 6.2 2 2 0 015 4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                    <a href="tel:<?= e(preg_replace('/[^0-9+]/', '', t('footer.phone'))) ?>"><?= e(t('footer.phone')) ?></a>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                    <a href="mailto:<?= e(t('footer.email')) ?>"><?= e(t('footer.email')) ?></a>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 12h17M12 3.5c2.5 2.3 2.5 14.7 0 17M12 3.5c-2.5 2.3-2.5 14.7 0 17" stroke="currentColor" stroke-width="1.6"/></svg>
+                    <span><?= e(t('footer.website')) ?></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer-link-col footer-newsletter-col">
+            <h3><?= e(t('footer.newsletter_title')) ?></h3>
+            <p class="footer-newsletter-text"><?= e(t('footer.newsletter_text')) ?></p>
+            <form class="footer-newsletter-form" action="<?= e(base_url('contact.php')) ?>" method="get">
+                <input type="email" name="newsletter_email" placeholder="<?= e(t('footer.newsletter_placeholder')) ?>" aria-label="<?= e(t('footer.newsletter_placeholder')) ?>" required>
+                <button type="submit" aria-label="<?= e(t('footer.newsletter_button')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="container footer-bottom">
         <div class="footer-legal">
             <small>&copy; <?= date('Y') ?> guineedortmund2026.org - <?= e(t('footer.rights')) ?></small>
             <p class="footer-credit">Développé par Mimi Sagno, développeur web.</p>
-            <div class="footer-policy-links">
-                <a href="<?= e(base_url('privacy.php')) ?>"><?= e(t('footer.privacy')) ?></a>
-                <a href="<?= e(base_url('impressum.php')) ?>"><?= e(t('footer.impressum')) ?></a>
-            </div>
         </div>
 
-        <div class="footer-social" aria-label="Social media">
-            <a href="https://www.facebook.com/profile.php?id=61591357127241" target="_blank" rel="noopener" aria-label="Facebook">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.1 19v-6.6h2.2l.3-2.5h-2.5V8.2c0-.7.2-1.2 1.3-1.2h1.3V4.8a17.4 17.4 0 0 0-1.9-.1c-1.9 0-3.1 1.2-3.1 3.4V10H9.5v2.5h2.1V19h2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </a>
+        <div class="footer-policy-links">
+            <a href="<?= e(base_url('privacy.php')) ?>"><?= e(t('footer.privacy')) ?></a>
+            <a href="<?= e(base_url('impressum.php')) ?>"><?= e(t('footer.impressum')) ?></a>
         </div>
     </div>
 </footer>
