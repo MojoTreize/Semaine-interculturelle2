@@ -969,9 +969,9 @@ textarea:focus {
     inset: 0;
     background-image:
         linear-gradient(118deg, rgba(198, 40, 40, 0.82), rgba(244, 180, 0, 0.62) 54%, rgba(31, 143, 70, 0.82)),
-        url("../images/photos/hero-monument.jpg");
+        url("../images/photos/hero-monument.png");
     background-size: cover, cover;
-    background-position: center, center 62%;
+    background-position: center, center 45%;
     background-repeat: no-repeat, no-repeat;
     animation: heroKenBurns 22s ease-in-out infinite alternate;
     will-change: transform;
