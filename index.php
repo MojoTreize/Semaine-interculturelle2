@@ -22,6 +22,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <section class="section about-hero home-about-hero">
+    <div class="home-about-hero-photo" aria-hidden="true"></div>
     <div class="container about-hero-grid home-about-hero-grid">
         <div class="about-hero-copy" data-aos="fade-right">
             <p class="about-kicker"><?= e(t('site.short_name')) ?></p>
@@ -56,6 +57,9 @@ require __DIR__ . '/includes/header.php';
             </div>
         </aside>
     </div>
+    <span class="hero-scroll-cue" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 9l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
 </section>
 
 <section class="section about-stats-section home-stats-section">
