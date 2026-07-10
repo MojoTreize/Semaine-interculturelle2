@@ -21,24 +21,30 @@ $totalPartners = count($partnerItems);
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="home-hero-banner">
-    <img src="<?= e(base_url('assets/images/photos/hero-monument.png')) ?>" alt="<?= e(t('site.short_name')) ?>" class="home-hero-banner-img">
-</section>
-
-<section class="section about-hero home-about-hero">
-    <div class="container about-hero-grid home-about-hero-grid">
-        <div class="about-hero-copy" data-aos="fade-right">
-            <p class="about-kicker"><?= e(t('site.short_name')) ?></p>
+<section class="home-hero" data-aos="fade">
+    <div class="home-hero-media">
+        <img src="<?= e(base_url('assets/images/photos/hero-monument.png')) ?>" alt="<?= e(t('site.short_name')) ?>" class="home-hero-img">
+        <span class="home-hero-scrim" aria-hidden="true"></span>
+    </div>
+    <div class="container home-hero-inner">
+        <div class="home-hero-copy" data-aos="fade-right" data-aos-delay="60">
+            <p class="home-hero-kicker">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.9 6.1 20.2l1.2-6.6L2.5 9l6.6-.9L12 2z"/></svg>
+                <?= e(t('home.edition_badge')) ?>
+            </p>
             <h1><?= e(t('home.hero_title')) ?></h1>
-            <p class="lead"><?= e(t('home.hero_subtitle')) ?></p>
-            <p><?= e(t('site.event_theme')) ?></p>
+            <p class="home-hero-facts">
+                <span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.7"/></svg><?= e(t('home.hero_location')) ?></span>
+                <span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 9h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><?= e(t('site.event_dates')) ?></span>
+            </p>
+            <p class="home-hero-lead"><?= e(t('site.event_theme')) ?></p>
             <div class="cta-row">
                 <a class="btn btn-light" href="<?= e(base_url('registration.php')) ?>"><?= e(t('buttons.register')) ?></a>
                 <a class="btn btn-secondary" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('buttons.contribute')) ?></a>
                 <a class="btn btn-primary" href="<?= e(base_url('partners.php')) ?>"><?= e(t('buttons.become_partner')) ?></a>
             </div>
         </div>
-        <aside class="about-hero-panel home-countdown-panel" data-aos="fade-left" data-aos-delay="120">
+        <aside class="home-countdown" data-aos="fade-left" data-aos-delay="140">
             <h2><?= e(t('home.countdown_title')) ?></h2>
             <div class="countdown-grid" data-countdown>
                 <div class="countdown-box">
@@ -60,170 +66,229 @@ require __DIR__ . '/includes/header.php';
             </div>
         </aside>
     </div>
-    <span class="hero-scroll-cue" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 9l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </span>
 </section>
 
-<section class="section about-stats-section home-stats-section">
+<section class="section home-stats-section">
     <div class="container">
-        <div class="stats-strip about-stats-strip">
-            <article class="stat-card about-stat-card" data-aos="zoom-in">
-                <strong data-counter-end="<?= e((string) $totalSessions) ?>">0</strong>
-                <span><?= e(t('home.stat_sessions')) ?></span>
+        <div class="home-stats-card" data-aos="fade-up">
+            <article class="home-stat">
+                <span class="home-stat-icon home-stat-icon--green" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="16" rx="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 9h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </span>
+                <div>
+                    <strong data-counter-end="<?= e((string) $totalSessions) ?>">0</strong>
+                    <span><?= e(t('home.stat_sessions')) ?></span>
+                </div>
             </article>
-            <article class="stat-card about-stat-card" data-aos="zoom-in" data-aos-delay="100">
-                <strong data-counter-end="<?= e((string) $totalProgramDays) ?>">0</strong>
-                <span><?= e(t('home.stat_days')) ?></span>
+            <article class="home-stat">
+                <span class="home-stat-icon home-stat-icon--gold" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </span>
+                <div>
+                    <strong data-counter-end="<?= e((string) $totalProgramDays) ?>">0</strong>
+                    <span><?= e(t('home.stat_days')) ?></span>
+                </div>
             </article>
-            <article class="stat-card about-stat-card" data-aos="zoom-in" data-aos-delay="200">
-                <strong data-counter-end="<?= e((string) $totalPartners) ?>">0</strong>
-                <span><?= e(t('home.stat_partners')) ?></span>
+            <article class="home-stat">
+                <span class="home-stat-icon home-stat-icon--red" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 19a5.5 5.5 0 0111 0M16 8.5a3 3 0 010 5M20.5 19a5.2 5.2 0 00-3.2-4.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </span>
+                <div>
+                    <strong data-counter-end="<?= e((string) $totalPartners) ?>">0</strong>
+                    <span><?= e(t('home.stat_partners')) ?></span>
+                </div>
             </article>
         </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="container grid-2 about-info-grid">
-        <article class="card about-info-card" data-aos="fade-up">
-            <h2><?= e(t('home.intro_title')) ?></h2>
-            <p><?= e(t('home.intro_text')) ?></p>
-        </article>
-        <article class="card about-info-card" data-aos="fade-up" data-aos-delay="120">
-            <h2><?= e(t('home.focus_title')) ?></h2>
-            <p><?= e(t('home.focus_text')) ?></p>
-        </article>
+<?php
+$homeFeatures = [
+    [
+        'variant' => 'green',
+        'title' => t('home.feature_region_title'),
+        'text' => t('home.feature_region_text'),
+        'link' => t('home.feature_region_link'),
+        'href' => base_url('about.php'),
+        'image' => base_url('assets/images/photos/region.jpg'),
+        'cover' => true,
+        'icon' => '<path d="M4 18c3-6 5-9 8-9s5 3 8 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 9V4M9.5 6.5L12 4l2.5 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    ],
+    [
+        'variant' => 'gold',
+        'title' => t('home.feature_dialogue_title'),
+        'text' => t('home.feature_dialogue_text'),
+        'link' => t('home.feature_dialogue_link'),
+        'href' => base_url('program.php'),
+        'image' => base_url('assets/images/photos/dialogue.jpg'),
+        'cover' => true,
+        'icon' => '<circle cx="9" cy="9" r="2.6" stroke="currentColor" stroke-width="1.7"/><circle cx="16" cy="10" r="2.2" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 19a5.2 5.2 0 0110.4 0M15 14.6a4.4 4.4 0 015.2 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    ],
+    [
+        'variant' => 'red',
+        'title' => t('home.feature_heritage_title'),
+        'text' => t('home.feature_heritage_text'),
+        'link' => t('home.feature_heritage_link'),
+        'href' => base_url('about.php'),
+        'image' => base_url('assets/images/photos/patrimoine.jpg'),
+        'cover' => true,
+        'icon' => '<path d="M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+    ],
+];
+?>
+<section class="section home-features-section">
+    <div class="container home-features-grid">
+        <?php foreach ($homeFeatures as $fi => $feature): ?>
+            <article class="home-feature-card home-feature-card--<?= e($feature['variant']) ?>" data-aos="fade-up" data-aos-delay="<?= e((string) ($fi * 120)) ?>">
+                <div class="home-feature-media<?= !empty($feature['image']) ? ' home-feature-media--photo' : '' ?><?= !empty($feature['cover']) ? ' home-feature-media--cover' : '' ?>"<?= !empty($feature['image']) ? ' style="--feat-img: url(\'' . e($feature['image']) . '\');"' : '' ?> aria-hidden="true">
+                    <span class="home-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none"><?= $feature['icon'] ?></svg>
+                    </span>
+                </div>
+                <div class="home-feature-body">
+                    <h3><?= e($feature['title']) ?></h3>
+                    <p><?= e($feature['text']) ?></p>
+                    <a class="home-feature-link" href="<?= e($feature['href']) ?>">
+                        <?= e($feature['link']) ?>
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+            </article>
+        <?php endforeach; ?>
     </div>
 </section>
 
-<section class="section about-roadmap-section section-program">
-    <div class="container">
-        <div class="about-section-head" data-aos="fade-up">
-            <h2><?= e(t('home.program_preview_title')) ?></h2>
-            <p class="lead"><?= e(t('program.subtitle')) ?></p>
+<?php
+$monthsAbbr = [1 => 'JAN', 2 => 'FEV', 3 => 'MAR', 4 => 'AVR', 5 => 'MAI', 6 => 'JUIN', 7 => 'JUIL', 8 => 'AOU', 9 => 'SEP', 10 => 'OCT', 11 => 'NOV', 12 => 'DEC'];
+
+// Modern Lucide-style stroke icons per program type (reuses the project's inline-SVG convention).
+$programIcons = [
+    // Ceremony: microphone (podium / official opening)
+    'ceremony' => '<rect x="9" y="2" width="6" height="11" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4M8 22h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    // Conference: growth / trending-up (Simandou 2040 - sustainable development)
+    'conference' => '<path d="M22 7 13.5 15.5 8.5 10.5 2 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h6v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    // Panel: discussion (diaspora-investment dialogue)
+    'panel' => '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+    // Exhibition: image / gallery
+    'exhibition' => '<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="1.7"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    // Networking: people / community
+    'networking' => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    // Workshop: lightbulb / ideas
+    'workshop' => '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 18h6M10 22h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+];
+?>
+<section class="section section-program home-program-section">
+    <div class="container home-program-layout">
+        <div class="home-program-intro" data-aos="fade-right">
+            <p class="home-kicker"><?= e(t('home.program_kicker')) ?></p>
+            <h2><?= e(t('home.program_intro_title')) ?></h2>
+            <p class="lead"><?= e(t('home.program_intro_text')) ?></p>
+            <a class="btn btn-secondary home-program-cta" href="<?= e(base_url('program.php')) ?>"><?= e(t('home.see_full_program')) ?></a>
         </div>
 
-        <div class="grid-2 about-info-grid program-preview-grid">
+        <div class="home-program-track" data-aos="fade-left" data-aos-delay="120">
             <?php foreach ($previewItems as $index => $item): ?>
                 <?php
                 $itemType = preg_replace('/[^a-z0-9_-]/i', '', (string) ($item['item_type'] ?? 'conference')) ?: 'conference';
                 $typeKey = 'program.' . $itemType;
                 $eventDate = trim((string) ($item['event_date'] ?? ''));
-                $startTime = substr(trim((string) ($item['start_time'] ?? '00:00:00')), 0, 8);
-                $endTime = substr(trim((string) ($item['end_time'] ?? '23:59:59')), 0, 8);
-                $calendarUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
-
+                $dayNum = '';
+                $monthLabel = '';
                 if ($eventDate !== '') {
                     try {
-                        $timezone = (string) app_config('app.timezone', 'Europe/Berlin');
-                        $startAt = new DateTimeImmutable($eventDate . ' ' . ($startTime !== '' ? $startTime : '00:00:00'), new DateTimeZone($timezone));
-                        $endAt = new DateTimeImmutable($eventDate . ' ' . ($endTime !== '' ? $endTime : '23:59:59'), new DateTimeZone($timezone));
-
-                        if ($endAt <= $startAt) {
-                            $endAt = $startAt->modify('+1 hour');
-                        }
-
-                        $dates = $startAt->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z')
-                            . '/' . $endAt->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z');
-
-                        $calendarUrl = 'https://calendar.google.com/calendar/render?' . http_build_query([
-                            'action' => 'TEMPLATE',
-                            'text' => (string) ($item['title'] ?? ''),
-                            'dates' => $dates,
-                            'details' => (string) ($item['description'] ?? ''),
-                            'location' => (string) ($item['location'] ?? ''),
-                            'ctz' => $timezone,
-                        ]);
+                        $d = new DateTimeImmutable($eventDate);
+                        $dayNum = $d->format('d');
+                        $monthLabel = $monthsAbbr[(int) $d->format('n')] ?? strtoupper($d->format('M'));
                     } catch (Throwable) {
-                        // Keep fallback calendar URL.
+                        // Ignore invalid dates.
                     }
                 }
-
-                $aosDelay = $index * 100;
+                $programIcon = $programIcons[$itemType] ?? $programIcons['conference'];
                 ?>
-                <article class="card about-info-card program-card program-card--<?= e($itemType) ?>" data-aos="fade-up" data-aos-delay="<?= e((string) $aosDelay) ?>">
-                    <h3><?= e((string) ($item['title'] ?? '')) ?></h3>
-                    <div class="meta">
-                        <span class="badge"><?= e((string) ($item['event_date'] ?? '')) ?></span>
-                        <span class="badge"><?= e(substr((string) ($item['start_time'] ?? ''), 0, 5)) ?> - <?= e(substr((string) ($item['end_time'] ?? ''), 0, 5)) ?></span>
-                        <span class="badge <?= e($itemType) ?>"><?= e(t($typeKey)) ?></span>
+                <article class="home-program-card program-card--<?= e($itemType) ?>">
+                    <div class="home-program-media" aria-hidden="true">
+                        <?php if ($dayNum !== ''): ?>
+                            <span class="home-program-date"><strong><?= e($dayNum) ?></strong><span><?= e($monthLabel) ?></span></span>
+                        <?php endif; ?>
+                        <span class="home-program-icon">
+                            <svg viewBox="0 0 24 24" fill="none"><?= $programIcon ?></svg>
+                        </span>
                     </div>
-                    <p><?= e((string) ($item['description'] ?? '')) ?></p>
-                    <p class="hint"><?= e(t('program.location')) ?>: <?= e((string) ($item['location'] ?? '')) ?></p>
-                    <a class="program-card-action" href="<?= e($calendarUrl) ?>" target="_blank" rel="noopener"><?= e(t('home.add_to_calendar')) ?></a>
+                    <div class="home-program-body">
+                        <h3><?= e((string) ($item['title'] ?? '')) ?></h3>
+                        <div class="home-program-meta">
+                            <span class="home-program-time"><?= e(substr((string) ($item['start_time'] ?? ''), 0, 5)) ?> - <?= e(substr((string) ($item['end_time'] ?? ''), 0, 5)) ?></span>
+                            <span class="badge <?= e($itemType) ?>"><?= e(t($typeKey)) ?></span>
+                        </div>
+                        <p><?= e((string) ($item['description'] ?? '')) ?></p>
+                        <p class="home-program-loc">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+                            <?= e((string) ($item['location'] ?? '')) ?>
+                        </p>
+                    </div>
                 </article>
             <?php endforeach; ?>
         </div>
-        <p class="program-main-cta-wrap" data-aos="fade-up" data-aos-delay="500"><a class="btn btn-primary program-main-cta" href="<?= e(base_url('program.php')) ?>"><?= e(t('home.see_full_program')) ?></a></p>
     </div>
 </section>
 
-<section class="section section-partners">
+<?php
+$homeWhy = [
+    ['title' => t('home.why_1_title'), 'text' => t('home.why_1_text'), 'icon' => '<circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 19a5.5 5.5 0 0111 0M16 6.5a3 3 0 010 5M21 19a5.2 5.2 0 00-3.4-4.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'],
+    ['title' => t('home.why_2_title'), 'text' => t('home.why_2_text'), 'icon' => '<path d="M8 12l2.5 2.5L16 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>'],
+    ['title' => t('home.why_3_title'), 'text' => t('home.why_3_text'), 'icon' => '<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 12l1.9 1.9 3.7-3.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'],
+    ['title' => t('home.why_4_title'), 'text' => t('home.why_4_text'), 'icon' => '<path d="M5 4h14M5 4v16M5 8h9M5 12h6M5 16h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'],
+];
+?>
+<section class="section home-why-section">
     <div class="container">
-        <?php $hasPartners = !empty($partnerItems); ?>
-        <div class="about-section-head" data-aos="fade-up">
-            <h2><?= e($hasPartners ? t('home.partners_preview_title') : t('partners.hero_title')) ?></h2>
-            <p class="lead"><?= e($hasPartners ? t('partners.open_text') : t('partners.hero_subtitle')) ?></p>
-        </div>
-        <?php if ($hasPartners): ?>
-            <div class="grid-3 partners-logo-grid">
-                <?php foreach ($partnerItems as $index => $partner): ?>
-                    <?php
-                    $partnerName = trim((string) ($partner['name'] ?? 'Partner'));
-                    $websiteUrl = trim((string) ($partner['website_url'] ?? ''));
-                    $logoPath = trim((string) ($partner['logo_path'] ?? ''));
-                    $logoUrl = '';
-                    if ($logoPath !== '') {
-                        $logoUrl = preg_match('#^https?://#i', $logoPath) === 1 ? $logoPath : base_url(ltrim($logoPath, '/'));
-                    }
-                    $showWebsite = $websiteUrl !== '' && $websiteUrl !== '#';
-
-                    $partnerDelay = 100 + ($index * 80);
-                    ?>
-                    <article class="card about-info-card partner-logo-card" data-aos="fade-up" data-aos-delay="<?= e((string) $partnerDelay) ?>">
-                        <div class="partner-logo-link">
-                            <div class="partner-logo-svg-wrap" aria-hidden="true">
-                                <?php if ($logoUrl !== ''): ?>
-                                    <img class="partner-logo-image" src="<?= e($logoUrl) ?>" alt="<?= e($partnerName) ?>">
-                                <?php else: ?>
-                                    <span class="partner-logo-placeholder"><?= e(t('partners.logo_pending')) ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <span class="partner-logo-name"><?= e($partnerName) ?></span>
-                            <?php if ($showWebsite): ?>
-                                <a class="partner-preview-link" href="<?= e($websiteUrl) ?>" target="_blank" rel="noopener"><?= e(t('partners.visit_site')) ?></a>
-                            <?php endif; ?>
-                        </div>
+        <p class="home-kicker home-why-kicker" data-aos="fade-up"><?= e(t('home.why_kicker')) ?></p>
+        <div class="home-why-layout">
+            <div class="home-why-grid">
+                <?php foreach ($homeWhy as $wi => $why): ?>
+                    <article class="home-why-item" data-aos="fade-up" data-aos-delay="<?= e((string) ($wi * 100)) ?>">
+                        <span class="home-why-index"><?= e(sprintf('%02d', $wi + 1)) ?></span>
+                        <span class="home-why-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><?= $why['icon'] ?></svg>
+                        </span>
+                        <h3><?= e($why['title']) ?></h3>
+                        <p><?= e($why['text']) ?></p>
                     </article>
                 <?php endforeach; ?>
             </div>
-        <?php else: ?>
-            <article class="card about-info-card partners-empty-state--compact" data-aos="fade-up" data-aos-delay="80">
-                <p><?= e(t('partners.hero_subtitle')) ?></p>
-            </article>
-        <?php endif; ?>
-        <p data-aos="fade-up" data-aos-delay="420">
-            <a class="btn btn-secondary" href="<?= e(base_url('partners.php')) ?>">
-                <?= e($hasPartners ? t('home.see_all_partners') : t('buttons.become_partner')) ?>
-            </a>
-        </p>
+            <div class="home-why-visual" data-aos="fade-left" data-aos-delay="120" aria-hidden="true">
+                <svg viewBox="0 0 200 200" fill="none">
+                    <path d="M55 30c18-8 40-6 55 8 14 13 16 30 8 47-6 13-4 22 4 33 6 8 2 20-9 24-16 6-38 4-55-6-19-11-31-31-32-53-1-25 8-45 29-53z" fill="url(#mapGrad)" opacity="0.92"/>
+                    <defs>
+                        <linearGradient id="mapGrad" x1="30" y1="20" x2="170" y2="180" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#1f8f46"/>
+                            <stop offset="0.5" stop-color="#3fae5f"/>
+                            <stop offset="1" stop-color="#166b34"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="container grid-2 about-message-grid">
-        <article class="card about-info-card home-contact-card" data-aos="fade-right">
-            <h2><?= e(t('home.contact_title')) ?></h2>
-            <p><?= e(t('home.contact_text')) ?></p>
+<section class="section home-cta-section">
+    <div class="container home-cta-banner" data-aos="fade-up">
+        <article class="home-cta-block home-cta-block--partner">
+            <span class="home-cta-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.2-7-9.5A4.3 4.3 0 0112 7a4.3 4.3 0 017 3.5C19 15.8 12 20 12 20z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </span>
+            <h2><?= e(t('home.cta_partner_title')) ?></h2>
+            <p><?= e(t('home.cta_partner_text')) ?></p>
+            <a class="btn btn-light" href="<?= e(base_url('partners.php')) ?>"><?= e(t('buttons.become_partner')) ?></a>
         </article>
-        <article class="card about-info-card home-cta-card" data-aos="fade-left" data-aos-delay="120">
-            <h2><?= e(t('about.cta_title')) ?></h2>
-            <p><?= e(t('about.cta_text')) ?></p>
-            <div class="cta-row">
-                <a class="btn btn-light" href="<?= e(base_url('contact.php')) ?>"><?= e(t('home.contact_cta')) ?></a>
-                <a class="btn btn-primary" href="<?= e(base_url('registration.php')) ?>"><?= e(t('buttons.register')) ?></a>
-            </div>
+        <article class="home-cta-block home-cta-block--donate">
+            <span class="home-cta-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.2-7-9.5A4.3 4.3 0 0112 7a4.3 4.3 0 017 3.5C19 15.8 12 20 12 20z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </span>
+            <h2><?= e(t('home.cta_donate_title')) ?></h2>
+            <p><?= e(t('home.cta_donate_text')) ?></p>
+            <a class="btn btn-light" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('buttons.contribute_now')) ?></a>
         </article>
     </div>
 </section>
