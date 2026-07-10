@@ -74,7 +74,7 @@ if (is_post()) {
             'created_at' => db_now(),
         ]);
     } catch (Throwable) {
-        set_flash('error', 'Erreur technique. Merci de reessayer.');
+        set_flash('error', 'Erreur technique. Merci de réessayer.');
         redirect('registration');
     }
 
