@@ -9,6 +9,12 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 Header always set X-Frame-Options "SAMEORIGIN"
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+# HSTS — only sent over HTTPS (1 year, include subdomains)
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+</IfModule>
 
 # API routes — must come before generic clean-URL rules
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -30,3 +36,14 @@ RewriteRule ^partners/$ partners.php [L,QSA]
 RewriteRule ^contact/$ contact.php [L,QSA]
 RewriteRule ^privacy/$ privacy.php [L,QSA]
 RewriteRule ^impressum/$ impressum.php [L,QSA]
+
+# Protect sensitive files and directories
+<FilesMatch "(^\.|composer\.(json|lock)|\.(sqlite|sql|md|ps1|log|ini|dist|example)$)">
+    Require all denied
+</FilesMatch>
+
+# Block direct access to internal folders
+RewriteRule ^(config|includes|database|server|lang|vendor)/ - [F,L]
+
+# Prevent directory listing
+Options -Indexes
