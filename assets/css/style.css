@@ -955,31 +955,23 @@ textarea:focus {
     50%      { transform: translate(-4%, -6%) scale(1.12); }
 }
 
-/* ── Homepage hero photo — Ken Burns image behind the brand gradient ────── */
+/* ── Homepage hero photo — shown in full, no crop, no color overlay ─────── */
 .home-about-hero-photo {
     position: absolute;
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    background-color: var(--color-ink);
 }
 
 .home-about-hero-photo::before {
     content: "";
     position: absolute;
     inset: 0;
-    background-image:
-        linear-gradient(118deg, rgba(198, 40, 40, 0.82), rgba(244, 180, 0, 0.62) 54%, rgba(31, 143, 70, 0.82)),
-        url("../images/photos/hero-monument.png");
-    background-size: cover, cover;
-    background-position: center, center 45%;
-    background-repeat: no-repeat, no-repeat;
-    animation: heroKenBurns 22s ease-in-out infinite alternate;
-    will-change: transform;
-}
-
-@keyframes heroKenBurns {
-    0%   { transform: scale(1) translate(0, 0); }
-    100% { transform: scale(1.12) translate(-1%, -1.5%); }
+    background-image: url("../images/photos/hero-monument.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .home-about-hero-grid {
