@@ -47,7 +47,7 @@ if ($provider === 'paypal') {
             $description = $message;
         } else {
             $message = t('contribute.thanks_pending');
-            $description = 'Paiement PayPal recu. Confirmation en cours.';
+            $description = 'Paiement PayPal reçu. Confirmation en cours.';
         }
     }
 }
@@ -64,7 +64,7 @@ require __DIR__ . '/includes/header.php';
             <h1><?= e(t('contribute.title')) ?></h1>
             <p><?= e($message) ?></p>
             <?php if ($provider === 'paypal'): ?>
-                <p class="hint">Le statut final est confirme automatiquement apres verification PayPal (IPN).</p>
+                <p class="hint">Le statut final est confirmé automatiquement après vérification PayPal (IPN).</p>
             <?php endif; ?>
             <div class="cta-row">
                 <a class="btn btn-primary" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('nav.contribute')) ?></a>

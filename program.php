@@ -79,14 +79,59 @@ require __DIR__ . '/includes/header.php';
                         $typeKey = 'program.' . $itemType;
                         $aosDelay = ($itemIndex % 4) * 80;
                         ?>
+                        <?php
+                        $startTime    = substr((string) ($item['start_time']   ?? ''), 0, 5);
+                        $endTime      = substr((string) ($item['end_time']     ?? ''), 0, 5);
+                        $description  = trim((string) ($item['description']  ?? ''));
+                        $location     = trim((string) ($item['location']     ?? ''));
+                        $speakersRaw  = trim((string) ($item['speakers_list'] ?? ''));
+
+                        // Parse speakers list (one per line, ignore blank lines)
+                        $speakersList = $speakersRaw !== ''
+                            ? array_values(array_filter(array_map('trim', explode("\n", $speakersRaw))))
+                            : [];
+
+                        // Dynamic label depending on session type
+                        $speakersLabel = match ($itemType) {
+                            'panel'       => current_lang() === 'de' ? 'Diskussionsteilnehmer' : 'Panélistes',
+                            'conference'  => current_lang() === 'de' ? 'Referenten'            : 'Intervenants',
+                            'workshop'    => current_lang() === 'de' ? 'Moderatoren'           : 'Animateurs',
+                            'ceremony'    => current_lang() === 'de' ? 'Beteiligte'            : 'Officiels',
+                            'networking'  => current_lang() === 'de' ? 'Organisatoren'         : 'Organisateurs',
+                            'exhibition'  => current_lang() === 'de' ? 'Aussteller'            : 'Exposants',
+                            default       => current_lang() === 'de' ? 'Beteiligte'            : 'Intervenants',
+                        };
+                        ?>
                         <article class="card about-info-card program-schedule-card" data-aos="fade-up" data-aos-delay="<?= e((string) $aosDelay) ?>">
                             <h3><?= e((string) ($item['title'] ?? '')) ?></h3>
                             <div class="meta program-schedule-meta">
-                                <span class="badge"><?= e(substr((string) ($item['start_time'] ?? ''), 0, 5)) ?> - <?= e(substr((string) ($item['end_time'] ?? ''), 0, 5)) ?></span>
+                                <?php if ($startTime !== '' || $endTime !== ''): ?>
+                                    <span class="badge">
+                                        <?= e($startTime) ?>
+                                        <?= ($startTime !== '' && $endTime !== '') ? ' - ' . e($endTime) : ($endTime !== '' ? e($endTime) : '') ?>
+                                    </span>
+                                <?php endif; ?>
                                 <span class="badge <?= e($itemType) ?>"><?= e(t($typeKey)) ?></span>
                             </div>
-                            <p><?= e((string) ($item['description'] ?? '')) ?></p>
-                            <p class="hint"><?= e(t('program.location')) ?>: <?= e((string) ($item['location'] ?? '')) ?></p>
+                            <?php if ($description !== ''): ?>
+                                <p><?= nl2br(e($description)) ?></p>
+                            <?php endif; ?>
+                            <?php if ($speakersList !== []): ?>
+                                <div class="program-speakers-list">
+                                    <p class="program-speakers-label"><?= e($speakersLabel) ?></p>
+                                    <ul>
+                                        <?php foreach ($speakersList as $speaker): ?>
+                                            <li><?= e($speaker) ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($location !== ''): ?>
+                                <p class="hint">
+                                    📍 <?= e(t('program.location')) ?> :
+                                    <a class="program-location-link" href="https://www.google.com/maps/search/?api=1&query=<?= rawurlencode($location) ?>" target="_blank" rel="noopener noreferrer"><?= e($location) ?></a>
+                                </p>
+                            <?php endif; ?>
                         </article>
                     <?php endforeach; ?>
                 </div>
@@ -104,12 +149,32 @@ require __DIR__ . '/includes/header.php';
 
         <div class="grid-3 program-speakers-grid">
             <?php foreach ($speakers as $speakerIndex => $speaker): ?>
-                <?php $speakerDelay = ($speakerIndex % 3) * 90; ?>
-                <article class="card about-info-card program-speaker-card" data-aos="fade-up" data-aos-delay="<?= e((string) $speakerDelay) ?>">
-                    <h3><?= e((string) ($speaker['full_name'] ?? '')) ?></h3>
-                    <p class="hint"><?= e((string) ($speaker['title'] ?? '')) ?></p>
-                    <p><?= e((string) ($speaker['organization'] ?? '')) ?></p>
-                    <p><?= e((string) ($speaker['bio'] ?? '')) ?></p>
+                <?php
+                $speakerDelay = ($speakerIndex % 3) * 90;
+                $photoPath    = trim((string) ($speaker['photo_path'] ?? ''));
+                $hasPhoto     = $photoPath !== '' && file_exists(__DIR__ . '/' . ltrim($photoPath, '/'));
+                $initials     = implode('', array_map(static fn($w) => mb_strtoupper(mb_substr($w, 0, 1)), array_slice(explode(' ', (string) ($speaker['full_name'] ?? '')), 0, 2)));
+                ?>
+                <article class="card program-speaker-card" data-aos="fade-up" data-aos-delay="<?= e((string) $speakerDelay) ?>">
+                    <div class="speaker-photo-wrap">
+                        <?php if ($hasPhoto): ?>
+                            <img class="speaker-photo" src="<?= e($photoPath) ?>" alt="<?= e((string) ($speaker['full_name'] ?? '')) ?>" loading="lazy">
+                        <?php else: ?>
+                            <div class="speaker-avatar" aria-hidden="true"><?= e($initials) ?></div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="speaker-info">
+                        <h3><?= e((string) ($speaker['full_name'] ?? '')) ?></h3>
+                        <?php if (trim((string) ($speaker['title'] ?? '')) !== ''): ?>
+                            <p class="hint"><?= e((string) $speaker['title']) ?></p>
+                        <?php endif; ?>
+                        <?php if (trim((string) ($speaker['organization'] ?? '')) !== ''): ?>
+                            <p class="speaker-org"><?= e((string) $speaker['organization']) ?></p>
+                        <?php endif; ?>
+                        <?php if (trim((string) ($speaker['bio'] ?? '')) !== ''): ?>
+                            <p class="speaker-bio"><?= nl2br(e((string) $speaker['bio'])) ?></p>
+                        <?php endif; ?>
+                    </div>
                 </article>
             <?php endforeach; ?>
         </div>

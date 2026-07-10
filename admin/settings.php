@@ -15,9 +15,12 @@ $settingKeys = [
     'stripe_public_key',
     'stripe_secret_key',
     'stripe_webhook_secret',
+    'paypal_client_id',
+    'paypal_client_secret',
     'paypal_business_email',
     'paypal_mode',
     'collection_goal',
+    'whatsapp_number',
 ];
 
 if (is_post()) {
@@ -26,7 +29,7 @@ if (is_post()) {
         $value = post_string($key);
         set_setting($pdo, $key, $value);
     }
-    set_flash('success', 'Parametres enregistres.');
+    set_flash('success', 'Paramètres enregistrés.');
     redirect('admin/settings.php');
 }
 
