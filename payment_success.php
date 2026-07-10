@@ -35,7 +35,11 @@ if ($provider === 'paypal') {
     $donationId = (int) ($_GET['donation_id'] ?? $_GET['custom'] ?? $_GET['cm'] ?? 0);
     $txnId = trim((string) ($_GET['tx'] ?? ''));
     if ($donationId > 0) {
-        if ($txnId !== '') {
+        $existing = payment_db_fetch_donation($pdo, $donationId);
+        $alreadyPaid = strtolower((string) ($existing['payment_status'] ?? '')) === 'paid';
+        // The IPN (server-to-server) is authoritative; never let this browser-return
+        // GET downgrade a donation that IPN already confirmed as paid.
+        if ($txnId !== '' && !$alreadyPaid) {
             payment_db_update_donation($pdo, $donationId, 'pending', $txnId, false, 'paypal');
         }
         $row = payment_db_fetch_donation($pdo, $donationId);

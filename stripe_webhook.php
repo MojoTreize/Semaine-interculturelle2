@@ -42,7 +42,15 @@ if ($type === 'checkout.session.completed') {
     }
 
     if ($donationId > 0) {
-        payment_db_update_donation($pdo, $donationId, 'paid', $sessionId !== '' ? $sessionId : null, true, 'stripe');
+        $donation = payment_db_fetch_donation($pdo, $donationId);
+        $amountTotal = ((float) ($object['amount_total'] ?? 0)) / 100;
+        $currency = strtoupper((string) ($object['currency'] ?? ''));
+        $amountMatches = is_array($donation) && abs(((float) ($donation['amount'] ?? 0)) - $amountTotal) < 0.01;
+        $currencyMatches = is_array($donation) && strtoupper((string) ($donation['currency'] ?? '')) === $currency;
+
+        if ($amountMatches && $currencyMatches) {
+            payment_db_update_donation($pdo, $donationId, 'paid', $sessionId !== '' ? $sessionId : null, true, 'stripe');
+        }
     }
 }
 

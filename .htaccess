@@ -19,14 +19,14 @@ RewriteRule ^api/payment/stripe/session/?$ api/stripe-session.php [L,QSA]
 # Block direct browsing of api/ source files
 RewriteRule ^api/$ - [F,L]
 
-# Clean URLs for pages
+# Clean URLs for pages — trailing slash optional (nav/redirects generate URLs without it)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^about/$ about.php [L,QSA]
-RewriteRule ^program/$ program.php [L,QSA]
-RewriteRule ^registration/$ registration.php [L,QSA]
-RewriteRule ^contribute/$ contribute.php [L,QSA]
-RewriteRule ^partners/$ partners.php [L,QSA]
-RewriteRule ^contact/$ contact.php [L,QSA]
-RewriteRule ^privacy/$ privacy.php [L,QSA]
-RewriteRule ^impressum/$ impressum.php [L,QSA]
+RewriteRule ^about/?$ about.php [L,QSA]
+RewriteRule ^program/?$ program.php [L,QSA]
+RewriteRule ^registration/?$ registration.php [L,QSA]
+RewriteRule ^contribute/?$ contribute.php [L,QSA]
+RewriteRule ^partners/?$ partners.php [L,QSA]
+RewriteRule ^contact/?$ contact.php [L,QSA]
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+RewriteRule ^impressum/?$ impressum.php [L,QSA]

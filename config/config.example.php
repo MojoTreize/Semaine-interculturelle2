@@ -37,11 +37,18 @@ return [
         'csrf_token_name' => 'csrf_token',
         'honeypot_field' => 'hp_field',
     ],
+    // Admin login credentials live in the `admins` DB table (bcrypt password_hash via
+    // database/schema.sql), not here. 'email' is only used as the notification recipient.
+    'admin' => [
+        'email' => 'admin@example.org',
+    ],
     'payment' => [
         'currency' => 'EUR',
         'stripe_public_key' => '',
         'stripe_secret_key' => '',
         'stripe_webhook_secret' => '',
+        'paypal_client_id' => '',
+        'paypal_client_secret' => '',
         'paypal_business_email' => '',
         'paypal_mode' => 'sandbox',
     ],

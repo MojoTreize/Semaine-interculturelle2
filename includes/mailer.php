@@ -43,6 +43,10 @@ if (!function_exists('send_email')) {
             }
         }
 
+        if (!function_exists('mail')) {
+            return false;
+        }
+
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',

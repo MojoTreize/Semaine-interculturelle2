@@ -49,6 +49,27 @@ a:hover {
     text-decoration: none;
 }
 
+.admin-logout-form {
+    margin: 0;
+}
+
+.admin-logout-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: #eaf0fa;
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+}
+
+.admin-logout-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
 .admin-main {
     padding: 1.1rem;
     background: radial-gradient(circle at top right, #ecf3ff 0%, #f6f8fc 44%, #f5f7fb 100%);

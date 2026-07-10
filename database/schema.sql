@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS donations (
     payment_provider_id VARCHAR(190) NULL,
     payment_status ENUM('pending','paid','failed','canceled') NOT NULL DEFAULT 'pending',
     is_public TINYINT(1) NOT NULL DEFAULT 1,
+    phone VARCHAR(50) NULL,
     language CHAR(2) NOT NULL DEFAULT 'fr',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     paid_at DATETIME NULL,
@@ -67,6 +68,7 @@ CREATE TABLE IF NOT EXISTS sponsor_requests (
     message TEXT NULL,
     gdpr_consent TINYINT(1) NOT NULL DEFAULT 0,
     language CHAR(2) NOT NULL DEFAULT 'fr',
+    logo_path VARCHAR(255) NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_sponsor_level (sponsorship_level),
     INDEX idx_sponsor_created (created_at)
@@ -122,6 +124,7 @@ CREATE TABLE IF NOT EXISTS program_items (
     location VARCHAR(190) NULL,
     item_type ENUM('conference','panel','exhibition','networking','ceremony','workshop') NOT NULL,
     speaker_id INT UNSIGNED NULL,
+    speakers_list TEXT NULL,
     display_order INT UNSIGNED NOT NULL DEFAULT 0,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -139,8 +142,11 @@ CREATE TABLE IF NOT EXISTS site_settings (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Default admin seed. CHANGE THIS PASSWORD after first login (admin/settings.php has no
+-- password-change UI yet — update password_hash directly via `SELECT password_hash('newpass')`
+-- run through PHP, or re-run this INSERT with a freshly generated bcrypt hash).
 INSERT INTO admins (full_name, email, password_hash, role)
-VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
+VALUES ('Administrateur UGFA', 'admin@ugfa.de', '$2y$12$58Rju6/n6lHDG/bcrC2hvOcp08JTeXAriOXaHm9w8odgg/VwIPqvO', 'super_admin')
 ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES

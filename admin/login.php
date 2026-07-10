@@ -18,6 +18,11 @@ if (is_post()) {
         redirect('admin/login.php');
     }
 
+    if (admin_login_throttled()) {
+        set_flash('error', 'Trop de tentatives. Merci de reessayer dans une minute.');
+        redirect('admin/login.php');
+    }
+
     if (admin_attempt_login($pdo, $email, $password)) {
         redirect('admin/index.php');
     }

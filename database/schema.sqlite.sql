@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS donations (
     payment_provider_id TEXT NULL,
     payment_status TEXT NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid', 'failed', 'canceled')),
     is_public INTEGER NOT NULL DEFAULT 1 CHECK (is_public IN (0, 1)),
+    phone TEXT NULL,
     language TEXT NOT NULL DEFAULT 'fr',
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     paid_at TEXT NULL
@@ -66,6 +67,7 @@ CREATE TABLE IF NOT EXISTS sponsor_requests (
     message TEXT NULL,
     gdpr_consent INTEGER NOT NULL DEFAULT 0 CHECK (gdpr_consent IN (0, 1)),
     language TEXT NOT NULL DEFAULT 'fr',
+    logo_path TEXT NULL,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_sponsor_level ON sponsor_requests (sponsorship_level);
@@ -121,6 +123,7 @@ CREATE TABLE IF NOT EXISTS program_items (
     location TEXT NULL,
     item_type TEXT NOT NULL CHECK (item_type IN ('conference', 'panel', 'exhibition', 'networking', 'ceremony', 'workshop')),
     speaker_id INTEGER NULL,
+    speakers_list TEXT NULL,
     display_order INTEGER NOT NULL DEFAULT 0,
     is_active INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1)),
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -138,8 +141,11 @@ CREATE TABLE IF NOT EXISTS site_settings (
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Default admin seed. CHANGE THIS PASSWORD after first login (admin/settings.php has no
+-- password-change UI yet — update password_hash directly via `SELECT password_hash('newpass')`
+-- run through PHP, or re-run this INSERT with a freshly generated bcrypt hash).
 INSERT INTO admins (full_name, email, password_hash, role)
-VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
+VALUES ('Administrateur UGFA', 'admin@ugfa.de', '$2y$12$58Rju6/n6lHDG/bcrC2hvOcp08JTeXAriOXaHm9w8odgg/VwIPqvO', 'super_admin')
 ON CONFLICT(email) DO UPDATE SET updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES

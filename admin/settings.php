@@ -38,6 +38,8 @@ foreach ($settingKeys as $key) {
     $settings[$key] = get_setting($pdo, $key, '');
 }
 
+$secretKeys = ['stripe_secret_key', 'stripe_webhook_secret', 'paypal_client_secret'];
+
 $adminTitle = t('admin.menu_settings');
 $activeAdmin = 'settings';
 require __DIR__ . '/_header.php';
@@ -48,9 +50,10 @@ require __DIR__ . '/_header.php';
         <?= csrf_field() ?>
         <div class="row">
             <?php foreach ($settings as $key => $value): ?>
+                <?php $isSecret = in_array($key, $secretKeys, true); ?>
                 <div>
                     <label for="<?= e($key) ?>"><?= e($key) ?></label>
-                    <input id="<?= e($key) ?>" type="text" name="<?= e($key) ?>" value="<?= e($value) ?>">
+                    <input id="<?= e($key) ?>" type="<?= $isSecret ? 'password' : 'text' ?>" name="<?= e($key) ?>" value="<?= e($value) ?>" autocomplete="new-password">
                 </div>
             <?php endforeach; ?>
         </div>

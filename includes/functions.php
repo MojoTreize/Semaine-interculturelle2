@@ -224,10 +224,20 @@ if (!function_exists('honeypot_passed')) {
 if (!function_exists('get_setting')) {
     function get_setting(mixed $pdo, string $key, string $default = ''): string
     {
-        $cache = $GLOBALS['site_settings_cache'] ?? null;
-
+        $cache = $GLOBALS['site_settings_cache'] ?? [];
         if (!is_array($cache)) {
-            $cache = [
+            $cache = [];
+        }
+
+        if (array_key_exists($key, $cache)) {
+            return $cache[$key];
+        }
+
+        // Fall back to config.php only when the caller didn't supply a default and
+        // the setting isn't in site_settings yet — DB values (via admin/settings.php)
+        // must always take priority so the admin Settings UI actually has effect.
+        if ($default === '') {
+            $configDefaults = [
                 'site_domain' => (string) app_config('app.base_url', ''),
                 'contact_email' => 'contact@guineedortmund2026.org',
                 'organizer_email' => 'organisation@guineedortmund2026.org',
@@ -240,12 +250,9 @@ if (!function_exists('get_setting')) {
                 'paypal_mode' => (string) app_config('payment.paypal_mode', 'sandbox'),
                 'currency' => (string) app_config('payment.currency', 'EUR'),
             ];
-        }
-
-        $GLOBALS['site_settings_cache'] = $cache;
-
-        if (array_key_exists($key, $cache)) {
-            return $cache[$key];
+            if (array_key_exists($key, $configDefaults)) {
+                $default = $configDefaults[$key];
+            }
         }
 
         try {
@@ -470,6 +477,20 @@ if (!function_exists('site_event_start_iso')) {
     }
 }
 
+if (!function_exists('csv_sanitize_cell')) {
+    function csv_sanitize_cell(mixed $value): mixed
+    {
+        if (!is_string($value) || $value === '') {
+            return $value;
+        }
+        // Neutralize formula injection: Excel/LibreOffice execute cells starting with these characters.
+        if (in_array($value[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+            return "'" . $value;
+        }
+        return $value;
+    }
+}
+
 if (!function_exists('output_csv_download')) {
     function output_csv_download(string $filename, array $headers, array $rows): never
     {
@@ -477,9 +498,9 @@ if (!function_exists('output_csv_download')) {
         header('Content-Disposition: attachment; filename=' . $filename);
 
         $output = fopen('php://output', 'wb');
-        fputcsv($output, $headers, ';');
+        fputcsv($output, array_map('csv_sanitize_cell', $headers), ';');
         foreach ($rows as $row) {
-            fputcsv($output, $row, ';');
+            fputcsv($output, array_map('csv_sanitize_cell', $row), ';');
         }
         fclose($output);
         exit;

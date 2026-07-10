@@ -9,9 +9,14 @@ $whatsappRaw   = trim((string) get_setting($pdo, 'whatsapp_number', ''));
 $whatsappNum   = preg_replace('/[^0-9+]/', '', $whatsappRaw);
 $whatsappUrl   = $whatsappNum !== '' ? 'https://wa.me/' . ltrim($whatsappNum, '+') : '';
 
-/* â”€â”€ POST: save intent then redirect to PayPal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── POST: save intent then redirect to PayPal ───────────────────────────── */
 if (is_post() && post_string('action') === 'initiate_donation') {
     verify_csrf_or_fail();
+
+    if (!honeypot_passed()) {
+        set_flash('error', t('validation.honeypot'));
+        redirect('contribute');
+    }
 
     $donorName = trim(post_string('donor_name'));
     $phone     = trim(post_string('phone'));
@@ -22,41 +27,46 @@ if (is_post() && post_string('action') === 'initiate_donation') {
         redirect('contribute');
     }
     if ($amount < 1) {
-        set_flash('error', 'Veuillez choisir ou saisir un montant (minimum 1 â‚¬).');
+        set_flash('error', 'Veuillez choisir ou saisir un montant (minimum 1 €).');
         redirect('contribute');
     }
 
-    $pdo->prepare('INSERT INTO donations (donor_name, donor_email, phone, amount, motive, payment_method, payment_status, created_at)
-                   VALUES (:n, :e, :p, :a, :m, :pm, :s, :ca)')
-        ->execute([
-            'n'  => $donorName,
-            'e'  => '',
-            'p'  => $phone !== '' ? $phone : null,
-            'a'  => $amount,
-            'm'  => 'general',
-            'pm' => 'paypal',
-            's'  => 'pending',
-            'ca' => db_now(),
-        ]);
+    try {
+        $pdo->prepare('INSERT INTO donations (donor_name, donor_email, phone, amount, motive, payment_method, payment_status, created_at)
+                       VALUES (:n, :e, :p, :a, :m, :pm, :s, :ca)')
+            ->execute([
+                'n'  => $donorName,
+                'e'  => '',
+                'p'  => $phone !== '' ? $phone : null,
+                'a'  => $amount,
+                'm'  => 'general',
+                'pm' => 'paypal',
+                's'  => 'pending',
+                'ca' => db_now(),
+            ]);
+    } catch (Throwable) {
+        set_flash('error', 'Erreur technique. Merci de reessayer.');
+        redirect('contribute');
+    }
 
-    $htmlBody = '<h2 style="color:#c61e31">Nouvelle contribution initiÃ©e â€” ' . $amount . ' â‚¬</h2>
+    $htmlBody = '<h2 style="color:#c61e31">Nouvelle contribution initiée — ' . $amount . ' €</h2>
         <table style="border-collapse:collapse;width:100%">
             <tr><td style="padding:.4rem .8rem;font-weight:600;width:140px">Nom</td><td style="padding:.4rem .8rem">' . htmlspecialchars($donorName, ENT_QUOTES) . '</td></tr>
-            <tr style="background:#f8faff"><td style="padding:.4rem .8rem;font-weight:600">TÃ©lÃ©phone</td><td style="padding:.4rem .8rem">' . htmlspecialchars($phone ?: 'â€”', ENT_QUOTES) . '</td></tr>
-            <tr><td style="padding:.4rem .8rem;font-weight:600">Montant</td><td style="padding:.4rem .8rem"><strong>' . $amount . ' â‚¬</strong></td></tr>
-            <tr style="background:#f8faff"><td style="padding:.4rem .8rem;font-weight:600">MÃ©thode</td><td style="padding:.4rem .8rem">PayPal (cagnotte)</td></tr>
+            <tr style="background:#f8faff"><td style="padding:.4rem .8rem;font-weight:600">Téléphone</td><td style="padding:.4rem .8rem">' . htmlspecialchars($phone ?: '—', ENT_QUOTES) . '</td></tr>
+            <tr><td style="padding:.4rem .8rem;font-weight:600">Montant</td><td style="padding:.4rem .8rem"><strong>' . $amount . ' €</strong></td></tr>
+            <tr style="background:#f8faff"><td style="padding:.4rem .8rem;font-weight:600">Méthode</td><td style="padding:.4rem .8rem">PayPal (cagnotte)</td></tr>
             <tr><td style="padding:.4rem .8rem;font-weight:600">Statut</td><td style="padding:.4rem .8rem;color:#e9a800">En attente de confirmation</td></tr>
         </table>
-        <p style="margin-top:1rem;font-size:.9rem;color:#4f617e">Confirmez le paiement manuellement dans l\'espace admin aprÃ¨s vÃ©rification.</p>';
+        <p style="margin-top:1rem;font-size:.9rem;color:#4f617e">Confirmez le paiement manuellement dans l\'espace admin après vérification.</p>';
 
     send_email($adminEmail, 'Administrateur UGFA',
-        "[UGFA] Contribution {$amount} â‚¬ â€” {$donorName}", $htmlBody);
+        "[UGFA] Contribution {$amount} € — {$donorName}", $htmlBody);
 
     header('Location: ' . $paypalPoolUrl);
     exit;
 }
 
-/* â”€â”€ Page data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Page data ───────────────────────────────────────────────────────────── */
 $pageTitle       = t('seo.contribute_title');
 $pageDescription = t('contribute.subtitle');
 
@@ -92,7 +102,7 @@ require __DIR__ . '/includes/header.php';
 <section class="section about-roadmap-section">
     <div class="container contribute-layout">
 
-        <!-- â”€â”€ Main form card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <!-- ── Main form card ────────────────────────────────────────────── -->
         <article class="form-card contribute-form-card" data-aos="fade-right">
 
             <!-- Progress bar -->
@@ -126,6 +136,7 @@ require __DIR__ . '/includes/header.php';
 
             <form method="post" id="donate-form" novalidate>
                 <?= csrf_field() ?>
+                <?= honeypot_field_html() ?>
                 <input type="hidden" name="action" value="initiate_donation">
                 <input type="hidden" name="amount" id="hidden-amount" value="">
 
@@ -133,15 +144,15 @@ require __DIR__ . '/includes/header.php';
                 <div class="form-group" style="margin-bottom:1.1rem">
                     <label><?= e(t('contribute.amount')) ?></label>
                     <div class="donate-presets">
-                        <button type="button" class="donate-preset-btn" data-amount="10">10 â‚¬</button>
-                        <button type="button" class="donate-preset-btn" data-amount="20">20 â‚¬</button>
-                        <button type="button" class="donate-preset-btn" data-amount="50">50 â‚¬</button>
-                        <button type="button" class="donate-preset-btn" data-amount="100">100 â‚¬</button>
+                        <button type="button" class="donate-preset-btn" data-amount="10">10 €</button>
+                        <button type="button" class="donate-preset-btn" data-amount="20">20 €</button>
+                        <button type="button" class="donate-preset-btn" data-amount="50">50 €</button>
+                        <button type="button" class="donate-preset-btn" data-amount="100">100 €</button>
                     </div>
                     <input id="amount-input" type="number" step="1" min="1" max="10000"
                            placeholder="<?= e(t('contribute.amount_custom')) ?>">
                     <p class="donate-amount-error hint" id="amount-error" hidden>
-                        Veuillez sÃ©lectionner ou saisir un montant (min 1 â‚¬).
+                        Veuillez sélectionner ou saisir un montant (min 1 €).
                     </p>
                 </div>
 
@@ -150,10 +161,10 @@ require __DIR__ . '/includes/header.php';
                     <div class="donate-identity-field">
                         <label for="donor_name">Votre nom <span style="color:var(--color-red)">*</span></label>
                         <input type="text" id="donor_name" name="donor_name"
-                               placeholder="PrÃ©nom et nom" required autocomplete="name">
+                               placeholder="Prénom et nom" required autocomplete="name">
                     </div>
                     <div class="donate-identity-field">
-                        <label for="donor_phone">NumÃ©ro de tÃ©lÃ©phone</label>
+                        <label for="donor_phone">Numéro de téléphone</label>
                         <input type="tel" id="donor_phone" name="phone"
                                placeholder="+49 000 000 000" autocomplete="tel">
                     </div>
@@ -175,9 +186,9 @@ require __DIR__ . '/includes/header.php';
                 <p class="donate-paypal-note" style="margin-top:.6rem">
                     <?= e(t('contribute.paypal_pool_note')) ?>
                     <?php if ($whatsappUrl !== ''): ?>
-                        â€” <a href="<?= e($whatsappUrl) ?>?text=Bonjour%2C+j%27ai+un+probl%C3%A8me+avec+ma+contribution+PayPal."
+                        — <a href="<?= e($whatsappUrl) ?>?text=Bonjour%2C+j%27ai+un+probl%C3%A8me+avec+ma+contribution+PayPal."
                              target="_blank" rel="noopener noreferrer" class="donate-whatsapp-inline">
-                            Un problÃ¨me ? WhatsApp
+                            Un problème ? WhatsApp
                         </a>
                     <?php endif; ?>
                 </p>
@@ -185,7 +196,7 @@ require __DIR__ . '/includes/header.php';
 
         </article>
 
-        <!-- â”€â”€ Side cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <!-- ── Side cards ─────────────────────────────────────────────────── -->
         <div class="contribute-side">
 
             <!-- Donors who already paid -->
@@ -196,7 +207,7 @@ require __DIR__ . '/includes/header.php';
                         <path d="M10 2l2.39 4.84 5.34.78-3.86 3.76.91 5.32L10 14.27l-4.78 2.51.91-5.32L2.27 7.62l5.34-.78L10 2z"
                               stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
                     </svg>
-                    Ils ont dÃ©jÃ  contribuÃ©
+                    Ils ont déjà contribué
                     <?php if (count($donors) > 0): ?>
                         <span class="donors-total-badge"><?= count($donors) ?></span>
                     <?php endif; ?>
@@ -212,7 +223,7 @@ require __DIR__ . '/includes/header.php';
                     <ul class="donors-list" id="donors-list"></ul>
                     <?php if (count($donors) > 3): ?>
                         <div class="donors-nav">
-                            <button type="button" class="donors-nav-btn" id="donors-prev" aria-label="PrÃ©cÃ©dent" disabled>&#8249;</button>
+                            <button type="button" class="donors-nav-btn" id="donors-prev" aria-label="Précédent" disabled>&#8249;</button>
                             <span class="donors-nav-page" id="donors-page">1 / <?= ceil(count($donors) / 3) ?></span>
                             <button type="button" class="donors-nav-btn" id="donors-next" aria-label="Suivant">&#8250;</button>
                         </div>
@@ -255,7 +266,7 @@ require __DIR__ . '/includes/header.php';
                     </script>
                 <?php else: ?>
                     <p class="hint" style="text-align:center;padding:1rem 0">
-                        Soyez le premier Ã  contribuer !
+                        Soyez le premier à contribuer !
                     </p>
                 <?php endif; ?>
             </article>
@@ -282,7 +293,7 @@ require __DIR__ . '/includes/header.php';
                     </svg>
                     Besoin d'aide ?
                 </h3>
-                <p class="hint">En cas de problÃ¨me avec votre paiement ou pour toute question, contactez-nous directement via WhatsApp.</p>
+                <p class="hint">En cas de problème avec votre paiement ou pour toute question, contactez-nous directement via WhatsApp.</p>
                 <?php if ($whatsappUrl !== ''): ?>
                     <a href="<?= e($whatsappUrl) ?>?text=Bonjour%2C+j%27ai+besoin+d%27aide+pour+ma+contribution+%C3%A0+l%27UGFA."
                        class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
@@ -294,8 +305,8 @@ require __DIR__ . '/includes/header.php';
                     </a>
                 <?php else: ?>
                     <p class="hint" style="font-size:.85rem">
-                        NumÃ©ro WhatsApp non encore configurÃ©.<br>
-                        <a href="<?= e(admin_url('settings.php')) ?>">Configurer depuis l'admin â†’</a>
+                        Numéro WhatsApp non encore configuré.<br>
+                        <a href="<?= e(admin_url('settings.php')) ?>">Configurer depuis l'admin →</a>
                     </p>
                 <?php endif; ?>
             </article>

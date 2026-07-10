@@ -53,8 +53,9 @@ if (is_post()) {
     /* ── Logo upload ─────────────────────────────────────────────────────── */
     $logoPath = null;
     if (!empty($_FILES['logo']['name']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
-        $allowedMime = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/gif'];
-        $allowedExt  = ['jpg', 'jpeg', 'png', 'webp', 'svg', 'gif'];
+        // SVG is intentionally excluded: it can embed <script> and executes in-origin if opened directly.
+        $allowedMime = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        $allowedExt  = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mime = $finfo->file($_FILES['logo']['tmp_name']);
         $origExt = strtolower(pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION));

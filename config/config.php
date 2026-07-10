@@ -37,10 +37,10 @@ return [
         'csrf_token_name' => 'csrf_token',
         'honeypot_field' => 'hp_field',
     ],
+    // Admin login credentials now live in the `admins` DB table (bcrypt password_hash),
+    // not here. 'email' below is only used as the notification recipient address.
     'admin' => [
-        'email'     => 'admin@ugfa.de',
-        'password'  => '***REMOVED***',
-        'full_name' => 'Administrateur UGFA',
+        'email' => 'admin@ugfa.de',
     ],
     'payment' => [
         'currency' => 'EUR',

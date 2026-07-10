@@ -5,7 +5,7 @@ require __DIR__ . '/../includes/bootstrap.php';
 admin_require_login();
 
 $allowedStatuses  = ['pending', 'paid', 'failed', 'canceled'];
-$allowedMethods   = ['stripe', 'paypal', 'bank_transfer', 'other'];
+$allowedMethods   = ['stripe', 'paypal', 'bank_transfer'];
 
 /* ── POST actions ─────────────────────────────────────────────────────────── */
 if (is_post()) {
@@ -22,25 +22,31 @@ if (is_post()) {
     if ($action === 'save' && $id > 0) {
         $newStatus = post_string('payment_status');
         if (!in_array($newStatus, $allowedStatuses, true)) { $newStatus = 'pending'; }
+        $newMethod = post_string('payment_method');
+        if (!in_array($newMethod, $allowedMethods, true)) { $newMethod = $allowedMethods[0]; }
         $paidAt = ($newStatus === 'paid') ? (', paid_at = ' . db_now_expression($pdo)) : '';
-        $stmt = $pdo->prepare('UPDATE donations
-            SET donor_name     = :donor_name,
-                donor_email    = :donor_email,
-                amount         = :amount,
-                motive         = :motive,
-                payment_method = :payment_method,
-                payment_status = :payment_status' . $paidAt . '
-            WHERE id = :id');
-        $stmt->execute([
-            'donor_name'     => post_string('donor_name'),
-            'donor_email'    => post_string('donor_email'),
-            'amount'         => (float) post_string('amount'),
-            'motive'         => post_string('motive'),
-            'payment_method' => post_string('payment_method'),
-            'payment_status' => $newStatus,
-            'id'             => $id,
-        ]);
-        set_flash('success', 'Contribution mise à jour.');
+        try {
+            $stmt = $pdo->prepare('UPDATE donations
+                SET donor_name     = :donor_name,
+                    donor_email    = :donor_email,
+                    amount         = :amount,
+                    motive         = :motive,
+                    payment_method = :payment_method,
+                    payment_status = :payment_status' . $paidAt . '
+                WHERE id = :id');
+            $stmt->execute([
+                'donor_name'     => post_string('donor_name'),
+                'donor_email'    => post_string('donor_email'),
+                'amount'         => (float) post_string('amount'),
+                'motive'         => post_string('motive'),
+                'payment_method' => $newMethod,
+                'payment_status' => $newStatus,
+                'id'             => $id,
+            ]);
+            set_flash('success', 'Contribution mise à jour.');
+        } catch (Throwable) {
+            set_flash('error', 'Erreur technique lors de la mise à jour.');
+        }
         redirect('admin/donations.php');
     }
 
