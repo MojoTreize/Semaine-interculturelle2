@@ -955,23 +955,16 @@ textarea:focus {
     50%      { transform: translate(-4%, -6%) scale(1.12); }
 }
 
-/* ── Homepage hero photo — shown in full, no crop, no color overlay ─────── */
-.home-about-hero-photo {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    background-color: var(--color-ink);
+/* ── Homepage image banner — full photo, no crop, no color tint ─────────── */
+.home-hero-banner {
+    width: 100%;
+    line-height: 0;
 }
 
-.home-about-hero-photo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("../images/photos/hero-monument.png");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+.home-hero-banner-img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .home-about-hero-grid {
