@@ -21,8 +21,11 @@ $totalPartners = count($partnerItems);
 require __DIR__ . '/includes/header.php';
 ?>
 
+<section class="home-hero-banner">
+    <img src="<?= e(base_url('assets/images/photos/hero-monument.png')) ?>" alt="<?= e(t('site.short_name')) ?>" class="home-hero-banner-img">
+</section>
+
 <section class="section about-hero home-about-hero">
-    <div class="home-about-hero-photo" aria-hidden="true"></div>
     <div class="container about-hero-grid home-about-hero-grid">
         <div class="about-hero-copy" data-aos="fade-right">
             <p class="about-kicker"><?= e(t('site.short_name')) ?></p>
