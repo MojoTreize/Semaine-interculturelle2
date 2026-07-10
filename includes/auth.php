@@ -19,11 +19,18 @@ if (!function_exists('admin_user')) {
 if (!function_exists('admin_attempt_login')) {
     function admin_attempt_login(mixed $pdo, string $email, string $password): bool
     {
-        $configuredEmail    = strtolower((string) app_config('admin.email',     'admin@ugfa.de'));
-        $configuredPassword = (string) app_config('admin.password',  '***REMOVED***');
+        $configuredEmail    = strtolower((string) app_config('admin.email',     ''));
+        $configuredPassword = (string) app_config('admin.password',  '');
         $configuredName     = (string) app_config('admin.full_name', 'Administrateur UGFA');
 
-        if (strtolower($email) !== $configuredEmail || $password !== $configuredPassword) {
+        // No credentials configured => login is disabled. Never allow a default/guessable login.
+        if ($configuredEmail === '' || $configuredPassword === '') {
+            return false;
+        }
+
+        $emailMatches    = hash_equals($configuredEmail, strtolower($email));
+        $passwordMatches = hash_equals($configuredPassword, $password);
+        if (!$emailMatches || !$passwordMatches) {
             return false;
         }
 
