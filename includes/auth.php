@@ -20,7 +20,7 @@ if (!function_exists('admin_attempt_login')) {
     function admin_attempt_login(mixed $pdo, string $email, string $password): bool
     {
         $configuredEmail    = strtolower((string) app_config('admin.email',     'admin@ugfa.de'));
-        $configuredPassword = (string) app_config('admin.password',  'Admin@1234');
+        $configuredPassword = (string) app_config('admin.password',  '***REMOVED***');
         $configuredName     = (string) app_config('admin.full_name', 'Administrateur UGFA');
 
         if (strtolower($email) !== $configuredEmail || $password !== $configuredPassword) {

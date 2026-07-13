@@ -39,7 +39,7 @@ return [
     ],
     'admin' => [
         'email'     => 'admin@ugfa.de',
-        'password'  => 'Admin@1234',
+        'password'  => '***REMOVED***',
         'full_name' => 'Administrateur UGFA',
     ],
     'payment' => [
