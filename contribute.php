@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 require __DIR__ . '/includes/bootstrap.php';
 
-$whatsappRaw = trim((string) get_setting($pdo, 'whatsapp_number', ''));
-$whatsappNum = preg_replace('/[^0-9+]/', '', $whatsappRaw);
-$whatsappUrl = $whatsappNum !== '' ? 'https://wa.me/' . ltrim($whatsappNum, '+') : '';
-
 $paypalClientId = paypal_client_id($pdo);
 $paypalCurrency = payment_currency($pdo);
 
@@ -19,11 +15,6 @@ $goalAmount  = (float) get_setting($pdo, 'collection_goal', '10000');
 $progressPct = $goalAmount > 0
     ? min(100.0, round(($totals['amount'] / $goalAmount) * 100, 1))
     : 0.0;
-
-$bankHolder = get_setting($pdo, 'bank_holder', 'Nestor Mermoz Thea');
-$bankIban   = get_setting($pdo, 'bank_iban', 'DE07 2687 0024 0335 0642 00');
-$bankBic    = get_setting($pdo, 'bank_bic', 'DEUTDEDB268');
-$bankName   = get_setting($pdo, 'bank_name', 'Deutsche Bank');
 
 $donors = $pdo->query(
     "SELECT donor_name, amount, created_at FROM donations
@@ -159,17 +150,17 @@ require __DIR__ . '/includes/header.php';
                     ], $donors), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
                     ?>
                     <ul class="donors-list" id="donors-list"></ul>
-                    <?php if (count($donors) > 3): ?>
+                    <?php if (count($donors) > 6): ?>
                         <div class="donors-nav">
                             <button type="button" class="donors-nav-btn" id="donors-prev" aria-label="Précédent" disabled>&#8249;</button>
-                            <span class="donors-nav-page" id="donors-page">1 / <?= ceil(count($donors) / 3) ?></span>
+                            <span class="donors-nav-page" id="donors-page">1 / <?= ceil(count($donors) / 6) ?></span>
                             <button type="button" class="donors-nav-btn" id="donors-next" aria-label="Suivant">&#8250;</button>
                         </div>
                     <?php endif; ?>
                     <script>
                     (function () {
                         var donors  = <?= $donorsJson ?>;
-                        var perPage = 3;
+                        var perPage = 6;
                         var page    = 0;
                         var list    = document.getElementById('donors-list');
                         var prev    = document.getElementById('donors-prev');
@@ -203,46 +194,6 @@ require __DIR__ . '/includes/header.php';
                 <?php else: ?>
                     <p class="hint" style="text-align:center;padding:1rem 0">
                         Soyez le premier à contribuer !
-                    </p>
-                <?php endif; ?>
-            </article>
-
-            <!-- Bank transfer -->
-            <article class="card about-info-card contribute-bank-card" data-aos="fade-left" data-aos-delay="80">
-                <h2><?= e(t('contribute.bank_title')) ?></h2>
-                <p><strong><?= e(t('contribute.bank_holder')) ?> :</strong> <?= e($bankHolder) ?></p>
-                <p><strong><?= e(t('contribute.bank_iban')) ?> :</strong> <?= e($bankIban) ?></p>
-                <p><strong><?= e(t('contribute.bank_bic')) ?> :</strong> <?= e($bankBic) ?></p>
-                <p><strong><?= e(t('contribute.bank_name')) ?> :</strong> <?= e($bankName) ?></p>
-                <p class="contribute-bank-reference">
-                    <strong><?= e(t('contribute.bank_reference')) ?> :</strong>
-                    <?= e(t('contribute.bank_reference_value')) ?>
-                </p>
-            </article>
-
-            <!-- WhatsApp support -->
-            <article class="card about-info-card contribute-whatsapp-card" data-aos="fade-left" data-aos-delay="140">
-                <h3 class="contribute-whatsapp-title">
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-                         style="width:20px;height:20px;color:#25D366;flex-shrink:0">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                    Besoin d'aide ?
-                </h3>
-                <p class="hint">En cas de problème avec votre paiement ou pour toute question, contactez-nous directement via WhatsApp.</p>
-                <?php if ($whatsappUrl !== ''): ?>
-                    <a href="<?= e($whatsappUrl) ?>?text=Bonjour%2C+j%27ai+besoin+d%27aide+pour+ma+contribution."
-                       class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-                             style="width:18px;height:18px;flex-shrink:0">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                        </svg>
-                        Contacter via WhatsApp
-                    </a>
-                <?php else: ?>
-                    <p class="hint" style="font-size:.85rem">
-                        Numéro WhatsApp non encore configuré.<br>
-                        <a href="<?= e(admin_url('settings.php')) ?>">Configurer depuis l'admin →</a>
                     </p>
                 <?php endif; ?>
             </article>
