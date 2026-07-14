@@ -36,7 +36,7 @@ declare(strict_types=1);
             <ul class="footer-contact-list">
                 <li>
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg>
-                    <span><?= e(t('footer.event_location')) ?></span>
+                    <a href="https://www.google.com/maps/search/?api=1&query=<?= rawurlencode(t('footer.event_location')) ?>" target="_blank" rel="noopener noreferrer"><?= e(t('footer.event_location')) ?></a>
                 </li>
                 <li>
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h3l1.6 4-2 1.4a12 12 0 006 6l1.4-2 4 1.6V19a2 2 0 01-2.2 2A16 16 0 014 6.2 2 2 0 015 4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -48,7 +48,7 @@ declare(strict_types=1);
                 </li>
                 <li>
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 12h17M12 3.5c2.5 2.3 2.5 14.7 0 17M12 3.5c-2.5 2.3-2.5 14.7 0 17" stroke="currentColor" stroke-width="1.6"/></svg>
-                    <span><?= e(t('footer.website')) ?></span>
+                    <a href="https://ugfa-ev.org" target="_blank" rel="noopener noreferrer"><?= e(t('footer.website')) ?></a>
                 </li>
             </ul>
         </div>

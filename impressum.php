@@ -21,9 +21,7 @@ require __DIR__ . '/includes/header.php';
                 <p>
                     Union de la Guinée Forestière en Allemagne (UGFA)<br>
                     Dachverband eingetragener Vereine<br>
-                    Leonie-Reygers-Terrasse<br>
-                    44137 Dortmund<br>
-                    Deutschland
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund, Deutschland</a>
                 </p>
 
                 <h2>Mitgliedsverbände</h2>
@@ -52,8 +50,8 @@ require __DIR__ . '/includes/header.php';
 
                 <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
                 <p>
-                    <mark>[Vollständiger Vor- und Nachname]</mark><br>
-                    Leonie-Reygers-Terrasse, 44137 Dortmund
+                    Jacques Koulemou<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund</a>
                 </p>
 
                 <h2>Haftung für Inhalte</h2>
@@ -114,9 +112,7 @@ require __DIR__ . '/includes/header.php';
                 <p>
                     Union de la Guinée Forestière en Allemagne (UGFA)<br>
                     Fédération d’associations enregistrées<br>
-                    Leonie-Reygers-Terrasse<br>
-                    44137 Dortmund<br>
-                    Allemagne
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund, Allemagne</a>
                 </p>
 
                 <h2>Associations membres</h2>
@@ -145,8 +141,8 @@ require __DIR__ . '/includes/header.php';
 
                 <h2>Responsable du contenu selon le § 18 al. 2 MStV</h2>
                 <p>
-                    <mark>[Nom et prénom complets]</mark><br>
-                    Leonie-Reygers-Terrasse, 44137 Dortmund
+                    Jacques Koulemou<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund</a>
                 </p>
 
                 <h2>Responsabilité concernant les contenus</h2>
