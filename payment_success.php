@@ -35,17 +35,19 @@ if ($provider === 'paypal') {
     $donationId = (int) ($_GET['donation_id'] ?? $_GET['custom'] ?? $_GET['cm'] ?? 0);
     $txnId = trim((string) ($_GET['tx'] ?? ''));
     if ($donationId > 0) {
-        if ($txnId !== '') {
-            payment_db_update_donation($pdo, $donationId, 'pending', $txnId, false, 'paypal');
-        }
         $row = payment_db_fetch_donation($pdo, $donationId);
         $status = strtolower((string) ($row['payment_status'] ?? 'pending'));
+        if ($txnId !== '' && $status !== 'paid') {
+            payment_db_update_donation($pdo, $donationId, 'pending', $txnId, false, 'paypal');
+            $row = payment_db_fetch_donation($pdo, $donationId);
+            $status = strtolower((string) ($row['payment_status'] ?? 'pending'));
+        }
         if ($status === 'paid') {
             $message = t('contribute.thanks_paid');
             $description = $message;
         } else {
             $message = t('contribute.thanks_pending');
-            $description = 'Paiement PayPal recu. Confirmation en cours.';
+            $description = 'Paiement PayPal reçu. Confirmation en cours.';
         }
     }
 }
@@ -62,7 +64,7 @@ require __DIR__ . '/includes/header.php';
             <h1><?= e(t('contribute.title')) ?></h1>
             <p><?= e($message) ?></p>
             <?php if ($provider === 'paypal'): ?>
-                <p class="hint">Le statut final est confirme automatiquement apres verification PayPal (IPN).</p>
+                <p class="hint">Le statut final est confirmé automatiquement après vérification PayPal (IPN).</p>
             <?php endif; ?>
             <div class="cta-row">
                 <a class="btn btn-primary" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('nav.contribute')) ?></a>

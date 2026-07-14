@@ -13,6 +13,9 @@
 !.env.example
 !.env.dist
 
+# Local application config with credentials (never commit real secrets)
+/config/config.php
+
 # Local database and runtime data
 /database/dev.sqlite
 /uploads/*

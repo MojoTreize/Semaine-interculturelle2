@@ -32,10 +32,15 @@ $businessEmail = strtolower(trim(paypal_business_email($pdo)));
 $gross = (float) ($ipn['mc_gross'] ?? 0);
 $currency = strtoupper(trim((string) ($ipn['mc_currency'] ?? '')));
 
+if ($businessEmail === '') {
+    http_response_code(400);
+    exit('PayPal business email not configured');
+}
+
 if ($donationId > 0) {
     $donation = payment_db_fetch_donation($pdo, $donationId);
 
-    if (is_array($donation) && ($businessEmail === '' || $receiverEmail === $businessEmail)) {
+    if (is_array($donation) && $receiverEmail === $businessEmail) {
         $amountMatches = abs(((float) ($donation['amount'] ?? 0)) - $gross) < 0.01;
         $currencyMatches = strtoupper((string) ($donation['currency'] ?? '')) === $currency;
 
