@@ -2621,7 +2621,7 @@ textarea:focus {
 }
 .donors-total-badge {
     margin-left: auto;
-    background: var(--color-red);
+    background: var(--color-green);
     color: #fff;
     font-size: .72rem;
     font-weight: 700;
@@ -2714,7 +2714,7 @@ textarea:focus {
 }
 .donor-amount {
     font-size: .8rem;
-    color: var(--color-red);
+    color: var(--color-green);
     font-weight: 600;
 }
 
@@ -4105,11 +4105,13 @@ a.footer-orga-item:hover {
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.3s ease;
 }
 
 .mobile-sidebar-overlay.is-open {
     opacity: 1;
+    pointer-events: auto;
 }
 
 /* Sidebar */
