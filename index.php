@@ -12,8 +12,7 @@ try {
         "SELECT id, name, website_url, logo_path, sponsorship_level
          FROM partners
          WHERE partner_type = 'sponsor' AND is_active = 1
-         ORDER BY display_order ASC, id ASC
-         LIMIT 6"
+         ORDER BY FIELD(sponsorship_level,'strategic','gold','silver','bronze'), display_order ASC, id ASC"
     )->fetchAll();
 } catch (Throwable) {
     $partnerItems = [];
@@ -354,32 +353,51 @@ $homeWhy = [
     </div>
 </section>
 
-<?php if (count($partnerItems) > 0): ?>
-<section class="section home-partners-section" data-aos="fade-up">
-    <div class="container">
-        <p class="home-kicker home-partners-kicker"><?= e(t('home.partners_preview_title')) ?></p>
-        <div class="home-partners-grid">
-            <?php foreach ($partnerItems as $partner): ?>
-                <?php
-                $logoPath   = trim((string) ($partner['logo_path'] ?? ''));
-                $name       = trim((string) ($partner['name'] ?? ''));
-                $websiteUrl = trim((string) ($partner['website_url'] ?? ''));
-                $tag        = $websiteUrl !== '' ? 'a' : 'div';
-                $attrs      = $websiteUrl !== '' ? ' href="' . e($websiteUrl) . '" target="_blank" rel="noopener noreferrer"' : '';
-                ?>
-                <<?= $tag ?> class="home-partner-logo-card"<?= $attrs ?>>
-                    <?php if ($logoPath !== ''): ?>
-                        <img src="<?= e(base_url($logoPath)) ?>" alt="<?= e($name) ?>" loading="lazy" width="140" height="70">
-                    <?php else: ?>
-                        <span class="home-partner-name-fallback"><?= e($name) ?></span>
-                    <?php endif; ?>
-                <?= '</' . $tag . '>' ?>
-            <?php endforeach; ?>
-        </div>
-        <div class="home-partners-cta" data-aos="fade-up" data-aos-delay="100">
-            <a class="btn btn-secondary" href="<?= e(base_url('partners.php')) ?>">
+<?php if (count($partnerItems) > 0):
+$_spLevels = [
+    'strategic' => ['fr' => 'Stratégique',  'de' => 'Strategisch', 'color' => '#7c3aed', 'bg' => '#f5f3ff'],
+    'gold'      => ['fr' => 'Gold',          'de' => 'Gold',        'color' => '#b45309', 'bg' => '#fffbeb'],
+    'silver'    => ['fr' => 'Silver',        'de' => 'Silber',      'color' => '#374151', 'bg' => '#f3f4f6'],
+    'bronze'    => ['fr' => 'Bronze',        'de' => 'Bronze',      'color' => '#92400e', 'bg' => '#fff7ed'],
+];
+$_lang = current_lang();
+?>
+<section class="home-sponsors-banner">
+    <div class="container home-sponsors-banner-inner">
+        <div class="home-sponsors-banner-text">
+            <p class="home-kicker"><?= e(t('home.partners_preview_title')) ?></p>
+            <a class="btn btn-hero-partner btn-sm" href="<?= e(base_url('partners.php')) ?>">
                 <?= e(t('home.see_all_partners')) ?>
             </a>
+        </div>
+        <div class="home-sponsors-track-wrap">
+            <div class="home-sponsors-track">
+                <?php foreach ($partnerItems as $sp):
+                    $spName    = trim((string)($sp['name'] ?? ''));
+                    $spLogo    = trim((string)($sp['logo_path'] ?? ''));
+                    $spUrl     = trim((string)($sp['website_url'] ?? ''));
+                    $spLevel   = strtolower(trim((string)($sp['sponsorship_level'] ?? '')));
+                    $spMeta    = $_spLevels[$spLevel] ?? null;
+                    $spTag     = $spUrl !== '' ? 'a' : 'div';
+                    $spAttrs   = $spUrl !== '' ? ' href="' . e($spUrl) . '" target="_blank" rel="noopener noreferrer"' : '';
+                ?>
+                <<?= $spTag ?> class="sp-card<?= $spLevel === 'strategic' ? ' sp-card--top' : '' ?>"<?= $spAttrs ?>>
+                    <?php if ($spMeta): ?>
+                        <span class="sp-badge" style="background:<?= e($spMeta['bg']) ?>;color:<?= e($spMeta['color']) ?>">
+                            <?= e($spMeta[$_lang] ?? $spMeta['fr']) ?>
+                        </span>
+                    <?php endif; ?>
+                    <div class="sp-logo">
+                        <?php if ($spLogo !== '' && is_file(ROOT_PATH . '/' . $spLogo)): ?>
+                            <img src="<?= e(base_url($spLogo)) ?>" alt="<?= e($spName) ?>" loading="lazy">
+                        <?php else: ?>
+                            <span class="sp-avatar"><?= e(mb_strtoupper(mb_substr($spName, 0, 2))) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <p class="sp-name"><?= e($spName) ?></p>
+                </<?= $spTag ?>>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </section>

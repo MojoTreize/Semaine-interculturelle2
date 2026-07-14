@@ -4586,80 +4586,151 @@ a.footer-orga-item:hover {
 }
 
 /* ─── Home partners section ────────────────────────────────── */
-.home-partners-section {
-    background: #f8f9fb;
+/* ─── Sponsors banner ───────────────────────────────────────────────────────── */
+.home-sponsors-banner {
+    background: linear-gradient(135deg, #1e3a6e 0%, #162d56 100%);
+    padding: 2rem 0;
+    overflow: hidden;
 }
 
-.home-partners-kicker {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.home-partners-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-    justify-content: center;
-    align-items: center;
-}
-
-.home-partner-logo-card {
+.home-sponsors-banner-inner {
     display: flex;
     align-items: center;
+    gap: 2rem;
+}
+
+.home-sponsors-banner-text {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.home-sponsors-banner-text .home-kicker {
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+    font-size: .75rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.home-sponsors-track-wrap {
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+}
+.home-sponsors-track-wrap::-webkit-scrollbar { display: none; }
+.home-sponsors-track-wrap.is-dragging { cursor: grabbing; }
+
+.home-sponsors-track {
+    display: flex;
+    gap: 1rem;
+    padding: .25rem .5rem .5rem;
+}
+
+/* ── Sponsor card ── */
+.sp-card {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem 1rem;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .55rem;
+    text-decoration: none;
+    transition: background .2s, transform .2s, box-shadow .2s;
+    position: relative;
+}
+
+a.sp-card:hover {
+    background: rgba(255,255,255,0.13);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.sp-card--top {
+    border-color: rgba(167,139,250,0.5);
+    background: rgba(124,58,237,0.15);
+    width: 190px;
+}
+
+.sp-badge {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .18rem .55rem;
+    border-radius: 999px;
+    line-height: 1.4;
+}
+
+.sp-logo {
+    width: 72px;
+    height: 56px;
+    display: flex;
+    align-items: center;
     justify-content: center;
+}
+
+.sp-logo img {
+    max-width: 72px;
+    max-height: 56px;
+    object-fit: contain;
+    border-radius: 6px;
     background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 1rem 1.5rem;
-    min-width: 140px;
-    min-height: 80px;
-    transition: box-shadow 0.2s, transform 0.2s;
+    padding: 4px;
+}
+
+.sp-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.sp-name {
+    font-size: .78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    margin: 0;
+    line-height: 1.3;
     text-decoration: none;
 }
 
-.home-partner-logo-card:hover {
-    box-shadow: 0 4px 18px rgba(30, 58, 110, 0.12);
-    transform: translateY(-2px);
+.sp-card,
+.sp-card *,
+.sp-card:hover,
+.sp-card:hover * {
+    text-decoration: none;
 }
 
-.home-partner-logo-card img {
-    max-width: 140px;
-    max-height: 70px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    filter: grayscale(30%);
-    transition: filter 0.2s;
-}
-
-.home-partner-logo-card:hover img {
-    filter: grayscale(0%);
-}
-
-.home-partner-name-fallback {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #1e3a6e;
-    text-align: center;
-}
-
-.home-partners-cta {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-@media (max-width: 640px) {
-    .home-partners-grid {
-        gap: 0.85rem;
+@media (max-width: 768px) {
+    .home-sponsors-banner-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
-    .home-partner-logo-card {
-        min-width: 110px;
-        min-height: 64px;
-        padding: 0.75rem 1rem;
+    .home-sponsors-banner-text {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
     }
-    .home-partner-logo-card img {
-        max-width: 100px;
-        max-height: 52px;
+    .home-sponsors-track-wrap {
+        width: 100%;
     }
 }
