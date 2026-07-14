@@ -7,12 +7,16 @@ $pageTitle = t('seo.home_title');
 $pageDescription = t('seo.default_description');
 
 $previewItems = program_preview($pdo, current_lang(), 4);
-$partnerItems = fetch_active_partners($pdo, 6);
-$partnerItems = array_values(array_filter($partnerItems, static function (array $partner): bool {
-    $name = trim((string) ($partner['name'] ?? ''));
-    $logoPath = trim((string) ($partner['logo_path'] ?? ''));
-    return $name !== '' && $logoPath !== '';
-}));
+try {
+    $partnerItems = $pdo->query(
+        "SELECT id, name, website_url, logo_path, sponsorship_level
+         FROM partners
+         WHERE partner_type = 'sponsor' AND is_active = 1
+         ORDER BY FIELD(sponsorship_level,'strategic','gold','silver','bronze'), display_order ASC, id ASC"
+    )->fetchAll();
+} catch (Throwable) {
+    $partnerItems = [];
+}
 $programItems = fetch_program_items($pdo, current_lang());
 $totalSessions = count($programItems);
 $totalProgramDays = count(program_by_date($programItems));
@@ -39,9 +43,18 @@ require __DIR__ . '/includes/header.php';
             </p>
             <p class="home-hero-lead"><?= e(t('site.event_theme')) ?></p>
             <div class="cta-row">
-                <a class="btn btn-light" href="<?= e(base_url('registration.php')) ?>"><?= e(t('buttons.register')) ?></a>
-                <a class="btn btn-secondary" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('buttons.contribute')) ?></a>
-                <a class="btn btn-primary" href="<?= e(base_url('partners.php')) ?>"><?= e(t('buttons.become_partner')) ?></a>
+                <a class="btn btn-hero-partner" href="<?= e(base_url('partners.php')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0"><path d="M15 12c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 17.5C4.5 15.5 7 14 12 14s7.5 1.5 8.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 6l2 2-2 2M7 6L5 8l2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <?= e(t('buttons.become_partner')) ?>
+                </a>
+                <a class="btn btn-hero-contribute" href="<?= e(base_url('contribute.php')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0"><path d="M12 21C12 21 4 15.5 4 9.5A5 5 0 0 1 12 6a5 5 0 0 1 8 3.5C20 15.5 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    <?= e(t('buttons.contribute')) ?>
+                </a>
+                <a class="btn btn-hero-register" href="<?= e(base_url('registration.php')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
+                    <?= e(t('buttons.register')) ?>
+                </a>
             </div>
         </div>
         <aside class="home-countdown" data-aos="fade-left" data-aos-delay="140">
@@ -109,7 +122,8 @@ $homeFeatures = [
         'title' => t('home.feature_region_title'),
         'text' => t('home.feature_region_text'),
         'link' => t('home.feature_region_link'),
-        'href' => base_url('about.php'),
+        'href' => 'https://zalymerveille.com/guinea',
+        'target' => '_blank',
         'image' => base_url('assets/images/photos/region.jpg'),
         'cover' => true,
         'icon' => '<path d="M4 18c3-6 5-9 8-9s5 3 8 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 9V4M9.5 6.5L12 4l2.5 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -129,7 +143,8 @@ $homeFeatures = [
         'title' => t('home.feature_heritage_title'),
         'text' => t('home.feature_heritage_text'),
         'link' => t('home.feature_heritage_link'),
-        'href' => base_url('about.php'),
+        'href' => 'https://zalymerveille.com/museums?q=NZEREKORE',
+        'target' => '_blank',
         'image' => base_url('assets/images/photos/patrimoine.jpg'),
         'cover' => true,
         'icon' => '<path d="M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
@@ -148,7 +163,7 @@ $homeFeatures = [
                 <div class="home-feature-body">
                     <h3><?= e($feature['title']) ?></h3>
                     <p><?= e($feature['text']) ?></p>
-                    <a class="home-feature-link" href="<?= e($feature['href']) ?>">
+                    <a class="home-feature-link" href="<?= e($feature['href']) ?>"<?= !empty($feature['target']) ? ' target="' . e($feature['target']) . '" rel="noopener noreferrer"' : '' ?>>
                         <?= e($feature['link']) ?>
                         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
@@ -186,51 +201,117 @@ $programIcons = [
             <a class="btn btn-secondary home-program-cta" href="<?= e(base_url('program.php')) ?>"><?= e(t('home.see_full_program')) ?></a>
         </div>
 
-        <div class="home-program-track" data-aos="fade-left" data-aos-delay="120">
-            <?php foreach ($previewItems as $index => $item): ?>
-                <?php
-                $itemType = preg_replace('/[^a-z0-9_-]/i', '', (string) ($item['item_type'] ?? 'conference')) ?: 'conference';
-                $typeKey = 'program.' . $itemType;
-                $eventDate = trim((string) ($item['event_date'] ?? ''));
-                $dayNum = '';
-                $monthLabel = '';
-                if ($eventDate !== '') {
-                    try {
-                        $d = new DateTimeImmutable($eventDate);
-                        $dayNum = $d->format('d');
-                        $monthLabel = $monthsAbbr[(int) $d->format('n')] ?? strtoupper($d->format('M'));
-                    } catch (Throwable) {
-                        // Ignore invalid dates.
-                    }
-                }
-                $programIcon = $programIcons[$itemType] ?? $programIcons['conference'];
-                ?>
-                <article class="home-program-card program-card--<?= e($itemType) ?>">
-                    <div class="home-program-media" aria-hidden="true">
-                        <?php if ($dayNum !== ''): ?>
-                            <span class="home-program-date"><strong><?= e($dayNum) ?></strong><span><?= e($monthLabel) ?></span></span>
-                        <?php endif; ?>
-                        <span class="home-program-icon">
-                            <svg viewBox="0 0 24 24" fill="none"><?= $programIcon ?></svg>
-                        </span>
-                    </div>
-                    <div class="home-program-body">
-                        <h3><?= e((string) ($item['title'] ?? '')) ?></h3>
-                        <div class="home-program-meta">
-                            <span class="home-program-time"><?= e(substr((string) ($item['start_time'] ?? ''), 0, 5)) ?> - <?= e(substr((string) ($item['end_time'] ?? ''), 0, 5)) ?></span>
-                            <span class="badge <?= e($itemType) ?>"><?= e(t($typeKey)) ?></span>
-                        </div>
-                        <p><?= e((string) ($item['description'] ?? '')) ?></p>
-                        <p class="home-program-loc">
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
-                            <?= e((string) ($item['location'] ?? '')) ?>
-                        </p>
-                    </div>
-                </article>
-            <?php endforeach; ?>
+        <div class="prog-slider-shell" data-aos="fade-left" data-aos-delay="120">
+            <div class="prog-slider" id="progSlider">
+                <div class="prog-slider-track" id="progSliderTrack">
+                    <?php foreach ($previewItems as $index => $item): ?>
+                        <?php
+                        $itemType   = preg_replace('/[^a-z0-9_-]/i', '', (string) ($item['item_type'] ?? 'conference')) ?: 'conference';
+                        $typeKey    = 'program.' . $itemType;
+                        $eventDate  = trim((string) ($item['event_date'] ?? ''));
+                        $dayNum     = '';
+                        $monthLabel = '';
+                        if ($eventDate !== '') {
+                            try {
+                                $d = new DateTimeImmutable($eventDate);
+                                $dayNum     = $d->format('d');
+                                $monthLabel = $monthsAbbr[(int) $d->format('n')] ?? strtoupper($d->format('M'));
+                            } catch (Throwable) {}
+                        }
+                        $programIcon = $programIcons[$itemType] ?? $programIcons['conference'];
+                        $colorMap = ['ceremony'=>'#c62828','conference'=>'#1565c0','panel'=>'#2e7d32','exhibition'=>'#6a1b9a','networking'=>'#e65100','workshop'=>'#00838f'];
+                        $accentColor = $colorMap[$itemType] ?? '#1565c0';
+                        ?>
+                        <article class="prog-slide program-card--<?= e($itemType) ?>" style="--slide-accent:<?= e($accentColor) ?>">
+                            <div class="prog-slide-top">
+                                <div class="prog-slide-icon-wrap">
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><?= $programIcon ?></svg>
+                                </div>
+                                <?php if ($dayNum !== ''): ?>
+                                    <div class="prog-slide-date">
+                                        <strong><?= e($dayNum) ?></strong>
+                                        <span><?= e($monthLabel) ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="prog-slide-body">
+                                <span class="prog-slide-badge"><?= e(t($typeKey)) ?></span>
+                                <h3><?= e((string) ($item['title'] ?? '')) ?></h3>
+                                <p><?= e((string) ($item['description'] ?? '')) ?></p>
+                            </div>
+                            <div class="prog-slide-footer">
+                                <span class="prog-slide-time">
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:14px;height:14px"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                    <?= e(substr((string) ($item['start_time'] ?? ''), 0, 5)) ?> – <?= e(substr((string) ($item['end_time'] ?? ''), 0, 5)) ?>
+                                </span>
+                                <span class="prog-slide-loc">
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:14px;height:14px"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+                                    <?= e((string) ($item['location'] ?? '')) ?>
+                                </span>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Contrôles -->
+            <div class="prog-slider-controls">
+                <button class="prog-slider-btn" id="progPrev" aria-label="Précédent">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="prog-slider-dots" id="progDots">
+                    <?php for ($i = 0; $i < count($previewItems); $i++): ?>
+                        <button class="prog-dot<?= $i === 0 ? ' is-active' : '' ?>" data-index="<?= $i ?>" aria-label="Diapositive <?= $i + 1 ?>"></button>
+                    <?php endfor; ?>
+                </div>
+                <button class="prog-slider-btn" id="progNext" aria-label="Suivant">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </section>
+
+<script>
+(function () {
+    var track  = document.getElementById('progSliderTrack');
+    var prev   = document.getElementById('progPrev');
+    var next   = document.getElementById('progNext');
+    var dots   = document.querySelectorAll('.prog-dot');
+    if (!track || !prev || !next) return;
+
+    var slides = track.querySelectorAll('.prog-slide');
+    var total  = slides.length;
+    var cur    = 0;
+    var auto, startX;
+
+    function goTo(n) {
+        cur = (n + total) % total;
+        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+        dots.forEach(function (d, i) { d.classList.toggle('is-active', i === cur); });
+    }
+
+    prev.addEventListener('click', function () { goTo(cur - 1); resetAuto(); });
+    next.addEventListener('click', function () { goTo(cur + 1); resetAuto(); });
+    dots.forEach(function (d) {
+        d.addEventListener('click', function () { goTo(+d.dataset.index); resetAuto(); });
+    });
+
+    /* Swipe mobile */
+    track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+        var diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) { goTo(diff > 0 ? cur + 1 : cur - 1); resetAuto(); }
+    }, { passive: true });
+
+    /* Autoplay */
+    function startAuto() { auto = setInterval(function () { goTo(cur + 1); }, 4500); }
+    function resetAuto() { clearInterval(auto); startAuto(); }
+    track.parentElement.addEventListener('mouseenter', function () { clearInterval(auto); });
+    track.parentElement.addEventListener('mouseleave', startAuto);
+    startAuto();
+})();
+</script>
 
 <?php
 $homeWhy = [
@@ -271,6 +352,56 @@ $homeWhy = [
         </div>
     </div>
 </section>
+
+<?php if (count($partnerItems) > 0):
+$_spLevels = [
+    'strategic' => ['fr' => 'Stratégique',  'de' => 'Strategisch', 'color' => '#7c3aed', 'bg' => '#f5f3ff'],
+    'gold'      => ['fr' => 'Gold',          'de' => 'Gold',        'color' => '#b45309', 'bg' => '#fffbeb'],
+    'silver'    => ['fr' => 'Silver',        'de' => 'Silber',      'color' => '#374151', 'bg' => '#f3f4f6'],
+    'bronze'    => ['fr' => 'Bronze',        'de' => 'Bronze',      'color' => '#92400e', 'bg' => '#fff7ed'],
+];
+$_lang = current_lang();
+?>
+<section class="home-sponsors-banner">
+    <div class="container home-sponsors-banner-inner">
+        <div class="home-sponsors-banner-text">
+            <p class="home-kicker"><?= e(t('home.partners_preview_title')) ?></p>
+            <a class="btn btn-hero-partner btn-sm" href="<?= e(base_url('partners.php')) ?>">
+                <?= e(t('home.see_all_partners')) ?>
+            </a>
+        </div>
+        <div class="home-sponsors-track-wrap">
+            <div class="home-sponsors-track">
+                <?php foreach ($partnerItems as $sp):
+                    $spName    = trim((string)($sp['name'] ?? ''));
+                    $spLogo    = trim((string)($sp['logo_path'] ?? ''));
+                    $spUrl     = trim((string)($sp['website_url'] ?? ''));
+                    $spLevel   = strtolower(trim((string)($sp['sponsorship_level'] ?? '')));
+                    $spMeta    = $_spLevels[$spLevel] ?? null;
+                    $spTag     = $spUrl !== '' ? 'a' : 'div';
+                    $spAttrs   = $spUrl !== '' ? ' href="' . e($spUrl) . '" target="_blank" rel="noopener noreferrer"' : '';
+                ?>
+                <<?= $spTag ?> class="sp-card<?= $spLevel === 'strategic' ? ' sp-card--top' : '' ?>"<?= $spAttrs ?>>
+                    <?php if ($spMeta): ?>
+                        <span class="sp-badge" style="background:<?= e($spMeta['bg']) ?>;color:<?= e($spMeta['color']) ?>">
+                            <?= e($spMeta[$_lang] ?? $spMeta['fr']) ?>
+                        </span>
+                    <?php endif; ?>
+                    <div class="sp-logo">
+                        <?php if ($spLogo !== '' && is_file(ROOT_PATH . '/' . $spLogo)): ?>
+                            <img src="<?= e(base_url($spLogo)) ?>" alt="<?= e($spName) ?>" loading="lazy">
+                        <?php else: ?>
+                            <span class="sp-avatar"><?= e(mb_strtoupper(mb_substr($spName, 0, 2))) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <p class="sp-name"><?= e($spName) ?></p>
+                </<?= $spTag ?>>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <section class="section home-cta-section">
     <div class="container home-cta-banner" data-aos="fade-up">

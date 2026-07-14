@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 return [
     'app' => [
-        'name' => 'Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026',
+        'name' => 'Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne',
         'base_url' => 'https://ugfa-ev.org',
         'timezone' => 'Europe/Berlin',
         'default_lang' => 'fr',

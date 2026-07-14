@@ -29,25 +29,39 @@ if (!is_array($input)) {
     api_abort('Corps JSON invalide');
 }
 
-$amount = isset($input['amount']) ? (float) $input['amount'] : 0.0;
+$amount     = isset($input['amount'])     ? (float)  $input['amount']              : 0.0;
+$donorName  = isset($input['donor_name'])  ? trim((string) $input['donor_name'])  : '';
+$donorEmail = isset($input['donor_email']) ? trim((string) $input['donor_email']) : '';
+$motive     = isset($input['motive'])      ? trim((string) $input['motive'])      : 'general';
+$message    = isset($input['message'])     ? trim((string) $input['message'])     : '';
+$lang       = isset($input['language'])    ? trim((string) $input['language'])    : current_lang();
 
 if (!is_finite($amount) || $amount < 1.0 || $amount > 10000.0) {
     api_abort('Montant invalide. Min 1 €, max 10 000 €.');
 }
+if (!in_array($motive, ['general', 'logistics', 'youth', 'culture', 'other'], true)) {
+    $motive = 'general';
+}
+if (!in_array($lang, ['fr', 'de'], true)) {
+    $lang = current_lang();
+}
 
-// Enregistre la donation en attente
+// Enregistre la donation en attente avec les données du formulaire
 try {
     $stmt = $pdo->prepare(
-        'INSERT INTO donations (amount, currency, motive, payment_method, payment_status, language, is_public)
-         VALUES (:amount, :currency, :motive, :method, :status, :lang, 1)'
+        'INSERT INTO donations (donor_name, donor_email, amount, currency, motive, message, payment_method, payment_status, language, is_public)
+         VALUES (:donor_name, :donor_email, :amount, :currency, :motive, :message, :method, :status, :lang, 1)'
     );
     $stmt->execute([
-        'amount'   => $amount,
-        'currency' => payment_currency($pdo),
-        'motive'   => 'general',
-        'method'   => 'paypal',
-        'status'   => 'pending',
-        'lang'     => current_lang(),
+        'donor_name'  => $donorName  !== '' ? $donorName  : null,
+        'donor_email' => $donorEmail !== '' ? $donorEmail : null,
+        'amount'      => $amount,
+        'currency'    => payment_currency($pdo),
+        'motive'      => $motive,
+        'message'     => $message !== '' ? $message : null,
+        'method'      => 'paypal',
+        'status'      => 'pending',
+        'lang'        => $lang,
     ]);
     $donationId = (int) $pdo->lastInsertId();
 } catch (Throwable) {

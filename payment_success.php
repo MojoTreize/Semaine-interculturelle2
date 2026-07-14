@@ -67,7 +67,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="hint">Le statut final est confirmé automatiquement après vérification PayPal (IPN).</p>
             <?php endif; ?>
             <div class="cta-row">
-                <a class="btn btn-primary" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('nav.contribute')) ?></a>
+                <a class="btn btn-hero-contribute" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('nav.contribute')) ?></a>
                 <a class="btn btn-secondary" href="<?= e(base_url('index.php')) ?>"><?= e(t('nav.home')) ?></a>
             </div>
         </article>

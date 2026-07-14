@@ -1,4 +1,4 @@
--- Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026
+-- Semaine de Cooperation Internationale et de Dialogue Interculturelle de la Guinee Forestiere en Allemagne
 -- Schema MySQL 8+
 
 SET NAMES utf8mb4;
@@ -66,9 +66,12 @@ CREATE TABLE IF NOT EXISTS sponsor_requests (
     sponsorship_level ENUM('bronze','silver','gold','strategic') NOT NULL DEFAULT 'bronze',
     message TEXT NULL,
     gdpr_consent TINYINT(1) NOT NULL DEFAULT 0,
+    status ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
     language CHAR(2) NOT NULL DEFAULT 'fr',
+    logo_path TEXT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_sponsor_level (sponsorship_level),
+    INDEX idx_sponsor_status (status),
     INDEX idx_sponsor_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -89,6 +92,9 @@ CREATE TABLE IF NOT EXISTS partners (
     name VARCHAR(190) NOT NULL,
     website_url VARCHAR(255) NULL,
     logo_path VARCHAR(255) NULL,
+    sponsorship_level VARCHAR(30) NULL,
+    contact_email VARCHAR(190) NULL,
+    vr_number VARCHAR(50) NULL,
     partner_type ENUM('partner','sponsor','institutional') NOT NULL DEFAULT 'partner',
     display_order INT UNSIGNED NOT NULL DEFAULT 0,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
@@ -140,14 +146,14 @@ CREATE TABLE IF NOT EXISTS site_settings (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO admins (full_name, email, password_hash, role)
-VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
+VALUES ('Administrateur UGFA', 'admin@ugfa-ev.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
 ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES
-('site_name', 'Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026'),
-('site_domain', 'https://guineedortmund2026.org'),
-('contact_email', 'contact@guineedortmund2026.org'),
-('organizer_email', 'organisation@guineedortmund2026.org'),
+('site_name', 'Semaine de Cooperation Internationale et de Dialogue Interculturelle de la Guinee Forestiere en Allemagne'),
+('site_domain', 'https://ugfa-ev.org'),
+('contact_email', 'contact@ugfa-ev.org'),
+('organizer_email', 'contact@ugfa-ev.org'),
 ('bank_holder', 'Association Guinee Forestiere Allemagne e.V.'),
 ('bank_iban', 'DE00 0000 0000 0000 0000 00'),
 ('bank_bic', 'GENODE00XXX'),

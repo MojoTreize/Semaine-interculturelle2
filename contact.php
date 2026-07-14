@@ -56,7 +56,7 @@ if (is_post()) {
         redirect('contact');
     }
 
-    $organizerEmail = get_setting($pdo, 'organizer_email', 'organisation@guineedortmund2026.org');
+    $organizerEmail = get_setting($pdo, 'organizer_email', 'contact@ugfa-ev.org');
     $mailSubject = t('emails.contact_subject');
     $mailBody = '<p>Nom: ' . e($fullName) . '</p>'
         . '<p>Email: ' . e($email) . '</p>'
@@ -69,7 +69,7 @@ if (is_post()) {
     redirect('contact');
 }
 
-$officialEmail = get_setting($pdo, 'contact_email', 'contact@guineedortmund2026.org');
+$officialEmail = get_setting($pdo, 'contact_email', 'contact@ugfa-ev.org');
 $siteDomain    = get_setting($pdo, 'site_domain', base_url(''));
 $waRaw         = trim((string) get_setting($pdo, 'whatsapp_number', ''));
 $waNum         = preg_replace('/[^0-9+]/', '', $waRaw);

@@ -374,4 +374,24 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    /* ── Sponsors drag-to-scroll ─────────────────────────────────────────── */
+    var spTrack = document.querySelector('.home-sponsors-track-wrap');
+    if (spTrack) {
+        var spDown = false, spStartX = 0, spScrollLeft = 0;
+        spTrack.addEventListener('mousedown', function (e) {
+            spDown = true;
+            spStartX = e.pageX - spTrack.offsetLeft;
+            spScrollLeft = spTrack.scrollLeft;
+            spTrack.classList.add('is-dragging');
+        });
+        spTrack.addEventListener('mouseleave', function () { spDown = false; spTrack.classList.remove('is-dragging'); });
+        spTrack.addEventListener('mouseup',    function () { spDown = false; spTrack.classList.remove('is-dragging'); });
+        spTrack.addEventListener('mousemove',  function (e) {
+            if (!spDown) return;
+            e.preventDefault();
+            var x = e.pageX - spTrack.offsetLeft;
+            spTrack.scrollLeft = spScrollLeft - (x - spStartX) * 1.4;
+        });
+    }
 });

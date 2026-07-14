@@ -117,7 +117,7 @@ if (is_post()) {
         redirect('partners.php');
     }
 
-    $organizerEmail = get_setting($pdo, 'organizer_email', 'organisation@guineedortmund2026.org');
+    $organizerEmail = get_setting($pdo, 'organizer_email', 'contact@ugfa-ev.org');
     $subject = t('emails.sponsor_subject');
     $body = '<p>Organisation: ' . e($organizationName) . '</p>'
         . '<p>Contact: ' . e($contactPerson) . '</p>'
@@ -250,7 +250,7 @@ require __DIR__ . '/includes/header.php';
                 </div>
 
                 <p class="hint partners-required-note"><?= e(t('partners.required_note')) ?></p>
-                <button type="submit" class="btn btn-primary"><?= e(t('partners.submit')) ?></button>
+                <button type="submit" class="btn btn-hero-partner"><?= e(t('partners.submit')) ?></button>
             </form>
             <script>
             (function(){
@@ -309,44 +309,6 @@ require __DIR__ . '/includes/header.php';
                 });
             })();
             </script>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <div class="about-section-head" data-aos="fade-up">
-            <h2><?= e(t('partners.why_title')) ?></h2>
-            <p class="lead"><?= e(t('partners.why_intro')) ?></p>
-        </div>
-
-        <div class="grid-2 partners-benefits-grid">
-            <?php foreach ($benefits as $index => $benefit): ?>
-                <?php $benefitDelay = ($index % 4) * 90; ?>
-                <article class="card about-info-card partners-benefit-card" data-aos="fade-up" data-aos-delay="<?= e((string) $benefitDelay) ?>">
-                    <h3><?= e((string) $benefit['title']) ?></h3>
-                    <p><?= e((string) $benefit['text']) ?></p>
-                </article>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<section class="section about-roadmap-section partners-target-section">
-    <div class="container">
-        <div class="about-section-head" data-aos="fade-up">
-            <h2><?= e(t('partners.target_title')) ?></h2>
-            <p class="lead"><?= e(t('partners.target_intro')) ?></p>
-        </div>
-
-        <div class="grid-2 partners-target-grid">
-            <?php foreach ($targetTypes as $index => $targetType): ?>
-                <?php $targetDelay = ($index % 4) * 80; ?>
-                <article class="about-roadmap-step partners-target-card" data-aos="fade-up" data-aos-delay="<?= e((string) $targetDelay) ?>">
-                    <span class="about-step-index"><?= e(str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT)) ?></span>
-                    <p><?= e($targetType) ?></p>
-                </article>
-            <?php endforeach; ?>
         </div>
     </div>
 </section>

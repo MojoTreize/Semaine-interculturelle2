@@ -20,28 +20,38 @@ require __DIR__ . '/includes/header.php';
                 <h2>Angaben gemäß § 5 DDG</h2>
                 <p>
                     Union de la Guinée Forestière en Allemagne (UGFA)<br>
-                    Nicht eingetragene Initiative<br>
-                    Leonie-Reygers-Terrasse<br>
-                    44137 Dortmund<br>
-                    Deutschland
+                    Dachverband eingetragener Vereine<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund, Deutschland</a>
                 </p>
+
+                <h2>Mitgliedsverbände</h2>
+                <p>
+                    UGFA ist der Zusammenschluss folgender eingetragener Vereine:
+                </p>
+                <ul>
+                    <li>UGS – Union de la Guinée Forestière e.V., Berlin &nbsp;·&nbsp; VR 36787 B</li>
+                    <li>Lelona e.V., Berlin &nbsp;·&nbsp; VR 41072 B</li>
+                    <li>Alga e.V., Hilzingen &nbsp;·&nbsp; VR 703617</li>
+                    <li>CRGSA e.V., Bochum &nbsp;·&nbsp; VR 4896</li>
+                    <li>Zaly e.V., Grevenbroich &nbsp;·&nbsp; VR 5750</li>
+                </ul>
 
                 <h2>Vertreten durch</h2>
                 <p>
-                    <mark>[Vollständiger Vor- und Nachname der vertretungsberechtigten Person]</mark>
+                    Jacques Koulemou
                 </p>
 
                 <h2>Kontakt</h2>
                 <p>
                     Telefon: <a href="tel:+49151926242516">+49 151 926 242 516</a><br>
-                    E-Mail: <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a><br>
+                    E-Mail: <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a><br>
                     Web: <a href="https://ugfa-ev.org">ugfa-ev.org</a>
                 </p>
 
                 <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
                 <p>
-                    <mark>[Vollständiger Vor- und Nachname]</mark><br>
-                    Leonie-Reygers-Terrasse, 44137 Dortmund
+                    Jacques Koulemou<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund</a>
                 </p>
 
                 <h2>Haftung für Inhalte</h2>
@@ -101,28 +111,38 @@ require __DIR__ . '/includes/header.php';
                 <h2>Informations conformément au § 5 DDG (loi allemande sur les services numériques)</h2>
                 <p>
                     Union de la Guinée Forestière en Allemagne (UGFA)<br>
-                    Initiative non enregistrée<br>
-                    Leonie-Reygers-Terrasse<br>
-                    44137 Dortmund<br>
-                    Allemagne
+                    Fédération d’associations enregistrées<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund, Allemagne</a>
                 </p>
+
+                <h2>Associations membres</h2>
+                <p>
+                    L’UGFA regroupe les associations enregistrées suivantes :
+                </p>
+                <ul>
+                    <li>UGS – Union de la Guinée Forestière e.V., Berlin &nbsp;·&nbsp; VR 36787 B</li>
+                    <li>Lelona e.V., Berlin &nbsp;·&nbsp; VR 41072 B</li>
+                    <li>Alga e.V., Hilzingen &nbsp;·&nbsp; VR 703617</li>
+                    <li>CRGSA e.V., Bochum &nbsp;·&nbsp; VR 4896</li>
+                    <li>Zaly e.V., Grevenbroich &nbsp;·&nbsp; VR 5750</li>
+                </ul>
 
                 <h2>Représentée par</h2>
                 <p>
-                    <mark>[Nom et prénom complets de la personne habilitée à représenter l’initiative]</mark>
+                    Jacques Koulemou
                 </p>
 
                 <h2>Contact</h2>
                 <p>
                     Téléphone : <a href="tel:+49151926242516">+49 151 926 242 516</a><br>
-                    E-mail : <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a><br>
+                    E-mail : <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a><br>
                     Web : <a href="https://ugfa-ev.org">ugfa-ev.org</a>
                 </p>
 
                 <h2>Responsable du contenu selon le § 18 al. 2 MStV</h2>
                 <p>
-                    <mark>[Nom et prénom complets]</mark><br>
-                    Leonie-Reygers-Terrasse, 44137 Dortmund
+                    Jacques Koulemou<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Leonie-Reygers-Terrasse+44137+Dortmund" target="_blank" rel="noopener noreferrer">Leonie-Reygers-Terrasse, 44137 Dortmund</a>
                 </p>
 
                 <h2>Responsabilité concernant les contenus</h2>
