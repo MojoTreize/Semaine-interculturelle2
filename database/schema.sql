@@ -66,9 +66,12 @@ CREATE TABLE IF NOT EXISTS sponsor_requests (
     sponsorship_level ENUM('bronze','silver','gold','strategic') NOT NULL DEFAULT 'bronze',
     message TEXT NULL,
     gdpr_consent TINYINT(1) NOT NULL DEFAULT 0,
+    status ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
     language CHAR(2) NOT NULL DEFAULT 'fr',
+    logo_path TEXT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_sponsor_level (sponsorship_level),
+    INDEX idx_sponsor_status (status),
     INDEX idx_sponsor_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -89,6 +92,9 @@ CREATE TABLE IF NOT EXISTS partners (
     name VARCHAR(190) NOT NULL,
     website_url VARCHAR(255) NULL,
     logo_path VARCHAR(255) NULL,
+    sponsorship_level VARCHAR(30) NULL,
+    contact_email VARCHAR(190) NULL,
+    vr_number VARCHAR(50) NULL,
     partner_type ENUM('partner','sponsor','institutional') NOT NULL DEFAULT 'partner',
     display_order INT UNSIGNED NOT NULL DEFAULT 0,
     is_active TINYINT(1) NOT NULL DEFAULT 1,

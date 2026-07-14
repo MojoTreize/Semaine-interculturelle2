@@ -65,6 +65,46 @@ declare(strict_types=1);
         </div>
     </div>
 
+    <?php
+    try {
+        $orgaStmt = $pdo->query("SELECT name, website_url, logo_path, vr_number FROM partners WHERE partner_type='institutional' AND is_active=1 ORDER BY display_order ASC, id ASC");
+        $orgaRows = $orgaStmt->fetchAll();
+    } catch (Throwable) {
+        $orgaRows = [];
+    }
+    if (!empty($orgaRows)):
+    ?>
+    <div class="container footer-orga">
+        <p class="footer-orga-label">
+            <?= current_lang() === 'de' ? 'Veranstaltende Vereine' : 'Associations organisatrices' ?>
+        </p>
+        <ul class="footer-orga-list">
+            <?php foreach ($orgaRows as $orga):
+                $orgaHasLogo = !empty($orga['logo_path']) && is_file(ROOT_PATH . '/' . $orga['logo_path']);
+                $orgaHasSite = !empty($orga['website_url']);
+                $orgaTag     = $orgaHasSite ? 'a' : 'span';
+                $orgaAttrs   = $orgaHasSite ? ' href="' . e((string)$orga['website_url']) . '" target="_blank" rel="noopener noreferrer"' : '';
+            ?>
+            <li>
+                <<?= $orgaTag ?> class="footer-orga-item"<?= $orgaAttrs ?>>
+                    <?php if ($orgaHasLogo): ?>
+                        <img src="<?= e(base_url((string)$orga['logo_path'])) ?>" alt="<?= e((string)$orga['name']) ?>" width="28" height="28" loading="lazy">
+                    <?php else: ?>
+                        <span class="footer-orga-avatar" aria-hidden="true">
+                            <?= e(mb_substr(strip_tags((string)$orga['name']), 0, 1)) ?>
+                        </span>
+                    <?php endif; ?>
+                    <span class="footer-orga-name"><?= e((string)$orga['name']) ?></span>
+                    <?php if (!empty($orga['vr_number'])): ?>
+                        <span class="footer-orga-vr"><?= e((string)$orga['vr_number']) ?></span>
+                    <?php endif; ?>
+                </<?= $orgaTag ?>>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php endif; ?>
+
     <div class="container footer-bottom">
         <div class="footer-legal">
             <small>&copy; <?= date('Y') ?> ugfa-ev.org - <?= e(t('footer.rights')) ?></small>
@@ -79,22 +119,22 @@ declare(strict_types=1);
 <?php
 $_waNum = trim((string) (isset($pdo) ? get_setting($pdo, 'whatsapp_number', '') : ''));
 $_waNum = preg_replace('/[^0-9+]/', '', $_waNum);
-if ($_waNum !== ''):
-    $_waHref = 'https://wa.me/' . ltrim($_waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai besoin d\'aide concernant la Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne.');
+$_waHref = $_waNum !== '' ? 'https://wa.me/' . ltrim($_waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai besoin d\'aide concernant la Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne.') : '';
 ?>
-<a class="whatsapp-fab" href="<?= e($_waHref) ?>" target="_blank" rel="noopener noreferrer"
-   aria-label="Contacter via WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-    <span class="whatsapp-fab-label">Contacter via WhatsApp</span>
-</a>
-<?php endif; ?>
-<button class="scroll-top-btn" type="button" aria-label="Nach oben" data-scroll-top>
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-</button>
+<div class="fab-stack">
+    <?php if ($_waHref !== ''): ?>
+    <a class="fab-btn fab-whatsapp" href="<?= e($_waHref) ?>" target="_blank" rel="noopener noreferrer" aria-label="Contacter via WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </a>
+    <?php endif; ?>
+    <button class="fab-btn fab-scroll-top" type="button" aria-label="Retour en haut" data-scroll-top>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+</div>
 <script>
 window.GD2026_EVENT_START = <?= json_encode(site_event_start_iso(isset($pdo) && $pdo instanceof PDO ? $pdo : null), JSON_UNESCAPED_SLASHES) ?>;
 window.GD2026_VALIDATE_PREFIX = <?= json_encode(t('validation.client_prefix'), JSON_UNESCAPED_SLASHES) ?>;

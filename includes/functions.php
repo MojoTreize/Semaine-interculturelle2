@@ -321,15 +321,20 @@ if (!function_exists('fetch_program_items')) {
         $lang = $lang === 'de' ? 'de' : 'fr';
 
         try {
-            $sql = "SELECT id, event_date, start_time, end_time, location, item_type, speakers_list,
-                           CASE WHEN :lang = 'de' THEN title_de ELSE title_fr END AS title,
-                           CASE WHEN :lang = 'de' THEN description_de ELSE description_fr END AS description
-                    FROM program_items
-                    WHERE is_active = 1
-                    ORDER BY event_date ASC, start_time ASC, display_order ASC, id ASC";
+            if ($lang === 'de') {
+                $sql = "SELECT id, event_date, start_time, end_time, location, item_type, speakers_list,
+                               title_de AS title, description_de AS description
+                        FROM program_items WHERE is_active = 1
+                        ORDER BY event_date ASC, start_time ASC, display_order ASC, id ASC";
+            } else {
+                $sql = "SELECT id, event_date, start_time, end_time, location, item_type, speakers_list,
+                               title_fr AS title, description_fr AS description
+                        FROM program_items WHERE is_active = 1
+                        ORDER BY event_date ASC, start_time ASC, display_order ASC, id ASC";
+            }
 
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['lang' => $lang]);
+            $stmt->execute([]);
             $rows = $stmt->fetchAll();
 
             if (!empty($rows)) {

@@ -250,7 +250,7 @@ require __DIR__ . '/includes/header.php';
                 </div>
 
                 <p class="hint partners-required-note"><?= e(t('partners.required_note')) ?></p>
-                <button type="submit" class="btn btn-primary"><?= e(t('partners.submit')) ?></button>
+                <button type="submit" class="btn btn-hero-partner"><?= e(t('partners.submit')) ?></button>
             </form>
             <script>
             (function(){
