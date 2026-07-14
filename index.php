@@ -39,9 +39,18 @@ require __DIR__ . '/includes/header.php';
             </p>
             <p class="home-hero-lead"><?= e(t('site.event_theme')) ?></p>
             <div class="cta-row">
-                <a class="btn btn-light" href="<?= e(base_url('registration.php')) ?>"><?= e(t('buttons.register')) ?></a>
-                <a class="btn btn-secondary" href="<?= e(base_url('contribute.php')) ?>"><?= e(t('buttons.contribute')) ?></a>
-                <a class="btn btn-primary" href="<?= e(base_url('partners.php')) ?>"><?= e(t('buttons.become_partner')) ?></a>
+                <a class="btn btn-hero-partner" href="<?= e(base_url('partners.php')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0"><path d="M15 12c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 17.5C4.5 15.5 7 14 12 14s7.5 1.5 8.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 6l2 2-2 2M7 6L5 8l2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <?= e(t('buttons.become_partner')) ?>
+                </a>
+                <a class="btn btn-hero-contribute" href="<?= e(base_url('contribute.php')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0"><path d="M12 21C12 21 4 15.5 4 9.5A5 5 0 0 1 12 6a5 5 0 0 1 8 3.5C20 15.5 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    <?= e(t('buttons.contribute')) ?>
+                </a>
+                <a class="btn btn-hero-register" href="<?= e(base_url('registration.php')) ?>">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;flex-shrink:0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
+                    <?= e(t('buttons.register')) ?>
+                </a>
             </div>
         </div>
         <aside class="home-countdown" data-aos="fade-left" data-aos-delay="140">
@@ -109,7 +118,8 @@ $homeFeatures = [
         'title' => t('home.feature_region_title'),
         'text' => t('home.feature_region_text'),
         'link' => t('home.feature_region_link'),
-        'href' => base_url('about.php'),
+        'href' => 'https://zalymerveille.com/guinea',
+        'target' => '_blank',
         'image' => base_url('assets/images/photos/region.jpg'),
         'cover' => true,
         'icon' => '<path d="M4 18c3-6 5-9 8-9s5 3 8 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 9V4M9.5 6.5L12 4l2.5 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -129,7 +139,8 @@ $homeFeatures = [
         'title' => t('home.feature_heritage_title'),
         'text' => t('home.feature_heritage_text'),
         'link' => t('home.feature_heritage_link'),
-        'href' => base_url('about.php'),
+        'href' => 'https://zalymerveille.com/museums?q=NZEREKORE',
+        'target' => '_blank',
         'image' => base_url('assets/images/photos/patrimoine.jpg'),
         'cover' => true,
         'icon' => '<path d="M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
@@ -148,7 +159,7 @@ $homeFeatures = [
                 <div class="home-feature-body">
                     <h3><?= e($feature['title']) ?></h3>
                     <p><?= e($feature['text']) ?></p>
-                    <a class="home-feature-link" href="<?= e($feature['href']) ?>">
+                    <a class="home-feature-link" href="<?= e($feature['href']) ?>"<?= !empty($feature['target']) ? ' target="' . e($feature['target']) . '" rel="noopener noreferrer"' : '' ?>>
                         <?= e($feature['link']) ?>
                         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
