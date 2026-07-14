@@ -1,4 +1,4 @@
--- Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026
+-- Semaine de Cooperation Internationale et de Dialogue Interculturelle de la Guinee Forestiere en Allemagne
 -- Schema MySQL 8+
 
 SET NAMES utf8mb4;
@@ -144,7 +144,7 @@ VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m
 ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES
-('site_name', 'Semaine de Dialogue Interculturel de la Guinee Forestiere - Dortmund 2026'),
+('site_name', 'Semaine de Cooperation Internationale et de Dialogue Interculturelle de la Guinee Forestiere en Allemagne'),
 ('site_domain', 'https://guineedortmund2026.org'),
 ('contact_email', 'contact@guineedortmund2026.org'),
 ('organizer_email', 'organisation@guineedortmund2026.org'),

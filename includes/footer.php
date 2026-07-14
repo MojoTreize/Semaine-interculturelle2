@@ -86,7 +86,7 @@ declare(strict_types=1);
 $_waNum = trim((string) (isset($pdo) ? get_setting($pdo, 'whatsapp_number', '') : ''));
 $_waNum = preg_replace('/[^0-9+]/', '', $_waNum);
 if ($_waNum !== ''):
-    $_waHref = 'https://wa.me/' . ltrim($_waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai besoin d\'aide concernant l\'événement UGFA Dortmund 2026.');
+    $_waHref = 'https://wa.me/' . ltrim($_waNum, '+') . '?text=' . rawurlencode('Bonjour, j\'ai besoin d\'aide concernant la Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne.');
 ?>
 <a class="whatsapp-fab" href="<?= e($_waHref) ?>" target="_blank" rel="noopener noreferrer"
    aria-label="Contacter via WhatsApp">

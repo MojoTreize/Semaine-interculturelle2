@@ -8,8 +8,8 @@ if (!function_exists('fallback_program_items')) {
         $items = [
             ['date' => '2026-07-04', 'start' => '09:00:00', 'end' => '11:00:00', 'type' => 'ceremony', 'location' => 'Dortmund Centrum',
                 'title_fr' => 'Ceremonie d\'ouverture officielle', 'title_de' => 'Offizielle Eroffnungszeremonie',
-                'desc_fr' => 'Lancement institutionnel de la semaine de dialogue interculturel.',
-                'desc_de' => 'Institutioneller Start der interkulturellen Dialogwoche.'],
+                'desc_fr' => 'Lancement institutionnel de la Semaine de Coopération Internationale et de Dialogue Interculturelle.',
+                'desc_de' => 'Institutioneller Auftakt der Woche der Internationalen Zusammenarbeit und des Interkulturellen Dialogs.'],
             ['date' => '2026-07-05', 'start' => '10:00:00', 'end' => '12:00:00', 'type' => 'conference', 'location' => 'Salle Konrad-Adenauer',
                 'title_fr' => 'Conference: Simandou 2040 et enjeux locaux', 'title_de' => 'Konferenz: Simandou 2040 und lokale Herausforderungen',
                 'desc_fr' => 'Perspectives economiques et environnementales pour la Guinee Forestiere.',

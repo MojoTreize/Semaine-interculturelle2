@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'site' => [
         'short_name' => 'Union de la Guinée Forestière en Allemagne',
-        'event_name' => 'Semaine de Dialogue Interculturel de la Guinée Forestière - Dortmund 2026',
+        'event_name' => 'Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne',
         'event_dates' => '1er au 11 octobre 2026',
         'event_location' => 'Leonie-Reygers-Terrasse, 44137 Dortmund, Allemagne',
         'event_theme' => 'Participation des ressortissants de la Guinée Forestière en Allemagne au développement durable de leur région d’origine dans le contexte du Projet Simandou 2040 en République de Guinée.',
@@ -31,7 +31,7 @@ return [
         'logout' => 'Déconnexion',
     ],
     'home' => [
-        'hero_title' => 'Semaine de Dialogue Interculturel de la Guinée Forestière',
+        'hero_title' => 'Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière',
         'hero_subtitle' => 'Dortmund, Allemagne | 1er au 11 octobre 2026',
         'stat_sessions' => 'Sessions programmées',
         'stat_days' => 'Jours de programmation',
@@ -84,7 +84,7 @@ return [
     ],
     'about' => [
         'title' => 'À propos',
-        'subtitle' => 'Vision, contexte et ambitions du dialogue interculturel',
+        'subtitle' => 'Vision, contexte et ambitions de la coopération internationale et du dialogue interculturel',
         'roadmap_title' => 'Une feuille de route claire pour agir',
         'roadmap_intro' => 'Nos priorités sont organisées en étapes concrètes pour transformer le dialogue en résultats mesurables.',
         'stat_days' => 'Jours d’activités (1er au 11 octobre)',
@@ -296,7 +296,7 @@ return [
         'hosting_note' => 'Hébergement Apache/Nginx avec HTTPS obligatoire en production.',
     ],
     'footer' => [
-        'event_title' => 'Dialogue Interculturel 2026',
+        'event_title' => 'Coopération Internationale & Dialogue Interculturel 2026',
         'event_dates' => '1er au 11 octobre 2026',
         'event_location' => 'Leonie-Reygers-Terrasse, 44137 Dortmund',
         'quick_links' => 'Liens rapides',
@@ -316,8 +316,8 @@ return [
     ],
     'seo' => [
         'default_title' => 'Union de la Guinée Forestière en Allemagne - Site officiel',
-        'default_description' => 'Site officiel de la Semaine de Dialogue Interculturel de la Guinée Forestière à Dortmund du 1er au 11 octobre 2026.',
-        'default_keywords' => 'Guinée, Dortmund, diaspora, Simandou 2040, dialogue interculturel, développement durable',
+        'default_description' => 'Site officiel de la Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne, du 1er au 11 octobre 2026.',
+        'default_keywords' => 'Guinée, Dortmund, Allemagne, diaspora, Simandou 2040, coopération internationale, dialogue interculturel, développement durable',
         'home_title' => 'Accueil - Union de la Guinée Forestière en Allemagne',
         'about_title' => 'À propos - Union de la Guinée Forestière en Allemagne',
         'program_title' => 'Programme - Union de la Guinée Forestière en Allemagne',
@@ -339,7 +339,7 @@ return [
     ],
     'emails' => [
         'registration_subject' => 'Confirmation inscription - Union de la Guinée Forestière en Allemagne',
-        'registration_body' => 'Bonjour :name,<br>Votre inscription a bien été enregistrée pour la Semaine de Dialogue Interculturel de la Guinée Forestière à Dortmund.',
+        'registration_body' => 'Bonjour :name,<br>Votre inscription a bien été enregistrée pour la Semaine de Coopération Internationale et de Dialogue Interculturelle de la Guinée Forestière en Allemagne.',
         'sponsor_subject' => 'Nouvelle demande sponsor - Union de la Guinée Forestière en Allemagne',
         'contact_subject' => 'Nouveau message contact - Union de la Guinée Forestière en Allemagne',
         'donation_subject' => 'Merci pour votre contribution - Union de la Guinée Forestière en Allemagne',

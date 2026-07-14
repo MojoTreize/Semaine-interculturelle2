@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'site' => [
         'short_name' => 'Union de la Guinee Forestière en Allemagne',
-        'event_name' => 'Woche des interkulturellen Dialogs von Guinee Forestiere - Dortmund 2026',
+        'event_name' => 'Woche der Internationalen Zusammenarbeit und des Interkulturellen Dialogs von Guinée Forestière in Deutschland',
         'event_dates' => '1. bis 11. Oktober 2026',
         'event_location' => 'Leonie-Reygers-Terrasse, 44137 Dortmund, Deutschland',
         'event_theme' => 'Beitrag der Staatsangehorigen aus Guinee Forestiere in Deutschland zur nachhaltigen Entwicklung ihrer Herkunftsregion im Kontext des Projekts Simandou 2040 in der Republik Guinea.',
@@ -32,7 +32,7 @@ return [
         'logout' => 'Abmelden',
     ],
     'home' => [
-        'hero_title' => 'Woche des interkulturellen Dialogs von Guinee Forestiere',
+        'hero_title' => 'Woche der Internationalen Zusammenarbeit und des Interkulturellen Dialogs von Guinée Forestière',
         'hero_subtitle' => 'Dortmund, Deutschland | 1. bis 11. Oktober 2026',
         'stat_sessions' => 'Geplante Sessions',
         'stat_days' => 'Programmtage',
@@ -85,7 +85,7 @@ return [
     ],
     'about' => [
         'title' => 'Uber uns',
-        'subtitle' => 'Vision, Kontext und Ziele des interkulturellen Dialogs',
+        'subtitle' => 'Vision, Kontext und Ziele der internationalen Zusammenarbeit und des interkulturellen Dialogs',
         'roadmap_title' => 'Eine klare Roadmap zum Handeln',
         'roadmap_intro' => 'Unsere Prioritaten sind in konkrete Etappen gegliedert, um den Dialog in messbare Ergebnisse zu uberfuhren.',
         'stat_days' => 'Tage mit Aktivitat (1. bis 11. Oktober)',
@@ -296,7 +296,7 @@ return [
         'hosting_note' => 'Hosting auf Apache/Nginx mit verpflichtendem HTTPS in Produktion.',
     ],
     'footer' => [
-        'event_title' => 'Interkultureller Dialog 2026',
+        'event_title' => 'Internationale Zusammenarbeit & Interkultureller Dialog 2026',
         'event_dates' => '1. bis 11. Oktober 2026',
         'event_location' => 'Leonie-Reygers-Terrasse, 44137 Dortmund',
         'quick_links' => 'Schnellzugriffe',
@@ -316,7 +316,7 @@ return [
     ],
     'seo' => [
         'default_title' => 'Union de la Guinee Forestière en Allemagne - Offizielle Webseite',
-        'default_description' => 'Offizielle Webseite der Woche des interkulturellen Dialogs von Guinee Forestiere in Dortmund vom 1. bis 11. Oktober 2026.',
+        'default_description' => 'Offizielle Webseite der Woche der Internationalen Zusammenarbeit und des Interkulturellen Dialogs von Guinée Forestière in Deutschland, vom 1. bis 11. Oktober 2026.',
         'default_keywords' => 'Guinea, Dortmund, Diaspora, Simandou 2040, interkultureller Dialog, nachhaltige Entwicklung',
         'home_title' => 'Start - Guinee Dortmund 2026',
         'about_title' => 'Uber uns - Guinee Dortmund 2026',
@@ -348,7 +348,7 @@ return [
     ],
     'emails' => [
         'registration_subject' => 'Anmeldebestatigung - Union de la Guinee Forestière en Allemagne',
-        'registration_body' => 'Hallo :name,<br>Ihre Anmeldung zur Woche des interkulturellen Dialogs von Guinee Forestiere in Dortmund wurde gespeichert.',
+        'registration_body' => 'Hallo :name,<br>Ihre Anmeldung zur Woche der Internationalen Zusammenarbeit und des Interkulturellen Dialogs von Guinée Forestière in Deutschland wurde gespeichert.',
         'sponsor_subject' => 'Neue Sponsoring-Anfrage - Union de la Guinee Forestière en Allemagne',
         'contact_subject' => 'Neue Kontaktanfrage - Union de la Guinee Forestière en Allemagne',
         'donation_subject' => 'Vielen Dank fur Ihren Beitrag - Union de la Guinee Forestière en Allemagne',
