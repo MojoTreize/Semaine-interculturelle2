@@ -7,8 +7,12 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- Speakers
-TRUNCATE TABLE speakers;
+-- Vider d'abord la table enfant (program_items référence speakers via fk_program_speaker)
+TRUNCATE TABLE program_items;
+
+-- Speakers (DELETE au lieu de TRUNCATE : phpMyAdmin réinitialise la session entre chaque requête,
+-- TRUNCATE échoue même avec FK vides car la contrainte existe au niveau schéma)
+DELETE FROM speakers;
 INSERT INTO speakers (id, full_name, title, organization, bio, photo_path, is_featured, created_at, updated_at) VALUES (4, 'Kabiné Komara', 'Ancien Premier Ministre de la République de Guinée', 'Comité Stratégique Simandou 2040', 'Intervenant sur les aspects institutionnels du Programme Simandou 2040 et son impact pour la diaspora guinéenne.', 'assets/images/speakers/kabine_komara.jpg', 1, '2026-07-05 17:13:19', '2026-07-05 17:13:19');
 INSERT INTO speakers (id, full_name, title, organization, bio, photo_path, is_featured, created_at, updated_at) VALUES (5, 'Bernard Goumou', 'Ancien Premier Ministre de la République de Guinée', 'Comité Stratégique Simandou 2040', 'Intervenant sur les aspects entrepreneuriaux et les opportunités d\'investissement dans le cadre du Programme Simandou 2040.', 'assets/images/speakers/bernard_goumou.jpg', 1, '2026-07-05 17:13:19', '2026-07-05 17:13:19');
 INSERT INTO speakers (id, full_name, title, organization, bio, photo_path, is_featured, created_at, updated_at) VALUES (6, 'Saran Daraba Kaba', 'Ancienne Ministre de la République de Guinée', 'Comité Stratégique Simandou 2040', 'Intervenante sur les aspects genre et la participation féminine dans le contexte du développement durable de la Guinée.', 'assets/images/speakers/hadja_saran_daraba_kaba.jpg', 1, '2026-07-05 17:13:19', '2026-07-05 17:13:19');
@@ -20,7 +24,6 @@ INSERT INTO speakers (id, full_name, title, organization, bio, photo_path, is_fe
 INSERT INTO speakers (id, full_name, title, organization, bio, photo_path, is_featured, created_at, updated_at) VALUES (12, 'Patriarche Goikoya-Lambert Zogbelemou', 'Patriarche de la communauté Guinée Forestière', 'Délégation du Patriarche', 'Représentant des aspects communautaires et traditionnels dans le dialogue interculturel et la coopération internationale.', 'assets/images/speakers/patriarche_goikoya-lambert_zogbelemou.jpg', 1, '2026-07-05 17:13:19', '2026-07-05 18:30:32');
 
 -- Program items
-TRUNCATE TABLE program_items;
 INSERT INTO program_items (id, event_date, start_time, end_time, title_fr, title_de, description_fr, description_de, location, item_type, speaker_id, speakers_list, display_order, is_active, created_at, updated_at) VALUES (59, '2026-10-03', '16:00:00', '00:00:00', 'Grillade, Networking et soirée dansante', 'Grillfest, Networking und Tanzabend', '16H–16H50 : Associations guinéennes – Mode vestimentaire comme facteur d\'intégration culturelle et défilé de mode en tenues nationales guinéennes.
 17H–18H : Grillade et Networking Afrique-Allemagne.
 21H–? : Soirée récréative et dansante avec la musique comme facteur d\'intégration culturelle.', '16H–16H50 : Guineische Vereine – Bekleidungsstil als Faktor kultureller Integration und Modenschau in traditioneller guineischer Kleidung.

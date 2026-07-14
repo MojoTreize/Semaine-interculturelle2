@@ -36,7 +36,7 @@ return [
         'hero_subtitle' => 'Dortmund, Deutschland | 1. bis 11. Oktober 2026',
         'stat_sessions' => 'Geplante Sessions',
         'stat_days' => 'Programmtage',
-        'stat_partners' => 'Offizielle Partner',
+        'stat_partners' => 'Offizielle Sponsoren',
         'intro_title' => 'Ein offizieller Rahmen fur gemeinsame Gestaltung',
         'intro_text' => 'Diese Veranstaltung bringt Diaspora, Institutionen, Expertinnen und Experten sowie Partner zusammen, um Chancen des Projekts Simandou 2040 in nachhaltige Aktionen fur Guinee Forestiere umzusetzen.',
         'focus_title' => 'Schwerpunkte dieser Ausgabe',

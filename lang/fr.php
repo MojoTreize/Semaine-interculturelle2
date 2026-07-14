@@ -35,7 +35,7 @@ return [
         'hero_subtitle' => 'Dortmund, Allemagne | 1er au 11 octobre 2026',
         'stat_sessions' => 'Sessions programmées',
         'stat_days' => 'Jours de programmation',
-        'stat_partners' => 'Partenaires officiels',
+        'stat_partners' => 'Sponsors officiels',
         'intro_title' => 'Un cadre officiel de co-construction',
         'intro_text' => 'Cet événement rassemble la diaspora, les institutions, les experts et les partenaires pour transformer les opportunités du Projet Simandou 2040 en actions durables pour la Guinée Forestière.',
         'focus_title' => 'Priorités de cette édition',
