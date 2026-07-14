@@ -20,15 +20,27 @@ require __DIR__ . '/includes/header.php';
                 <h2>Angaben gemäß § 5 DDG</h2>
                 <p>
                     Union de la Guinée Forestière en Allemagne (UGFA)<br>
-                    Nicht eingetragene Initiative<br>
+                    Dachverband eingetragener Vereine<br>
                     Leonie-Reygers-Terrasse<br>
                     44137 Dortmund<br>
                     Deutschland
                 </p>
 
+                <h2>Mitgliedsverbände</h2>
+                <p>
+                    UGFA ist der Zusammenschluss folgender eingetragener Vereine:
+                </p>
+                <ul>
+                    <li>UGS – Union de la Guinée Forestière e.V., Berlin &nbsp;·&nbsp; VR 36787 B</li>
+                    <li>Lelona e.V., Berlin &nbsp;·&nbsp; VR 41072 B</li>
+                    <li>Alga e.V., Hilzingen &nbsp;·&nbsp; VR 703617</li>
+                    <li>CRGSA e.V., Bochum &nbsp;·&nbsp; VR 4896</li>
+                    <li>Zaly e.V., Grevenbroich &nbsp;·&nbsp; VR 5750</li>
+                </ul>
+
                 <h2>Vertreten durch</h2>
                 <p>
-                    <mark>[Vollständiger Vor- und Nachname der vertretungsberechtigten Person]</mark>
+                    Jacques Koulemou
                 </p>
 
                 <h2>Kontakt</h2>
@@ -101,15 +113,27 @@ require __DIR__ . '/includes/header.php';
                 <h2>Informations conformément au § 5 DDG (loi allemande sur les services numériques)</h2>
                 <p>
                     Union de la Guinée Forestière en Allemagne (UGFA)<br>
-                    Initiative non enregistrée<br>
+                    Fédération d’associations enregistrées<br>
                     Leonie-Reygers-Terrasse<br>
                     44137 Dortmund<br>
                     Allemagne
                 </p>
 
+                <h2>Associations membres</h2>
+                <p>
+                    L’UGFA regroupe les associations enregistrées suivantes :
+                </p>
+                <ul>
+                    <li>UGS – Union de la Guinée Forestière e.V., Berlin &nbsp;·&nbsp; VR 36787 B</li>
+                    <li>Lelona e.V., Berlin &nbsp;·&nbsp; VR 41072 B</li>
+                    <li>Alga e.V., Hilzingen &nbsp;·&nbsp; VR 703617</li>
+                    <li>CRGSA e.V., Bochum &nbsp;·&nbsp; VR 4896</li>
+                    <li>Zaly e.V., Grevenbroich &nbsp;·&nbsp; VR 5750</li>
+                </ul>
+
                 <h2>Représentée par</h2>
                 <p>
-                    <mark>[Nom et prénom complets de la personne habilitée à représenter l’initiative]</mark>
+                    Jacques Koulemou
                 </p>
 
                 <h2>Contact</h2>
