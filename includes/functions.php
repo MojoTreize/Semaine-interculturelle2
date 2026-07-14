@@ -229,8 +229,8 @@ if (!function_exists('get_setting')) {
         if (!is_array($cache)) {
             $cache = [
                 'site_domain' => (string) app_config('app.base_url', ''),
-                'contact_email' => 'contact@guineedortmund2026.org',
-                'organizer_email' => 'organisation@guineedortmund2026.org',
+                'contact_email' => 'contact@ugfa-ev.org',
+                'organizer_email' => 'contact@ugfa-ev.org',
                 'stripe_public_key' => (string) app_config('payment.stripe_public_key', ''),
                 'stripe_secret_key' => (string) app_config('payment.stripe_secret_key', ''),
                 'stripe_webhook_secret' => (string) app_config('payment.stripe_webhook_secret', ''),

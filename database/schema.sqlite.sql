@@ -139,14 +139,14 @@ CREATE TABLE IF NOT EXISTS site_settings (
 );
 
 INSERT INTO admins (full_name, email, password_hash, role)
-VALUES ('Admin Dortmund 2026', 'admin@guineedortmund2026.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
+VALUES ('Administrateur UGFA', 'admin@ugfa-ev.org', '$2y$12$3IoV/If7m9b0iV1FtE3rxeRPHVAVuQLiN0IELuGc.lRJjmmgynd1e', 'super_admin')
 ON CONFLICT(email) DO UPDATE SET updated_at = CURRENT_TIMESTAMP;
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES
 ('site_name', 'Semaine de Cooperation Internationale et de Dialogue Interculturelle de la Guinee Forestiere en Allemagne'),
-('site_domain', 'https://guineedortmund2026.org'),
-('contact_email', 'contact@guineedortmund2026.org'),
-('organizer_email', 'organisation@guineedortmund2026.org'),
+('site_domain', 'https://ugfa-ev.org'),
+('contact_email', 'contact@ugfa-ev.org'),
+('organizer_email', 'contact@ugfa-ev.org'),
 ('bank_holder', 'Association Guinee Forestiere Allemagne e.V.'),
 ('bank_iban', 'DE00 0000 0000 0000 0000 00'),
 ('bank_bic', 'GENODE00XXX'),

@@ -31,7 +31,7 @@ require __DIR__ . '/includes/header.php';
                     <mark>[Vollständiger Vor- und Nachname der vertretungsberechtigten Person]</mark><br>
                     Leonie-Reygers-Terrasse, 44137 Dortmund, Deutschland<br>
                     Telefon: <a href="tel:+49151926242516">+49 151 926 242 516</a><br>
-                    E-Mail: <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a>
+                    E-Mail: <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a>
                 </p>
 
                 <h2>2. Allgemeines zur Datenverarbeitung</h2>
@@ -162,7 +162,7 @@ require __DIR__ . '/includes/header.php';
                 </ul>
                 <p>
                     Zur Ausübung Ihrer Rechte genügt eine Nachricht an
-                    <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a>.
+                    <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a>.
                 </p>
 
                 <h2>13. Beschwerderecht bei einer Aufsichtsbehörde</h2>
@@ -203,7 +203,7 @@ require __DIR__ . '/includes/header.php';
                     <mark>[Nom et prénom complets de la personne habilitée à représenter l’initiative]</mark><br>
                     Leonie-Reygers-Terrasse, 44137 Dortmund, Allemagne<br>
                     Téléphone : <a href="tel:+49151926242516">+49 151 926 242 516</a><br>
-                    E-mail : <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a>
+                    E-mail : <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a>
                 </p>
 
                 <h2>2. Généralités sur le traitement des données</h2>
@@ -328,7 +328,7 @@ require __DIR__ . '/includes/header.php';
                 </ul>
                 <p>
                     Pour exercer vos droits, un message à
-                    <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a> suffit.
+                    <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a> suffit.
                 </p>
 
                 <h2>13. Droit de réclamation auprès d’une autorité de contrôle</h2>

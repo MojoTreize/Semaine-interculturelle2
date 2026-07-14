@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://guineedortmund2026.org/sitemap.xml
+Sitemap: https://ugfa-ev.org/sitemap.xml

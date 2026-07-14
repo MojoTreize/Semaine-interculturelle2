@@ -34,7 +34,7 @@ require __DIR__ . '/includes/header.php';
                 <h2>Kontakt</h2>
                 <p>
                     Telefon: <a href="tel:+49151926242516">+49 151 926 242 516</a><br>
-                    E-Mail: <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a><br>
+                    E-Mail: <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a><br>
                     Web: <a href="https://ugfa-ev.org">ugfa-ev.org</a>
                 </p>
 
@@ -115,7 +115,7 @@ require __DIR__ . '/includes/header.php';
                 <h2>Contact</h2>
                 <p>
                     Téléphone : <a href="tel:+49151926242516">+49 151 926 242 516</a><br>
-                    E-mail : <a href="mailto:contact@guineeforestiere.de">contact@guineeforestiere.de</a><br>
+                    E-mail : <a href="mailto:contact@ugfa-ev.org">contact@ugfa-ev.org</a><br>
                     Web : <a href="https://ugfa-ev.org">ugfa-ev.org</a>
                 </p>
 

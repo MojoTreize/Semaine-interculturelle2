@@ -117,7 +117,7 @@ if (is_post()) {
         redirect('partners.php');
     }
 
-    $organizerEmail = get_setting($pdo, 'organizer_email', 'organisation@guineedortmund2026.org');
+    $organizerEmail = get_setting($pdo, 'organizer_email', 'contact@ugfa-ev.org');
     $subject = t('emails.sponsor_subject');
     $body = '<p>Organisation: ' . e($organizationName) . '</p>'
         . '<p>Contact: ' . e($contactPerson) . '</p>'
